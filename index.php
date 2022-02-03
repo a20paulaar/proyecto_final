@@ -25,6 +25,7 @@
                     <span><a class="menu_element" href="#">Horarios</a></span>
                     <span><a class="menu_element" href="#">Mapa</a></span>
                     <span><a class="menu_element" href="#">Atención al cliente</a></span>
+                    <span><a class="menu_element" href="#">Iniciar sesión</a></span>
                 </div>
             </nav>
         </div>

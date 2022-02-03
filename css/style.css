@@ -1,0 +1,146 @@
+body{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgba(0,0,255,0.3);
+}
+
+#nav{
+    background-color: rgba(64,64,255,0.3);
+}
+
+#links>span{
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu_element{
+    text-decoration: none;
+    color: #6D4650;
+}
+
+#title{
+    font-size: x-large;
+    color: #6D4650;
+}
+
+#container{
+    display: flex;
+    margin-top: 1em;
+    justify-content: space-between;
+}
+
+#container>section{
+    background-color: rgba(64,64,255,0.3);
+    padding: 0.5em;
+}
+
+#container>aside{
+    background-color: rgba(64,64,255,0.3);
+    left:0;
+}
+
+.formarea{
+    display: flex;
+}
+
+article{
+    border-width: 2px 0;
+    border-style: solid;
+    border-image: 
+    linear-gradient(
+    to right, rgba(0,0,0,0), black, rgba(0,0,0,0)
+    ) 1 0 100%;
+}
+
+#anc, #adu, #jov{
+    width: 50%;
+}
+
+footer{
+    margin: 1em auto;
+}
+
+@media (max-width: 767px){
+    #title{
+        margin: 0.5em auto 1em;
+    }
+
+    #links{
+        display: none;
+        flex-direction: column;
+    }
+
+    #links>span, #logo>img{
+        width: 100%;
+    }
+
+    #container, .formarea{
+        flex-direction: column;
+    }
+
+    #container>section{
+        margin-bottom: 0.5em;
+    }
+
+    .formarea{
+        margin: 0.5em;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #title{
+        margin: 2em auto;
+    }
+
+    #mobile_menu{
+        display: none;
+    }
+
+    header{
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+        justify-content: space-between;
+    }
+
+    #logo{
+        left: 0;
+    }
+
+    #logo>img{
+        height: 30vh;
+    }
+
+    #header_content{
+        align-self: flex-end;
+    }
+
+    #links{
+        display: flex;
+        width: 65vw;
+    }
+
+    #links>span{
+        width: 25%;
+    }
+
+    #container{
+        flex-direction: row;
+    }
+
+    #container>section{
+        width: 70%;
+    }
+
+    #container>aside{
+        width: 25%;
+    }
+
+    .formarea>span{
+        margin: 0.5em;
+    }
+}

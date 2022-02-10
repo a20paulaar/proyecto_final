@@ -17,7 +17,7 @@ document.getElementById('iv').onclick = function(){
     document.getElementById('formarea_fechavuelta').style.display = "block";
 }
 
-provisional_rellenarSelects();
+cargarParadas();
 
 /**
  * Formatea la fecha para los input date
@@ -29,29 +29,17 @@ function todayToInput(dayOffset = 0) {
     return date.toJSON().slice(0,10);
 };
 
-//Para rellenar los select sin base de datos ahora mismo; esto no vale al hacer la web
-function provisional_rellenarSelects(){
-    var paradas = [
-        "Vigo-Estación Autobuses",
-        "Vigo-Hospital Meixoeiro",
-        "Vigo-Aeroporto",
-        "O Porriño",
-        "Tui",
-        "Valença do Minho",
-        "Viana do Castelo",
-        "Póvoa de Varzim",
-        "Oporto-Aeroporto",
-        "Oporto-Casa da Música"
-    ];
-
-    ["origen", "destino"].forEach(elemento =>{
-        var sel = document.getElementById(elemento);
-        paradas.forEach(parada => {
-            var opt = document.createElement('option');
-            opt.innerHTML = parada;
-            opt.value = parada;
-            sel.appendChild(opt);
-        });
+function cargarParadas(){
+    $.post("php/bd.php",
+    {
+        method: "loadStops"
+    },
+    function(data, status){
+        var json = JSON.parse(data);
+        for(var p of json.paradas){
+            $('#origen').append(new Option(p.name, p.id));
+            $('#destino').append(new Option(p.name, p.id));
+        }
     });
 }
 

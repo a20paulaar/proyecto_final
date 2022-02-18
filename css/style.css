@@ -16,6 +16,9 @@ body{
     align-items: center;
     justify-content: center;
 }
+#links>span:hover{
+    background-color: rgb(134, 134, 241);
+}
 
 .menu_element{
     text-decoration: none;
@@ -104,15 +107,11 @@ footer{
         display: flex;
         flex-direction: row;
         font-weight: bold;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
-    #logo{
-        left: 0;
-    }
-
-    #logo>img{
-        height: 30vh;
+    #logo img{
+        height: 25vh;
     }
 
     #header_content{
@@ -129,13 +128,19 @@ footer{
     }
 
     #container{
+        display: flex;
         flex-direction: row;
+        min-height: 80vh;
     }
 
     #container>section{
         width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
     }
-
+    
     #container>aside{
         width: 25%;
     }

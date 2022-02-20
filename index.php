@@ -23,7 +23,7 @@
                     <i class="fa fa-bars">MENÚ</i>
                 </a>
                 <div id="links">
-                    <span><a class="menu_element" href="#">Tarifas</a></span>
+                    <span><a class="menu_element" href="pages/tarifas.php">Tarifas</a></span>
                     <span><a class="menu_element" href="pages/horarios.php">Horarios</a></span>
                     <span><a class="menu_element" href="pages/atencion.php">Atención al cliente</a></span>
                     <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>

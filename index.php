@@ -12,7 +12,7 @@
 <body>
     <header>
         <div id="logo">
-            <a href="index.html"><img src="images/logo_trans.png"/></a>
+            <a href="#"><img src="images/logo_trans.png"/></a>
         </div>
         <div id="header_content">
             <div id="title">
@@ -24,10 +24,11 @@
                 </a>
                 <div id="links">
                     <span><a class="menu_element" href="#">Tarifas</a></span>
-                    <span><a class="menu_element" href="#">Horarios</a></span>
-                    <span><a class="menu_element" href="#">Mapa</a></span>
-                    <span><a class="menu_element" href="#">Atención al cliente</a></span>
-                    <span><a class="menu_element" href="#">Iniciar sesión</a></span>
+                    <span><a class="menu_element" href="pages/horarios.php">Horarios</a></span>
+                    <span><a class="menu_element" href="pages/atencion.php">Atención al cliente</a></span>
+                    <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>
+                    <span><a class="menu_element" href="#">Cerrar sesión</a></span>
+                    <span><a class="menu_element" href="pages/admin.php">Administración</a></span> <!-- TODO SOLO PERFIL ADMIN -->
                 </div>
             </nav>
         </div>
@@ -91,14 +92,17 @@
             <h2>Noticias</h2>
             <!-- TODO bucle PHP por cada noticia, limitado a 3, usa query en una tabla de noticias -->
             <article>
+                <img src="#" alt="Noticia 1">
                 <h4><a class="menu_element" href="noticias.php#art-3">Título</a></h4>
                 <p>Cuerpo de la noticia</p>
             </article>
             <article>
+                <img src="#" alt="Noticia 2">
                 <h4><a class="menu_element" href="noticias.php#art-2">Título</a></h4>
                 <p>Cuerpo de la noticia</p>
             </article>
             <article>
+                <img src="#" alt="Noticia 3">
                 <h4><a class="menu_element" href="noticias.php#art-1">Título</a></h4>
                 <p>Cuerpo de la noticia</p>
             </article>
@@ -110,5 +114,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/script_index.js"></script>
 </body>
 </html>

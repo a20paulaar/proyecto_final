@@ -79,7 +79,7 @@
                 <div class="formarea">
                     <span>
                         <label for="direccion">Dirección:</label>
-                        <textarea class="form-control" cols="30" rows="1" name="direccion" id="direccion"></textarea>
+                        <textarea class="form-control" cols="80" rows="2" name="direccion" id="direccion"></textarea>
                     </span>
                 </div>
                 <div class="formarea">

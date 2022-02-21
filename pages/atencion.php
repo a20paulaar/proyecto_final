@@ -26,9 +26,14 @@
                     <span><a class="menu_element" href="../pages/tarifas.php">Tarifas</a></span>
                     <span><a class="menu_element" href="../pages/horarios.php">Horarios</a></span>
                     <span><a class="menu_element" href="../pages/atencion.php">Atención al cliente</a></span>
+                    <?php if(!isset($_SESSION)) { ?>
                     <span><a class="menu_element" href="../pages/sesion.php">Iniciar sesión</a></span>
-                    <span><a class="menu_element" href="#">Cerrar sesión</a></span>
+                    <?php } else { ?>
+                    <span><a class="menu_element" href="../functions/sesion.php?session=close">Cerrar sesión</a></span>
+                    <?php } ?>
+                    <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
                     <span><a class="menu_element" href="../pages/admin.php">Administración</a></span>
+                    <?php } ?>
                 </div>
             </nav>
         </div>
@@ -38,7 +43,7 @@
             <h2>Atención al Cliente</h2>
             <form action="#" method="post">
                     <div class="formatencion">
-                        <label for="nombre">Nombre </label>
+                        <label for="nombre">Nombre: </label>
                         <input class="form-control" type="text" name="nombre" id="nombre">
                     </div>
                     <div class="formatencion">
@@ -49,6 +54,9 @@
                         <label for="pass">Mensaje: </label>
                         <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>                    
                     </div>
+                    <? if($_GET["error"]){ ?>
+                    <div id="error">Contraseña o e-mail inválidos.</div>
+                    <? } ?>
                     <div class="formatencion">
                         <input class="form-control" type="submit" id="sesion" value="Enviar" />
                     </div>

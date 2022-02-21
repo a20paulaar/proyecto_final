@@ -40,21 +40,8 @@
     </header>
     <div id="container">
         <section>
-            <h2>Iniciar sesión</h2>
-            <form id="compra" action="../functions/sesion.php" method="post">
-                    <div class="formsession">
-                        <label for="email">E-mail: </label>
-                        <input class="form-control" type="email" name="email" id="email">
-                    </div>
-                    <div class="formsession">
-                        <label for="pass">Contraseña: </label>
-                        <input class="form-control" type="password" name="pass" id="pass">                    
-                    </div>
-                    <div class="formsession">
-                        <input class="form-control" type="submit" id="sesion" value="Iniciar Sesión" />
-                    </div>
-            </form>
-            <a class="menu_element" href="../pages/registro.php">¿Todavía no tienes una cuenta? Regístrate ahora.</a>
+            <h2>Simulador de tarifas</h2>
+            <div id="simulador" class="row"></div>
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -78,9 +65,14 @@
         </aside>
     </div>
     <footer>
-        &copy; TransMiño Transportes do Miño S.A. 2022
+        <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
+        <div id="social">
+
+        </div>
+        
     </footer>
 
     <script src="../js/script.js"></script>
+    <script src="../js/script_tarifas.js"></script>
 </body>
 </html>

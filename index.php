@@ -26,9 +26,14 @@
                     <span><a class="menu_element" href="pages/tarifas.php">Tarifas</a></span>
                     <span><a class="menu_element" href="pages/horarios.php">Horarios</a></span>
                     <span><a class="menu_element" href="pages/atencion.php">Atención al cliente</a></span>
+                    <?php if(!isset($_SESSION)) { ?>
                     <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>
-                    <span><a class="menu_element" href="#">Cerrar sesión</a></span>
-                    <span><a class="menu_element" href="pages/admin.php">Administración</a></span> <!-- TODO SOLO PERFIL ADMIN -->
+                    <?php } else { ?>
+                    <span><a class="menu_element" href="functions/sesion.php?session=close">Cerrar sesión</a></span>
+                    <?php } ?>
+                    <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
+                    <span><a class="menu_element" href="pages/admin.php">Administración</a></span>
+                    <?php } ?>
                 </div>
             </nav>
         </div>

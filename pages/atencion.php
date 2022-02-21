@@ -37,19 +37,19 @@
         <section>
             <h2>Atención al Cliente</h2>
             <form action="#" method="post">
-                    <div class="formsession">
+                    <div class="formatencion">
                         <label for="nombre">Nombre </label>
                         <input class="form-control" type="text" name="nombre" id="nombre">
                     </div>
-                    <div class="formsession">
+                    <div class="formatencion">
                         <label for="email">E-mail: </label>
                         <input class="form-control" type="email" name="email" id="email">
                     </div>
-                    <div class="formsession">
+                    <div class="formatencion">
                         <label for="pass">Mensaje: </label>
                         <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>                    
                     </div>
-                    <div class="formsession">
+                    <div class="formatencion">
                         <input class="form-control" type="submit" id="sesion" value="Enviar" />
                     </div>
             </form>

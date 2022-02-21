@@ -5,6 +5,7 @@ if(isset($_POST['method'])){
     switch($_POST['method']){
         case 'loadStops': loadStops(); break;
         case 'getSchedule': getSchedule(); break;
+        case 'loadFares': loadFares(); break;
     }
 }
 
@@ -79,6 +80,18 @@ function getSchedule(){
     $ret = [];
     foreach ($resul as $r) {
         $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => $r['nombre'], 'hour' => $r['hora']];
+    }
+    echo json_encode($json);
+}
+
+function loadFares(){
+    $bd = loadBBDD();
+    $query = "SELECT id_parada_origen, id_parada_destino, precio FROM tarifas";
+    $resul = $bd->query($query);
+
+    $ret = [];
+    foreach ($resul as $r) {
+        $json[] = ['between' => [$r['id_parada_origen'], $r['id_parada_destino']], 'price' => $r['precio']];
     }
     echo json_encode($json);
 }

@@ -67,9 +67,10 @@
     <footer>
         <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
         <div id="social">
-
-        </div>
-        
+            <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
+        </div>   
     </footer>
 
     <script src="../js/script.js"></script>

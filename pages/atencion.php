@@ -42,23 +42,28 @@
         <section>
             <h2>Atención al Cliente</h2>
             <form action="#" method="post">
-                    <div class="formatencion">
-                        <label for="nombre">Nombre: </label>
-                        <input class="form-control" type="text" name="nombre" id="nombre">
+                    <div class="formarea">
+                        <span>
+                            <label for="nombre">Nombre: </label>
+                            <input class="form-control" type="text" name="nombre" id="nombre">
+                        </span>
                     </div>
-                    <div class="formatencion">
-                        <label for="email">E-mail: </label>
-                        <input class="form-control" type="email" name="email" id="email">
+                    <div class="formarea">
+                        <span>
+                            <label for="email">E-mail: </label>
+                            <input class="form-control" type="email" name="email" id="email">
+                        </span>
                     </div>
-                    <div class="formatencion">
-                        <label for="pass">Mensaje: </label>
-                        <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>                    
+                    <div class="formarea">
+                        <span>
+                            <label for="pass">Mensaje: </label>
+                            <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>
+                        </span>                    
                     </div>
-                    <? if($_GET["error"]){ ?>
-                    <div id="error">Contraseña o e-mail inválidos.</div>
-                    <? } ?>
-                    <div class="formatencion">
-                        <input class="form-control" type="submit" id="sesion" value="Enviar" />
+                    <div class="formarea">
+                        <span>
+                            <input class="form-control" type="submit" id="sesion" value="Enviar" />
+                        </span>
                     </div>
             </form>
             <a class="menu_element" href="../html/registro.html">También puedes ponerte en contacto con nosotros a través de nuestras redes sociales.</a>
@@ -85,7 +90,12 @@
         </aside>
     </div>
     <footer>
-        &copy; TransMiño Transportes do Miño S.A. 2022
+        <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
+        <div id="social">
+            <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
+        </div>
     </footer>
 
     <script src="../js/script.js"></script>

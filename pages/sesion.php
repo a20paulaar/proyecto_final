@@ -41,17 +41,26 @@
     <div id="container">
         <section>
             <h2>Iniciar sesión</h2>
-            <form id="compra" action="../functions/sesion.php" method="post">
-                    <div class="formsession">
-                        <label for="email">E-mail: </label>
-                        <input class="form-control" type="email" name="email" id="email">
+            <form action="../functions/sesion.php" method="post">
+                    <div class="formarea">
+                        <span>
+                            <label for="email">E-mail: </label>
+                            <input class="form-control" type="email" name="email" id="email">
+                        </span>
                     </div>
-                    <div class="formsession">
-                        <label for="pass">Contraseña: </label>
-                        <input class="form-control" type="password" name="pass" id="pass">                    
+                    <div class="formarea">
+                        <span>
+                            <label for="pass">Contraseña: </label>
+                            <input class="form-control" type="password" name="pass" id="pass">
+                        </span>                 
                     </div>
-                    <div class="formsession">
-                        <input class="form-control" type="submit" id="sesion" value="Iniciar Sesión" />
+                    <?php if(isset($_GET["error"])){ ?>
+                    <div id="error">Contraseña o e-mail inválidos.</div>
+                    <?php } ?>
+                    <div class="formarea">
+                        <span>
+                            <input class="form-control" type="submit" id="sesion" value="Iniciar Sesión" />
+                        </span>
                     </div>
             </form>
             <a class="menu_element" href="../pages/registro.php">¿Todavía no tienes una cuenta? Regístrate ahora.</a>
@@ -78,9 +87,13 @@
         </aside>
     </div>
     <footer>
-        &copy; TransMiño Transportes do Miño S.A. 2022
+        <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
+        <div id="social">
+            <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
+        </div>
     </footer>
-
     <script src="../js/script.js"></script>
 </body>
 </html>

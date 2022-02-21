@@ -42,40 +42,50 @@
         <section>
             <h2>Registro de usuario:</h2>
             <form action="#" method="post">
-                <div class="formregistro">
-                    <label for="nombre">Nombre:</label>
-                    <input class="form-control" type="text" name="nombre" id="nombre">
+                <div class="formarea">
+                    <span>
+                        <label for="nombre">Nombre:</label>
+                        <input class="form-control" type="text" name="nombre" id="nombre">
+                    </span>
+                    <span>
+                        <label for="apellido1">Primer Apellido:</label>
+                        <input class="form-control" type="text" name="apellido1" id="apellido1">
+                    </span>
+                    <span>
+                        <label for="apellido2">Segundo Apellido:</label>
+                        <input class="form-control" type="text" name="apellido2" id="apellido2">
+                    </span>
                 </div>
-                <div class="formregistro">
-                    <label for="apellido1">Primer Apellido:</label>
-                    <input class="form-control" type="text" name="apellido1" id="apellido1">
+                <div class="formarea">
+                    <span>
+                        <label for="dni">DNI:</label>
+                        <input class="form-control" type="text" name="dni" id="dni">
+                    </span>
+                    <span>
+                        <label for="fecha_nac">Fecha de nacimiento:</label>
+                        <input class="form-control" type="date" name="fecha_nac" id="fecha_nac">
+                    </span>
                 </div>
-                <div class="formregistro">
-                    <label for="apellido2">Segundo Apellido:</label>
-                    <input class="form-control" type="text" name="apellido2" id="apellido2">
+                <div class="formarea">
+                    <span>
+                        <label for="email">E-mail:</label>
+                        <input class="form-control" type="email" name="email" id="email">
+                    </span>
+                    <span>
+                        <label for="movil">Teléfono:</label>
+                        <input class="form-control" type="tel" name="movil" id="movil">
+                    </span>
                 </div>
-                <div class="formregistro">
-                    <label for="dni">DNI:</label>
-                    <input class="form-control" type="text" name="dni" id="dni">
+                <div class="formarea">
+                    <span>
+                        <label for="direccion">Dirección:</label>
+                        <textarea class="form-control" cols="30" rows="1" name="direccion" id="direccion"></textarea>
+                    </span>
                 </div>
-                <div class="formregistro">
-                    <label for="fecha_nac">Fecha de nacimiento:</label>
-                    <input class="form-control" type="date" name="fecha_nac" id="fecha_nac">
-                </div>
-                <div class="formregistro">
-                    <label for="email">E-mail:</label>
-                    <input class="form-control" type="email" name="email" id="email">
-                </div>
-                <div class="formregistro">
-                    <label for="movil">Teléfono:</label>
-                    <input class="form-control" type="tel" name="movil" id="movil">
-                </div>
-                <div class="formregistro">
-                    <label for="direccion">Dirección:</label>
-                    <textarea class="form-control" name="direccion" id="direccion"></textarea>
-                </div>
-                <div class="formregistro">
-                    <input class="form-control" type="submit" value="Registrarse">
+                <div class="formarea">
+                    <span>
+                        <input class="form-control" type="submit" value="Registrarse">
+                    </span>
                 </div>
             </form>
         </section>
@@ -101,10 +111,14 @@
         </aside>
     </div>
     <footer>
-        &copy; TransMiño Transportes do Miño S.A. 2022
+        <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
+        <div id="social">
+            <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
+        </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script src="js/script_index.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>

@@ -105,7 +105,7 @@ function calcular(){
                 $(this).html("<i class='fa fa-ban'>Viaje no posible</i>");
             }
             else{
-                $(this).text(acumulador);
+                $(this).text(acumulador != "" ? acumulador + " €" : "");
             }
         });
     });

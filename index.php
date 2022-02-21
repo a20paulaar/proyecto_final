@@ -41,7 +41,7 @@
     <div id="container">
         <section>
             <h2>Comprar billetes</h2>
-            <form id="compra" action="comprar.php" method="post">
+            <form action="comprar.php" method="post">
                 <div class="formarea">
                     <span id="formarea_ida">
                         <input class="form-check-input" type="radio" id="i" name="trayecto" value="Ida">
@@ -115,7 +115,12 @@
         </aside>
     </div>
     <footer>
-        &copy; TransMiño Transportes do Miño S.A. 2022
+        <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
+        <div id="social">
+            <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+        </div>
     </footer>
 
     <script src="js/script.js"></script>

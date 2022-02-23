@@ -1,8 +1,7 @@
 cargarHorarios();
 
 function cargarParadas(){
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadStops"
     },
     function(data, status){
@@ -17,8 +16,7 @@ function cargarParadas(){
 function cargarHorarios(){
     cargarParadas();
 
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadSchedule"
     },
     function(data, status){

@@ -1,8 +1,7 @@
 var maxStop = 0; //Para el bucle de rellenar tarifas hay que saber el índice del último elemento
 
 function cargarParadas(){
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadStops"
     },
     function(data, status){
@@ -53,8 +52,7 @@ function cargarParadas(){
 function calcular(){
     var origen = $(this).val();
 
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadFares"
     },
     function(data, status){

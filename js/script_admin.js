@@ -1,9 +1,9 @@
 cargarReservas();
+cargarUsuarios();
 cargarTarifas();
 
 function cargarReservas(){
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadPendingReservations"
     },
     function(data, status){
@@ -16,9 +16,16 @@ function cargarReservas(){
     });
 }
 
+function cargarUsuarios(){
+    $.post("../functions/bd.php", {
+        method: "loadUsers"
+    },
+    function(data, status){
+    });
+}
+
 function cargarTarifas(){
-    $.post("../functions/bd.php",
-    {
+    $.post("../functions/bd.php", {
         method: "loadFares"
     },
     function(data, status){

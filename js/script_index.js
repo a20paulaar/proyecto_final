@@ -30,8 +30,7 @@ function todayToInput(dayOffset = 0) {
 };
 
 function cargarParadas(){
-    $.post("functions/bd.php",
-    {
+    $.post("functions/bd.php", {
         method: "loadStops"
     },
     function(data, status){

@@ -23,6 +23,22 @@ function cargarTarifas(){
     },
     function(data, status){
         var listaTarifas = JSON.parse(data);
-        console.log(listaTarifas);
+        for(var tarifa of listaTarifas){
+            $('#lista_tarifas').append(
+                '<tr>'+
+                '<td>'+tarifa.between_n[0]+'</td>'+
+                '<td>'+tarifa.between_n[1]+'</td>'+
+                '<td>'+
+                    '<form method="post" action="../functions/admin.php">'+
+                        '<input type="number" step="any" lang="en" class="admin_price" value="'+tarifa.price+'" name="price" /><br/>'+
+                        '<input type="hidden" name="between" value="' + tarifa.between[0] + '_' +tarifa.between[1]+'" />'+
+                        '<input type="submit" name="tarifas" value="Modificar" />'+
+                    '</form>'+
+                '</td>'+
+                '</tr>'
+            );
+
+            $('.admin_price').css("width", "6em");
+        }
     });
 }

@@ -19,7 +19,7 @@ function cargarHorarios(){
 
     $.post("../functions/bd.php",
     {
-        method: "getSchedule"
+        method: "loadSchedule"
     },
     function(data, status){
         var json = JSON.parse(data);

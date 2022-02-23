@@ -4,7 +4,7 @@ incluir aquí la referencia al método que se llama*/
 if(isset($_POST['method'])){
     switch($_POST['method']){
         case 'loadStops': loadStops(); break;
-        case 'getSchedule': getSchedule(); break;
+        case 'loadSchedule': loadSchedule(); break;
         case 'loadFares': loadFares(); break;
     }
 }
@@ -77,7 +77,7 @@ function getSchedule(){
     JOIN paradas p ON h.id_parada = p.id_parada";
     $resul = $bd->query($query);
 
-    $ret = [];
+    $json = [];
     foreach ($resul as $r) {
         $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => $r['nombre'], 'hour' => $r['hora']];
     }
@@ -86,12 +86,39 @@ function getSchedule(){
 
 function loadFares(){
     $bd = loadBBDD();
-    $query = "SELECT id_parada_origen, id_parada_destino, precio FROM tarifas";
+    $query = "SELECT t.id_parada_origen, t.id_parada_destino, 
+        p1.nombre AS nombre_parada_origen, p2.nombre AS nombre_parada_destino, t.precio FROM tarifas t
+    JOIN paradas p1 ON p1.id_parada = t.id_parada_origen
+    JOIN paradas p2 ON p2.id_parada = t.id_parada_destino";
     $resul = $bd->query($query);
 
-    $ret = [];
+    $json = [];
     foreach ($resul as $r) {
-        $json[] = ['between' => [$r['id_parada_origen'], $r['id_parada_destino']], 'price' => $r['precio']];
+        $json[] = [
+            'between' => [$r['id_parada_origen'], $r['id_parada_destino']],
+            'between_n' => [$r['nombre_parada_origen'], $r['nombre_parada_destino']], 
+            'price' => $r['precio']
+        ];
     }
     echo json_encode($json);
+}
+
+function setFare($stop1, $stop2, $value){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("UPDATE tarifas SET precio = ? 
+            WHERE id_parada_origen = ? AND id_parada_destino = ?");
+        $query->bindParam(1, $value);
+        $query->bindParam(2, $stop1);
+        $query->bindParam(3, $stop2);
+        $query->execute();
+        $bd->commit();
+
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+    }
 }

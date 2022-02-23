@@ -52,7 +52,7 @@
                 </div>
                 <div id="admin_tarifas">
                     <h4>Gestión de tarifas</h4>
-                    <div id=lista_tarifas></div>
+                    <table id="lista_tarifas" class="table"><tr/></table>
                 </div>
             </div>
         </section>
@@ -60,13 +60,16 @@
     <footer>
         <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
         <div id="social">
-            <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
-            <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
-            <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
         </div>
     </footer>
 
     <script src="../js/script.js"></script>
     <script src="../js/script_admin.js"></script>
+    <?php if(isset($_GET['error'])){ ?>
+        <script> alert("<?= $_GET['error'] ?>") </script>
+    <?php } ?>
 </body>
 </html>

@@ -43,15 +43,15 @@
     <div id="container">
         <section>
             <h2>Registro de usuario:</h2>
-            <form action="#" method="post">
+            <form action="#" method="post" onsubmit="return validar();">
                 <div class="formarea">
                     <span>
                         <label for="nombre">Nombre:</label>
-                        <input class="form-control" type="text" name="nombre" id="nombre">
+                        <input class="form-control" type="text" name="nombre" id="nombre" required>
                     </span>
                     <span>
                         <label for="apellido1">Primer Apellido:</label>
-                        <input class="form-control" type="text" name="apellido1" id="apellido1">
+                        <input class="form-control" type="text" name="apellido1" id="apellido1" required>
                     </span>
                     <span>
                         <label for="apellido2">Segundo Apellido:</label>
@@ -61,11 +61,11 @@
                 <div class="formarea">
                     <span>
                         <label for="dni">DNI:</label>
-                        <input class="form-control" type="text" name="dni" id="dni">
+                        <input class="form-control" type="text" name="dni" id="dni" required>
                     </span>
                     <span>
                         <label for="fecha_nac">Fecha de nacimiento:</label>
-                        <input class="form-control" type="date" name="fecha_nac" id="fecha_nac">
+                        <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
                     </span>
                 </div>
                 <div class="formarea">
@@ -75,17 +75,17 @@
                     </span>
                     <span>
                         <label for="email">E-mail:</label>
-                        <input class="form-control" type="email" name="email" id="email">
+                        <input class="form-control" type="email" name="email" id="email" required>
                     </span>
                 </div>
                 <div class="formarea">
                     <span>
                         <label for="pass">Contraseña:</label>
-                        <input class="form-control" type="password" name="pass" id="pass">
+                        <input class="form-control" type="password" name="pass" id="pass" required>
                     </span>
                     <span>
                         <label for="pass2">Repita la contraseña:</label>
-                        <input class="form-control" type="password" name="pass2" id="pass2">
+                        <input class="form-control" type="password" name="pass2" id="pass2" required>
                     </span>
                 </div>
                 <div class="formarea">
@@ -103,23 +103,8 @@
         </section>
         <aside>
             <h2>Noticias</h2>
-            <!-- TODO bucle PHP por cada noticia, limitado a 3, usa query en una tabla de noticias -->
-            <article>
-                <img src="#" alt="Noticia 1">
-                <h4><a class="menu_element" href="noticias.php#art-3">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <article>
-                <img src="#" alt="Noticia 2">
-                <h4><a class="menu_element" href="noticias.php#art-2">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <article>
-                <img src="#" alt="Noticia 3">
-                <h4><a class="menu_element" href="noticias.php#art-1">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <a class="menu_element" href="#">Ver noticias anteriores</a>
+            <div></div>
+            <!-- <a class="menu_element" href="#">Ver noticias anteriores</a> -->
         </aside>
     </div>
     <footer>

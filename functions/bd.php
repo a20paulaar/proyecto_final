@@ -6,6 +6,9 @@ if(isset($_POST['method'])){
         case 'loadStops': loadStops(); break;
         case 'loadSchedule': loadSchedule(); break;
         case 'loadFares': loadFares(); break;
+        case 'loadUsers': loadUsers(); break;
+        case 'loadPendingReservations': loadPendingReservations(); break;
+        case 'loadNews': loadNews(); break;
     }
 }
 
@@ -40,6 +43,8 @@ function readConfig($fichero_config_BBDD, $esquema) {
     $resul[] = $clave[0];
     return $resul;
 }
+
+// CARGAR DATOS
 
 function loadStops(){
     $bd = loadBBDD();
@@ -103,6 +108,61 @@ function loadFares(){
     echo json_encode($json);
 }
 
+function loadUsers(){
+    $bd = loadBBDD();
+    $query = "SELECT email, perfil FROM usuarios";
+    $resul = $bd->query($query);
+
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = ['email' => $r['email'], 'profile' => $r['perfil']];
+    }
+    echo json_encode($json);
+}
+
+function loadPendingReservations(){
+    $bd = loadBBDD();
+    $query = "SELECT a.dni, a.fecha_viaje, a.id_expedicion, 
+        a.id_parada_origen, p1.nombre AS nombre_parada_origen, h1.hora AS hora_origen,
+        a.id_parada_destino, p2.nombre AS nombre_parada_destino, h2.hora AS hora_destino,
+        a.num_asiento
+    FROM asignacion_asiento a
+    JOIN paradas p1 ON p1.id_parada = a.id_parada_origen
+    JOIN paradas p2 ON p2.id_parada = a.id_parada_destino
+    JOIN horarios h1 ON h1.id_parada = a.id_parada_origen AND h1.id_expedicion = a.id_expedicion
+    JOIN horarios h2 ON h2.id_parada = a.id_parada_destino AND h2.id_expedicion = a.id_expedicion
+    WHERE estado_reserva = 1"; // 0: En compra - 1: Reserva pendiente - 2: Reserva confirmada
+    $resul = $bd->query($query);
+
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = [
+            'dni' => $r['dni'], 'date' => $r['fecha_viaje'], 'exped' => $r['id_expedicion'],
+            'start_stop' => $r['id_parada_origen'], 'start_stop_name' => $r['nombre_parada_origen'], 'start_time' => $r['hora_origen'],
+            'end_stop' => $r['id_parada_destino'], 'end_stop_name' => $r['nombre_parada_destino'], 'end_time' => $r['hora_destino'],
+            'seat' => $r['num_asiento']
+        ];
+    }
+    echo json_encode($json);
+}
+
+function loadNews(){
+    $bd = loadBBDD();
+    $query = "SELECT id_noticia, titulo, noticia, imagen 
+        FROM noticias ORDER BY id_noticia DESC LIMIT " . $_POST['range'];
+    $resul = $bd->query($query);
+
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = [
+            'id' => $r['id_noticia'], 'title' => $r['titulo'], 'text' => $r['noticia'], 'has_pic' => $r['imagen'] 
+        ];
+    }
+    echo json_encode($json);
+}
+
+//ACTUALIZAR DATOS
+
 function setFare($stop1, $stop2, $value){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -113,6 +173,51 @@ function setFare($stop1, $stop2, $value){
         $query->bindParam(1, $value);
         $query->bindParam(2, $stop1);
         $query->bindParam(3, $stop2);
+        $query->execute();
+        $bd->commit();
+
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+function updateReservation($valid, $dni, $date, $exped, $seat){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $bd->beginTransaction();
+    try {
+        if($valid){
+            $query = $bd->prepare("UPDATE asignacion_asiento SET estado_reserva = 2 
+                WHERE dni = ? AND fecha_viaje = ? AND id_expedicion = ? AND num_asiento = ?");
+        }
+        else{
+            $query = $bd->prepare("DELETE FROM asignacion_asiento
+                WHERE dni = ? AND fecha_viaje = ? AND id_expedicion = ? AND num_asiento = ?");
+        }
+        $query->bindParam(1, $dni);
+        $query->bindParam(2, $date);
+        $query->bindParam(3, $exped);
+        $query->bindParam(4, $seat);
+        $query->execute();
+        $bd->commit();
+
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+function updateUserProfile($mail, $profile){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("UPDATE usuarios SET perfil = ? WHERE email = ?");
+        $query->bindParam(1, $profile);
+        $query->bindParam(2, $mail);
         $query->execute();
         $bd->commit();
 

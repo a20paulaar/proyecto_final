@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/style_admin.css">
     <title>TransMiño</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
@@ -45,18 +46,51 @@
         <section>
             <h2>Panel de administración</h2>
             <div id="admin">
-                <div id="admin_confirmar">
-                    <h4>Confirmar reserva</h4>
-                    <table id="lista_reservas" class="table"><tr/></table>
+                <div id="admin_reservas" class="card">
+                    <div class="card-header" id="headingOne">
+                        <h4 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#div_lista_reservas" aria-expanded="false" aria-controls="div_lista_reservas">
+                            <h4>Gestión de reservas</h4>
+                            </button>
+                        </h4>
+                    </div>
+                    <div id="div_lista_reservas" class="collapse" aria-labelledby="headingOne" data-parent="#admin">
+                        <div class="card-body">
+                            <table id="lista_reservas" class="table"><tr>
+                                <th>DNI</th><th>Fecha</th><th>Origen (Hora)</th><th>Destino (Hora)</th><th>Asiento</th><th>&nbsp;</th>
+                            </tr></table>
+                        </div>
+                    </div>
                 </div>
-                <div id="admin_usuarios">
-                    <h4>Gestión de usuarios</h4>
-                    Incluye cambios de rol. Histórico de modificaciones del perfil (Necesita tabla log)
-                    <table id="lista_usuarios" class="table"><tr/></table>
+
+                <div id="admin_usuarios" class="card">
+                    <div class="card-header" id="headingOne">
+                        <h4 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#div_lista_usuarios" aria-expanded="false" aria-controls="div_lista_usuarios">
+                            <h4>Gestión de roles de usuarios</h4>
+                            </button>
+                        </h4>
+                    </div>
+                    <div id="div_lista_usuarios" class="collapse" aria-labelledby="headingOne" data-parent="#admin">
+                        <div class="card-body">
+                            <div id="lista_usuarios" class="row"></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="admin_tarifas">
-                    <h4>Gestión de tarifas</h4>
-                    <table id="lista_tarifas" class="table"><tr/></table>
+
+                <div id="admin_tarifas" class="card">
+                    <div class="card-header" id="headingOne">
+                        <h4 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#div_lista_tarifas" aria-expanded="false" aria-controls="div_lista_tarifas">
+                            <h4>Gestión de tarifa</h4>
+                            </button>
+                        </h4>
+                    </div>
+                    <div id="div_lista_tarifas" class="collapse" aria-labelledby="headingOne" data-parent="#admin">
+                        <div class="card-body">
+                            <table id="lista_tarifas" class="table"><tr/></table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

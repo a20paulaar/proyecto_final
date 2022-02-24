@@ -68,27 +68,12 @@
                         </span>
                     </div>
             </form>
-            <a class="menu_element" href="../html/registro.html">También puedes ponerte en contacto con nosotros a través de nuestras redes sociales.</a>
+            <a class="menu_element">También puedes ponerte en contacto con nosotros a través de nuestras redes sociales.</a>
         </section>
         <aside>
             <h2>Noticias</h2>
-            <!-- TODO bucle PHP por cada noticia, limitado a 3, usa query en una tabla de noticias -->
-            <article>
-                <img src="#" alt="Noticia 1">
-                <h4><a class="menu_element" href="noticias.php#art-3">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <article>
-                <img src="#" alt="Noticia 2">
-                <h4><a class="menu_element" href="noticias.php#art-2">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <article>
-                <img src="#" alt="Noticia 3">
-                <h4><a class="menu_element" href="noticias.php#art-1">Título</a></h4>
-                <p>Cuerpo de la noticia</p>
-            </article>
-            <a class="menu_element" href="#">Ver noticias anteriores</a>
+            <div></div>
+            <!-- <a class="menu_element" href="#">Ver noticias anteriores</a> -->
         </aside>
     </div>
     <footer>

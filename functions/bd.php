@@ -12,9 +12,22 @@ if(isset($_POST['method'])){
     }
 }
 
+function getPerfilUsuario(){
+    $perfil = $_SESSION["rol"];
+    switch($perfil){
+        case 1:
+            return "admin";
+        case 2:
+            return "user";
+        default:
+            return "guest";
+    }
+}
+
 function loadBBDD() {
+    $usuario = getPerfilUsuario();
     try {
-        $res = readConfig(dirname(__FILE__) . "/../config/configuracion.xml", dirname(__FILE__) . "/../config/configuracion.xsd");
+        $res = readConfig(dirname(__FILE__) . "/../config/configuracion.xml", dirname(__FILE__) . "/../config/configuracion.xsd", $usuario);
         $bd = new PDO($res[0], $res[1], $res[2]);
         return $bd;
     } catch (\Exception $e) {
@@ -23,7 +36,7 @@ function loadBBDD() {
     }
 }
 
-function readConfig($fichero_config_BBDD, $esquema) {
+function readConfig($fichero_config_BBDD, $esquema, $usuario) {
 
     $config = new DOMDocument();
     $config->load($fichero_config_BBDD);
@@ -32,10 +45,17 @@ function readConfig($fichero_config_BBDD, $esquema) {
         throw new InvalidArgumentException("Revise el fichero de configuración");
     }
     $datos = simplexml_load_file($fichero_config_BBDD);
-    $ip = $datos->xpath("//ip");
-    $nombre = $datos->xpath("//nombre");
-    $usu = $datos->xpath("//usuario");
-    $clave = $datos->xpath("//clave");
+    $configuracion = $datos->xpath("//configuracion");
+    while(list( , $nodo) = each($configuracion)) {
+        if($nodo->xpath("//usuario")==$usuario){
+            $ip = $nodo->xpath("//ip");
+            $nombre = $nodo->xpath("//nombre");
+            $usu = $nodo->xpath("//usuario");
+            $clave = $nodo->xpath("//clave");
+        }
+    }
+
+    
     $cad = sprintf("mysql:dbname=%s;host=%s", $nombre[0], $ip[0]);
     $resul = [];
     $resul[] = $cad;
@@ -225,5 +245,34 @@ function updateUserProfile($mail, $profile){
     } catch (\Throwable $th) {
         $bd->rollBack();
         return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, $pass, $address){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)"); //Falta la query de inserción y los binds (no tengo la bd a mano en clase).
+        $query->bindParam(1, $mail);
+        $query->bindParam(2. $pass);
+        $query->execute();
+
+        $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");
+        $query2->bindParam(1, $dni);
+        $query2->bindParam(2, $mail);
+        $query2->bindParam(3, $name);
+        $query2->bindParam(4, $surname1);
+        $query2->bindParam(5, $surname2);
+        $query2->bindParam(6, $phone);
+        $query2->bindParam(7, $address);
+        $query2->bindParam(8, $birth);
+        $query2->execute();
+
+        $bd->commit();
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
     }
 }

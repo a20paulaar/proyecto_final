@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuracion>
-    <ip>127.0.0.1</ip>
-    <nombre>transminho</nombre>
-    <usuario>root</usuario>
-    <clave></clave>    
-</configuracion>
+<configuraciones>
+    <configuracion>
+        <ip>127.0.0.1</ip>
+        <nombre>transminho</nombre>
+        <usuario>root</usuario>
+        <clave></clave>    
+    </configuracion>
+    <configuracion>
+        <ip>127.0.0.1</ip>
+        <nombre>transminho</nombre>
+        <usuario>admin</usuario>
+        <clave>1234</clave>    
+    </configuracion>
+    <configuracion>
+        <ip>127.0.0.1</ip>
+        <nombre>transminho</nombre>
+        <usuario>user</usuario>
+        <clave>1234</clave>    
+    </configuracion>
+    <configuracion>
+        <ip>127.0.0.1</ip>
+        <nombre>transminho</nombre>
+        <usuario>guest</usuario>
+        <clave></clave>    
+    </configuracion>
+</configuraciones>

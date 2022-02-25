@@ -42,8 +42,14 @@
     </header>
     <div id="container">
         <section>
+        <?php if(isset($_GET["error"])){?>
+                <script>
+                    alert("Ha habido un problema al realizar el registro. Disculpe las molestias.");
+                </script>
+            <?php }
+            ?>
             <h2>Registro de usuario:</h2>
-            <form action="#" method="post" onsubmit="return validar();">
+            <form action="../functions/sesion.php" method="post" onsubmit="return validar();">
                 <div class="formarea">
                     <span>
                         <label for="nombre">Nombre:</label>
@@ -96,7 +102,7 @@
                 </div>
                 <div class="formarea">
                     <span>
-                        <input class="form-control submit" type="submit" value="Registrarse">
+                        <input class="form-control submit" name="registro" type="submit" value="Registrarse">
                     </span>
                 </div>
             </form>

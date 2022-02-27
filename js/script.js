@@ -22,7 +22,7 @@ function cargarUltimasNoticias(){
             $('aside div').append(
                 '<article>'+
                 (parseInt(n.has_pic) ? '<img src="'+call+'images/news/'+n.id+'.png" alt="'+n.title+'" class="news_minipic">': '')+
-                '<h4><a class="menu_element" href="'+call+'pages/noticia.php#art-'+n.id+'">'+n.title+'</a></h4>'+
+                '<h4><a class="menu_element" href="'+call+'pages/noticia.php?art='+n.id+'">'+n.title+'</a></h4>'+
                 '<p>'+text_sample+'</p>'+
                 '</article>'
             );

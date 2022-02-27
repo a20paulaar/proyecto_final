@@ -79,7 +79,6 @@ footer{
     width: 2em;
 }
 
-
 @media (max-width: 767px){
     #title{
         margin: 0.5em auto 1em;
@@ -104,6 +103,14 @@ footer{
 
     .formarea{
         margin: 0.5em;
+    }
+
+    .news_pic{
+        width: 100%;
+    }
+
+    .news_minipic{
+        width: 90%;
     }
 }
 
@@ -162,4 +169,12 @@ footer{
         margin: 0.5em;
     }
 
+    .news_pic{
+        width: 40%;
+        /* TODO posicionar como se desee */
+    }
+
+    .news_minipic{
+        width: 100%;
+    }
 }

@@ -9,11 +9,12 @@ if(isset($_POST['method'])){
         case 'loadUsers': loadUsers(); break;
         case 'loadPendingReservations': loadPendingReservations(); break;
         case 'loadNews': loadNews(); break;
+        case 'loadNew': loadNew($_POST['id']); break;
     }
 }
 
 function getPerfilUsuario(){
-    $perfil = $_SESSION["rol"];
+    $perfil = isset($_SESSION["rol"]) ? $_SESSION["rol"] : 3;
     switch($perfil){
         case 1:
             return "admin";
@@ -44,17 +45,16 @@ function readConfig($fichero_config_BBDD, $esquema, $usuario) {
     if ($res === FALSE) {
         throw new InvalidArgumentException("Revise el fichero de configuración");
     }
-    $datos = simplexml_load_file($fichero_config_BBDD);
-    $configuracion = $datos->xpath("//configuracion");
-    while(list( , $nodo) = each($configuracion)) {
-        if($nodo->xpath("//usuario")==$usuario){
-            $ip = $nodo->xpath("//ip");
-            $nombre = $nodo->xpath("//nombre");
-            $usu = $nodo->xpath("//usuario");
-            $clave = $nodo->xpath("//clave");
-        }
+    $datos = simplexml_load_file($fichero_config_BBDD);   
+    $configuracion = $datos->xpath("//configuracion");    
+    while(list( , $nodo) = each($configuracion)) {      
+        if((string) $nodo->xpath("usuario")[0]==$usuario){          
+            $ip = $nodo->xpath("ip")[0];          
+            $nombre = $nodo->xpath("nombre")[0];        
+            $usu = $nodo->xpath("usuario")[0];            
+            $clave = $nodo->xpath("clave")[0];        
+        }   
     }
-
     
     $cad = sprintf("mysql:dbname=%s;host=%s", $nombre[0], $ip[0]);
     $resul = [];
@@ -181,6 +181,20 @@ function loadNews(){
     echo json_encode($json);
 }
 
+function loadNew($id){
+    $bd = loadBBDD();
+    $query = "SELECT titulo, noticia, imagen 
+        FROM noticias WHERE id_noticia = " . $id;
+    $resul = $bd->query($query);
+
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = [
+            'title' => $r['titulo'], 'text' => $r['noticia'], 'has_pic' => $r['imagen'] 
+        ];
+    }
+    echo json_encode($json);
+}
 //ACTUALIZAR DATOS
 
 function setFare($stop1, $stop2, $value){
@@ -255,7 +269,7 @@ function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, 
     try {
         $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)"); //Falta la query de inserción y los binds (no tengo la bd a mano en clase).
         $query->bindParam(1, $mail);
-        $query->bindParam(2. $pass);
+        $query->bindParam(2, $pass);
         $query->execute();
 
         $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");

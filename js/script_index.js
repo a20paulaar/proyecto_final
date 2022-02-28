@@ -41,3 +41,27 @@ function cargarParadas(){
         }
     });
 }
+
+function validarCompra(){
+    let msg = "";
+    let result = true;
+    
+    if($('#origen').val()==$('#destino').val()){
+        msg += "El origen y el destino no pueden ser el mismo.\\n";
+        result = false;
+    }
+    if($('#vuelta').val()<$('#ida').val()){
+        msg += "La fecha de regreso no puede ser anterior a la fecha de salida.\\n";
+        result = false;
+    }
+    if($('#anc').val==0 && $('#jov').val==0 && $('#adu').val==0){
+        msg += "Tiene que haber al menos un viajero.\\n";
+        result = false;
+    }
+
+    if(!result){
+        alert(msg);
+    }
+
+    return result;
+}

@@ -40,15 +40,15 @@ function validar(){
         msg += "El nombre/apellidos contiene caracteres invalidos\\n";
         result = false;
     }
-    if($('pass').val()!=$('pass2').val()){
+    if($('#pass').val()!=$('#pass2').val()){
         msg += "Las contraseñas no coinciden\\n";
         result = false;
     }
-    if($('pass').val()==$('pass2').val() && $('pass').val().length<6){
+    if($('#pass').val()==$('#pass2').val() && $('#pass').val().length<6){
         msg += "La contraseña debe contener al menos 6 caracteres\\n";
         result = false;
     }
-    if(!matchEmail.test($('email').val())){
+    if(!matchEmail.test($('#email').val())){
         msg += "Debe introducir una dirección de correo electrónico válida.\\n";
         result = false;
     }

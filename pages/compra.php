@@ -43,54 +43,21 @@
     <div id="container">
         <section>
             <h2>Comprar billetes</h2>
-            <form action="functions/compra.php" method="post">
+            <form action="comprar.php" method="post">
                 <div class="formarea">
                     <span id="formarea_ida">
-                        <input class="form-check-input" type="radio" id="i" name="trayecto" value="i">
+                        <input class="form-check-input" type="radio" id="i" name="trayecto" value="Ida">
                         <label class="form-check-label" for="i">Ida</label>
-                    </span> 
+                    </span>
                     <span class="formarea_vuelta">
-                        <input class="form-check-input" type="radio" id="iv" name="trayecto" value="iv" checked>
+                        <input class="form-check-input" type="radio" id="iv" name="trayecto" value="Vuelta" checked>
                         <label class="form-check-label" for="iv">Ida y vuelta</label>
                     </span>
                 </div>
-                <div class="formarea">
-                    <span id="formarea_origen">
-                        <label for="origen">Origen</label><br/>
-                        <select class="form-select form-select-sm" id="origen"></select>
-                    </span>
-                    <span id="formarea_destino">
-                        <label for="destino">Destino</label><br/>
-                        <select class="form-select form-select-sm" id="destino"></select>
-                    </span>
-                </div>
-                <div class="formarea">
-                    <span id="formarea_fechaida">
-                        <label for="ida">Fecha de ida:</label><br/>
-                        <input class="form-control" type="date" id="ida" name="ida" />
-                    </span>
-                    <span id="formarea_fechavuelta">
-                        <label for="vuelta">Fecha de vuelta:</label><br/>
-                        <input class="form-control" type="date" id="vuelta" name="vuelta" />
-                    </span>
-                </div>
-                <div class="formarea">
-                    <span id="formarea_anc">
-                        <label for="anc">Ancianos (+65)</label><br/>
-                        <input class="form-control" type="number" id="anc" value="0" />
-                    </span>
-                    <span id="formarea_adu">
-                        <label for="adu">Adultos (16-64)</label><br/>
-                        <input class="form-control" type="number" id="adu" value="0" />
-                    </span>
-                    <span id="formarea_jov">
-                        <label for="jov">Jóvenes (-15)</label><br/>
-                        <input class="form-control"type="number" id="jov" value="0" />
-                    </span>
-                </div>
+                
                 <div class="formarea">
                     <span id="formarea_conf">
-                        <input class="form-control submit" type="submit" id="submit" name="step" value="Comprar" />
+                        <input class="form-control submit" type="submit" id="submit" value="Comprar" />
                     </span>
                 </div>
             </form>

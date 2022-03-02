@@ -1,33 +1,46 @@
 <?php
 include 'bd.php';
-//var_dump($_POST);
+//var_dump($_POST); die();
 /*EJEMPLO
 array(6) { ["trayecto"]=> string(2) "iv" ["origen"]=> string(1) "1" 
     ["destino"]=> string(1) "4" ["ida"]=> string(10) "2022-03-01" 
     ["vuelta"]=> string(10) "2022-03-03" ["step"]=> string(7) "Comprar" } 
 */
 if($_POST['step']=='Comprar'){
-    /* TODO: Llamar en bd.php a tabla horarios 
+/* 
+    Llamar en bd.php a tabla horarios 
 
     SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h
     WHERE h.id_parada IN(<id parada origen>,<id parada destino>)
 */
     $horarios = loadSchedulesBetween($_POST['origen'], $_POST['destino']);
-
+    $horarios_copy = $horarios;
 /*
     por cada dupla de resultados (según su id_expedición)
     comprueba en los que la hora que corresponde a id parada destino sea posterior al
     id parada origen; los que no sean así se borran, no los metes en la cookie
 */
-
     foreach ($horarios as $exp => $datos) {
         if($datos[0]['time'] > $datos[1]['time']){
             unset($horarios[$exp]);
         }
     }
 
+    $horarios['date'] = $_POST['ida'];
 
-    setcookie("traveldata", json_encode($horarios), ['path' => '/']);
+    setcookie("traveldata_i", json_encode($horarios), ['path' => '/']);
+
+    if($_POST['trayecto']=='iv'){
+        foreach ($horarios_copy as $exp => $datos) {
+            if($datos[0]['time'] < $datos[1]['time']){
+                unset($horarios_copy[$exp]);
+            }
+        }
+
+        $horarios_copy['date'] = $_POST['vuelta'];
+
+        setcookie("traveldata_v", json_encode($horarios_copy), ['path' => '/']);
+    }
 
     header("Location: ../pages/compra.php");
 }

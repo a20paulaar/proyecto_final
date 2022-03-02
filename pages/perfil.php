@@ -43,32 +43,41 @@
     </header>
     <div id="container">
         <section id="profile">
-            <h2>Información del perfil</h2>
-            <img src="../images/default.jpg" id="img_perfil" alt="Imagen por defecto">
-            <span>
-                <div id="nombre">Nombre:</div>
-            </span>
-            <span>
-                <div id="apellidos">Apellidos:</div>
-            </span>
-            <span>
-                <div id="email">E-mail:</div>
-            </span>
-            <span>
-                <div id="dni">DNI:</div>
-            </span>
-            <span>
-                <div id="fecha_nacimiento">Fecha de nacimiento:</div>
-            </span>
-            <span>
-                <div id="telefono">Teléfono:</div>
-            </span>
-            <span>
-                <div id="direccion">Dirección:</div>
-            </span>
-            <span>
-                <button id="modificar" class="form-control">Modificar perfil</button>
-            </span>
+            <form action="../functions/perfil.php" method="post">
+                <h2>Información del perfil</h2>
+                <span>
+                    <img src="../images/default.jpg" id="img_perfil" alt="Imagen por defecto">
+                    <input class="form-control" type="file" name="subir_img" id="subir_img" style="display: none;" accept="image/png, image/jpeg, image/gif">
+                </span>
+                <span>
+                    <span id="nombre">Nombre:</span>
+                </span>
+                <span>
+                    <span id="apellidos">Apellidos:</span>
+                </span>
+                <span>
+                    <span id="email">E-mail:</span>
+                </span>
+                <span>
+                    <span id="dni">DNI:</span>
+                </span>
+                <span>
+                    <span id="fecha_nacimiento">Fecha de nacimiento:</span>
+                </span>
+                <span>
+                    <span id="telefono">Teléfono:</span>
+                </span>
+                <span>
+                    <span id="direccion">Dirección:</span>
+                </span>
+                <span>
+                    <button id="modificar" type="button" class="form-control">Modificar perfil</button>
+                </span>
+                <span>
+                    <button id="aceptar" type="submit" class="form-control" style="display: none;">Aplicar cambios</button>
+                    <button id="cancelar" type="button" class="form-control" style="display: none;">Cancelar</button>
+                </span>
+            </form>
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -86,5 +95,8 @@
     </footer>
     <script src="../js/script.js"></script>
     <script src="../js/script_perfil.js"></script>
+    <?php if(isset($_GET['error'])){ ?>
+        <script> alert("<?= $_GET['error'] ?>") </script>
+    <?php } ?>
 </body>
 </html>

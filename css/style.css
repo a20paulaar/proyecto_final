@@ -70,16 +70,24 @@ article{
     color: white;
 }
 
-#profile{
+#profile form{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#profile>span{
+#profile form>span{
     display: flex;
-    justify-content: space-between;
-    width: 50%;
+    align-items: center;
+    width: 100%;
+}
+
+#profile form>span>span{
+    width: 75%;
+}
+
+#profile form{
+    margin: 2em;
 }
 
 #img_perfil{
@@ -87,13 +95,17 @@ article{
     margin-top: 2em;
     margin-bottom: 2em;
 }
-#profile button{
+#profile form button{
     margin: 2em;
     width: 50%;
 }
 
-#profile input{
-    width: 50%;
+#profile form input{
+    width: 100%;
+}
+
+#subir_img{
+    margin: 2em;
 }
 
 footer{
@@ -138,7 +150,7 @@ footer{
     .news_minipic{
         width: 90%;
     }
-    #profile>span{
+    #profile form>span{
         width: 100%;
     }
     #social{

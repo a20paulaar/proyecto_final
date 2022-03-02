@@ -10,8 +10,10 @@ if(isset($_POST['method'])){
         case 'loadPendingReservations': loadPendingReservations(); break;
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
-        case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
+        //case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
+        case 'loadProfileInfo': loadProfileInfo('usuario@mail.com'); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
+        case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
     }
 }
 
@@ -239,6 +241,30 @@ function loadProfileInfo($email){
     echo json_encode($json);
 }
 
+function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT num_asiento FROM asignacion_asiento 
+    WHERE fecha_viaje=? AND id_expedicion=? 
+    AND (id_parada_origen BETWEEN ? AND ? OR id_parada_destino BETWEEN ? AND ?)");
+
+    $query->bindParam(1, $date);
+    $query->bindParam(2, $expedition);
+    $query->bindParam(3, $id_origin);
+    $query->bindParam(4, $id_destination);
+    $query->bindParam(5, $id_origin);
+    $query->bindParam(6, $id_destination);
+
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $seats = [];
+    foreach ($resul as $r) {
+        $seats[] = $r['num_asiento'];
+    };
+    $seats = [2,3,4,5,9,20];
+    echo json_encode($seats);
+}
+
 //ACTUALIZAR DATOS
 
 function setFare($stop1, $stop2, $value){
@@ -326,11 +352,28 @@ function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, 
         $query2->bindParam(7, $address);
         $query2->bindParam(8, $birth);
         $query2->execute();
-
         $bd->commit();
         return 'OK';
     } catch (\Throwable $th) {
         $bd->rollBack();
         return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
+    }
+
+    function updateProfileInfo($mail, $phone, $address){
+        $bd = loadBBDD();
+        $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $bd->beginTransaction();
+        try {
+            $query = $bd->prepare("UPDATE viajeros SET telefono = ? , direccion = ? WHERE email = ? AND principal = 1");
+            $query->bindParam(1, $phone);
+            $query->bindParam(2, $address);
+            $query->bindParam(3, $mail);
+            $query->execute();
+            $bd->commit();
+            return 'OK';
+        } catch (\Throwable $th) {
+            $bd->rollBack();
+            return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+        }
     }
 }

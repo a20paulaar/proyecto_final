@@ -44,6 +44,7 @@
         <section>
             <h2>Comprar billetes</h2>
             <form action="comprar.php" method="post">
+<!--                
                 <div class="formarea">
                     <span id="formarea_ida">
                         <input class="form-check-input" type="radio" id="i" name="trayecto" value="Ida">
@@ -60,6 +61,7 @@
                         <input class="form-control submit" type="submit" id="submit" value="Comprar" />
                     </span>
                 </div>
+-->
             </form>
         </section>
         <aside>
@@ -78,6 +80,11 @@
     </footer>
 
     <script src="js/script.js"></script>
-    <script src="js/script_index.js"></script>
+    <script>
+        console.log(document.cookie);
+        //document.cookie.split(';')
+        //    .filter(c => c.startsWith('word'));
+    </script>
+    <?php var_dump($_COOKIE) ?>
 </body>
 </html>

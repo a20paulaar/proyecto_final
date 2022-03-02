@@ -65,10 +65,37 @@ article{
     width: 50%;
 }
 
-.submit:hover{
+.submit:hover, #profile button:hover{
     background-color: rgba(64,64,255,0.3);
     color: white;
 }
+
+#profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile>span{
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+#img_perfil{
+    width: 10em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+#profile button{
+    margin: 2em;
+    width: 50%;
+}
+
+#profile input{
+    width: 50%;
+}
+
 footer{
     margin: 1em auto;
     display: flex;
@@ -83,7 +110,6 @@ footer{
     #title{
         margin: 0.5em auto 1em;
     }
-
     #links{
         display: none;
         flex-direction: column;
@@ -111,6 +137,12 @@ footer{
 
     .news_minipic{
         width: 90%;
+    }
+    #profile>span{
+        width: 100%;
+    }
+    #social{
+        width: 50%;
     }
 }
 

@@ -1,16 +1,42 @@
 <?php
 include 'bd.php';
-var_dump($_POST);
+//var_dump($_POST);
+/*EJEMPLO
+array(6) { ["trayecto"]=> string(2) "iv" ["origen"]=> string(1) "1" 
+    ["destino"]=> string(1) "4" ["ida"]=> string(10) "2022-03-01" 
+    ["vuelta"]=> string(10) "2022-03-03" ["step"]=> string(7) "Comprar" } 
+*/
 if($_POST['step']=='Comprar'){
     /* TODO: Llamar en bd.php a tabla horarios 
 
     SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h
     WHERE h.id_parada IN(<id parada origen>,<id parada destino>)
+*/
+    $horarios = loadSchedulesBetween($_POST['origen'], $_POST['destino']);
 
+/*
     por cada dupla de resultados (según su id_expedición)
     comprueba en los que la hora que corresponde a id parada destino sea posterior al
-    id parada origen; los que no sean así no los metes en el json de vuelta
+    id parada origen; los que no sean así se borran, no los metes en la cookie
+*/
 
+    foreach ($horarios as $exp => $datos) {
+        if($datos[0]['time'] > $datos[1]['time']){
+            unset($horarios[$exp]);
+        }
+    }
+
+
+    setcookie("traveldata", json_encode($horarios), ['path' => '/']);
+
+    header("Location: ../pages/compra.php");
+}
+else if($_POST['step']=='Pagar'){
+
+}
+else{
+    /*
+TODO, recibiendo llamada del pages/compra
     Cuando seleccionen un viaje, evento:
     Para la asignación de asiento, ponle en la vista un select-option de, por ejemplo, 
     50 asientos
@@ -27,8 +53,4 @@ if($_POST['step']=='Comprar'){
     [De momento solo para ida. 
     OJO, para ida/vuelta tiene que haber dos formularios en lugar de uno]
     */
-
-}
-else if($_POST['step']=='Pagar'){
-
 }

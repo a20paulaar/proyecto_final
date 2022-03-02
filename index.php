@@ -43,7 +43,7 @@
     <div id="container">
         <section>
             <h2>Comprar billetes</h2>
-            <form action="functions/compra.php" method="post">
+            <form action="functions/compra.php" method="post" onsubmit="return validarCompra()">
                 <div class="formarea">
                     <span id="formarea_ida">
                         <input class="form-check-input" type="radio" id="i" name="trayecto" value="i">
@@ -57,11 +57,11 @@
                 <div class="formarea">
                     <span id="formarea_origen">
                         <label for="origen">Origen</label><br/>
-                        <select class="form-select form-select-sm" id="origen"></select>
+                        <select class="form-select form-select-sm" id="origen" name="origen"></select>
                     </span>
                     <span id="formarea_destino">
                         <label for="destino">Destino</label><br/>
-                        <select class="form-select form-select-sm" id="destino"></select>
+                        <select class="form-select form-select-sm" id="destino" name="destino"></select>
                     </span>
                 </div>
                 <div class="formarea">

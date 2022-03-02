@@ -47,15 +47,15 @@ function validarCompra(){
     let result = true;
     
     if($('#origen').val()==$('#destino').val()){
-        msg += "El origen y el destino no pueden ser el mismo.\\n";
+        msg += "El origen y el destino no pueden ser el mismo.\n";
         result = false;
     }
     if($('#vuelta').val()<$('#ida').val()){
-        msg += "La fecha de regreso no puede ser anterior a la fecha de salida.\\n";
+        msg += "La fecha de regreso no puede ser anterior a la fecha de salida.\n";
         result = false;
     }
-    if($('#anc').val==0 && $('#jov').val==0 && $('#adu').val==0){
-        msg += "Tiene que haber al menos un viajero.\\n";
+    if($('#anc').val()==0 && $('#jov').val()==0 && $('#adu').val()==0){
+        msg += "Tiene que haber al menos un viajero.\n";
         result = false;
     }
 

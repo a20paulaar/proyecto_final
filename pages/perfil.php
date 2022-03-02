@@ -42,8 +42,33 @@
         </div>
     </header>
     <div id="container">
-        <section>
-            
+        <section id="profile">
+            <h2>Información del perfil</h2>
+            <img src="../images/default.jpg" id="img_perfil" alt="Imagen por defecto">
+            <span>
+                <div id="nombre">Nombre:</div>
+            </span>
+            <span>
+                <div id="apellidos">Apellidos:</div>
+            </span>
+            <span>
+                <div id="email">E-mail:</div>
+            </span>
+            <span>
+                <div id="dni">DNI:</div>
+            </span>
+            <span>
+                <div id="fecha_nacimiento">Fecha de nacimiento:</div>
+            </span>
+            <span>
+                <div id="telefono">Teléfono:</div>
+            </span>
+            <span>
+                <div id="direccion">Dirección:</div>
+            </span>
+            <span>
+                <button id="modificar" class="form-control">Modificar perfil</button>
+            </span>
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -60,5 +85,6 @@
         </div>
     </footer>
     <script src="../js/script.js"></script>
+    <script src="../js/script_perfil.js"></script>
 </body>
 </html>

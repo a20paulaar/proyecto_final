@@ -37,19 +37,19 @@ function validar(){
     let matchEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/;
     
     if(!matchName.test($('#nombre').val()) || !matchName.test($('#apellido1').val()) || !matchName.test($('#apellido2').val())){
-        msg += "El nombre/apellidos contiene caracteres invalidos\\n";
+        msg += "El nombre/apellidos contiene caracteres invalidos\n";
         result = false;
     }
     if($('#pass').val()!=$('#pass2').val()){
-        msg += "Las contraseñas no coinciden\\n";
+        msg += "Las contraseñas no coinciden\n";
         result = false;
     }
     if($('#pass').val()==$('#pass2').val() && $('#pass').val().length<6){
-        msg += "La contraseña debe contener al menos 6 caracteres\\n";
+        msg += "La contraseña debe contener al menos 6 caracteres\n";
         result = false;
     }
     if(!matchEmail.test($('#email').val())){
-        msg += "Debe introducir una dirección de correo electrónico válida.\\n";
+        msg += "Debe introducir una dirección de correo electrónico válida.\n";
         result = false;
     }
 

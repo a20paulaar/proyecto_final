@@ -10,6 +10,8 @@ if(isset($_POST['method'])){
         case 'loadPendingReservations': loadPendingReservations(); break;
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
+        case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
+        case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
     }
 }
 
@@ -109,6 +111,28 @@ function getSchedule(){
     echo json_encode($json);
 }
 
+function loadSchedulesBetween($id_origin, $id_destination){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h
+    WHERE h.id_parada IN(?,?) ORDER BY FIELD(h.id_parada, ?,?)");
+    $query->bindParam(1, $id_origin);
+    $query->bindParam(2, $id_destination);
+    $query->bindParam(3, $id_origin);
+    $query->bindParam(4, $id_destination);
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $data = [];
+    foreach ($resul as $r) {
+        $data[$r['id_expedicion']][] = [
+            'stop' => $r['id_parada'], 
+            'time' => $r['hora'] 
+        ];
+    }
+    
+    return $data;
+}
+
 function loadFares(){
     $bd = loadBBDD();
     $query = "SELECT t.id_parada_origen, t.id_parada_destino, 
@@ -168,10 +192,11 @@ function loadPendingReservations(){
 
 function loadNews(){
     $bd = loadBBDD();
-    $query = "SELECT id_noticia, titulo, noticia, imagen 
-        FROM noticias ORDER BY id_noticia DESC LIMIT " . $_POST['range'];
-    $resul = $bd->query($query);
-
+    $query = $bd->prepare("SELECT id_noticia, titulo, noticia, imagen 
+        FROM noticias ORDER BY id_noticia DESC LIMIT ?");
+    $query->bindParam(1, $_POST['range'], PDO::PARAM_INT);
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
@@ -183,9 +208,11 @@ function loadNews(){
 
 function loadNew($id){
     $bd = loadBBDD();
-    $query = "SELECT titulo, noticia, imagen 
-        FROM noticias WHERE id_noticia = " . $id;
-    $resul = $bd->query($query);
+    $query = $bd->prepare("SELECT titulo, noticia, imagen 
+        FROM noticias WHERE id_noticia = ?");
+    $query->bindParam(1, $id);
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $json = [];
     foreach ($resul as $r) {
@@ -195,6 +222,23 @@ function loadNew($id){
     }
     echo json_encode($json);
 }
+
+function loadProfileInfo($email){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT nombre, apellido1, apellido2, email, dni, fecha_nacimiento, telefono, direccion 
+        FROM viajeros WHERE email = ? AND principal = 1");
+
+    $query->bindParam(1, $email);
+    $query->execute();
+    $r = $query->fetch(PDO::FETCH_ASSOC);
+
+    $json[] = [
+        'nombre' => $r['nombre'], 'apellidos' => $r['apellido1'] . " " . $r['apellido2'], 'email' => $r['email'], 
+        'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => $r['direccion']
+    ];
+    echo json_encode($json);
+}
+
 //ACTUALIZAR DATOS
 
 function setFare($stop1, $stop2, $value){

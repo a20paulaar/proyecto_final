@@ -334,6 +334,15 @@ function updateUserProfile($mail, $profile){
 
 function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, $pass, $address){
     $bd = loadBBDD();
+
+    $query_select = $bd->prepare("SELECT COUNT(*) AS cuenta FROM usuarios WHERE email = ?");
+    $query_select->bindParam(1, $mail);
+    $query_select->execute();
+    
+    if($result_select=$query_select->fetch()){
+        if($result_select['cuenta']) return "Ya existe una cuenta con este email";
+    }
+
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $bd->beginTransaction();
     try {
@@ -358,22 +367,22 @@ function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, 
         $bd->rollBack();
         return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
     }
+}
 
-    function updateProfileInfo($mail, $phone, $address){
-        $bd = loadBBDD();
-        $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $bd->beginTransaction();
-        try {
-            $query = $bd->prepare("UPDATE viajeros SET telefono = ? , direccion = ? WHERE email = ? AND principal = 1");
-            $query->bindParam(1, $phone);
-            $query->bindParam(2, $address);
-            $query->bindParam(3, $mail);
-            $query->execute();
-            $bd->commit();
-            return 'OK';
-        } catch (\Throwable $th) {
-            $bd->rollBack();
-            return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
-        }
+function updateProfileInfo($mail, $phone, $address){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("UPDATE viajeros SET telefono = ? , direccion = ? WHERE email = ? AND principal = 1");
+        $query->bindParam(1, $phone);
+        $query->bindParam(2, $address);
+        $query->bindParam(3, $mail);
+        $query->execute();
+        $bd->commit();
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
     }
 }

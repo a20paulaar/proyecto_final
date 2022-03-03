@@ -42,12 +42,11 @@
     </header>
     <div id="container">
         <section>
-        <?php if(isset($_GET["error"])){?>
+            <?php if(isset($_GET["error"])){ ?>
                 <script>
-                    alert("Ha habido un problema al realizar el registro. Disculpe las molestias.");
+                    alert("<?= $_GET['error'] ?>");
                 </script>
-            <?php }
-            ?>
+            <?php } ?>
             <h2>Registro de usuario:</h2>
             <form action="../functions/sesion.php" method="post" onsubmit="return validar();">
                 <div class="formarea">

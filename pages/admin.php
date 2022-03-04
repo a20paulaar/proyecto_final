@@ -33,6 +33,7 @@
                     <? if(!isset($_SESSION)) { ?>
                     <span><a class="menu_element" href="../pages/sesion.php">Iniciar sesión</a></span>
                     <? } else { ?>
+                    <span><a class="menu_element" href="../pages/perfil">Mi perfil</a></span>
                     <span><a class="menu_element" href="../functions/sesion.php?session=close">Cerrar sesión</a></span>
                     <? } ?>
                     <? if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>

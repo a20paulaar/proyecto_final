@@ -31,6 +31,7 @@
                     <?php if(!isset($_SESSION)) { ?>
                     <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>
                     <?php } else { ?>
+                    <span><a class="menu_element" href="../pages/perfil">Mi perfil</a></span>
                     <span><a class="menu_element" href="functions/sesion.php?session=close">Cerrar sesión</a></span>
                     <?php } ?>
                     <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
@@ -43,7 +44,7 @@
     <div id="container">
         <section>
             <h2>Comprar billetes</h2>
-            <form action="comprar.php" method="post">
+            <form action="comprar.php" method="post" onsubmit="return validarCompra()">
                 <div id="ida">
                     <h3>Trayecto de ida</h3>
                     <div class="formarea">
@@ -75,6 +76,16 @@
                             <a href="../images/seats.png" target="_blank">Guía de asientos</a>
                         </span>
                     </div>
+                </div>
+                <div class="formarea">
+                    <span>
+                        <label for="pago">Seleccione una forma de pago:</label>
+                        <select name="pago" id="pago">
+                            <option value="PayPal">PayPal</option>
+                            <option value="Tarjeta">Tarjeta de crédito / débito</option>
+                            <option value="Bizum">Bizum</option>
+                        </select>
+                    </span>
                 </div>
                 <div class="formarea">
                     <span id="formarea_conf">

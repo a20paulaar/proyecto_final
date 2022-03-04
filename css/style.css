@@ -90,10 +90,13 @@ article{
     margin: 2em;
 }
 
-#img_perfil{
-    width: 10em;
-    margin-top: 2em;
-    margin-bottom: 2em;
+#profile_img{
+    background-image: url('../images/default.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 10em !important;
+    height: 10em !important;
+    margin: 2em;
 }
 #profile form button{
     margin: 2em;
@@ -106,6 +109,7 @@ article{
 
 #subir_img{
     margin: 2em;
+    width: 50% !important;
 }
 
 footer{

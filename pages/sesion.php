@@ -47,7 +47,7 @@
                     <div class="formarea">
                         <span>
                             <label for="email">E-mail: </label>
-                            <input class="form-control" type="email" name="email" id="email">
+                            <input class="form-control" type="email" name="email" id="email" value="<?= isset($_COOKIE['email']) ? $_COOKIE['email'] : '' ?>">
                         </span>
                     </div>
                     <div class="formarea">

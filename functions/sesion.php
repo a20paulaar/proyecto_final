@@ -5,6 +5,7 @@ if(isset($_POST["registro"])){
     header("Location: ../pages/sesion.php");
 } else if($_GET["session"]!="close"){
     $perfil = validUser($_POST['email'], $_POST['pass']);
+    setcookie('email', $_POST['email'], time()+3600);
     if($perfil!=null){
         session_start();
         $_SESSION["rol"] = $perfil;

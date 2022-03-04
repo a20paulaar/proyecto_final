@@ -46,7 +46,7 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
 ['ida', 'vuelta'].forEach(element => {
     $('#t_'+element).delegate('input:radio', 'change', function(e){
         $('#a_'+element).find('option').remove();
-        $('#a_'+element).append('<option>Seleccione asiento</option>');
+        $('#a_'+element).append('<option value="">Seleccione asiento</option>');
         for(var i=1; i<=50; i++) $('#a_'+element).append('<option id="a_'+element+'_'+i+'" value="'+i+'">'+i+'</option>'); //50 asientos por bus
     
         let value = $(this).val().split("_");
@@ -67,3 +67,20 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
         });
     });
 });
+
+function validarCompra(){
+    let msg = "";
+    let result = true;
+    
+    if($('#a_ida').val()=="" || !$("input[name='h_ida']:checked").val()
+    || ($('#vuelta').length && ($('#a_vuelta').val()=="" || !$("input[name='h_vuelta']:checked").val()))){
+        msg += "Debes completar todos los campos.\n";
+        result = false;
+    }
+
+    if(!result){
+        alert(msg);
+    }
+
+    return result;
+}

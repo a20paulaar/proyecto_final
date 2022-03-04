@@ -14,6 +14,15 @@ function cargarInformacionPerfil(){
             }   
         }
     });
+    $.post("../functions/perfil.php", {
+        method: "loadUserPic"
+    }, 
+    function(data, status){
+        console.log(data);
+        if(data){
+            $('#profile_img').css('background-image', 'url("../images/' + data + '/user.png")');
+        }
+    });
 }
 
 

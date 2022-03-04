@@ -46,7 +46,7 @@
             <form action="../functions/perfil.php" method="post">
                 <h2>Información del perfil</h2>
                 <span>
-                    <img src="../images/default.jpg" id="img_perfil" alt="Imagen por defecto">
+                    <div id="profile_img"></div>
                     <input class="form-control" type="file" name="subir_img" id="subir_img" style="display: none;" accept="image/png, image/jpeg, image/gif">
                 </span>
                 <span>

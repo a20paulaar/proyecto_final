@@ -177,7 +177,7 @@ function loadPendingReservations(){
     JOIN paradas p2 ON p2.id_parada = a.id_parada_destino
     JOIN horarios h1 ON h1.id_parada = a.id_parada_origen AND h1.id_expedicion = a.id_expedicion
     JOIN horarios h2 ON h2.id_parada = a.id_parada_destino AND h2.id_expedicion = a.id_expedicion
-    WHERE estado_reserva = 1"; // 0: En compra - 1: Reserva pendiente - 2: Reserva confirmada
+    WHERE estado_reserva = 1"; // 0: En compra (No se usa) - 1: Reserva pendiente - 2: Reserva confirmada
     $resul = $bd->query($query);
 
     $json = [];
@@ -227,7 +227,7 @@ function loadNew($id){
 
 function loadProfileInfo($email){
     $bd = loadBBDD();
-    $query = $bd->prepare("SELECT nombre, apellido1, apellido2, email, dni, fecha_nacimiento, telefono, direccion 
+    $query = $bd->prepare("SELECT nombre, apellidos, email, dni, fecha_nacimiento, telefono, direccion 
         FROM viajeros WHERE email = ? AND principal = 1");
 
     $query->bindParam(1, $email);
@@ -235,7 +235,7 @@ function loadProfileInfo($email){
     $r = $query->fetch(PDO::FETCH_ASSOC);
 
     $json[] = [
-        'nombre' => $r['nombre'], 'apellidos' => $r['apellido1'] . " " . $r['apellido2'], 'email' => $r['email'], 
+        'nombre' => $r['nombre'], 'apellidos' => $r['apellidos'], 'email' => $r['email'], 
         'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => $r['direccion']
     ];
     echo json_encode($json);
@@ -287,6 +287,35 @@ function setFare($stop1, $stop2, $value){
     }
 }
 
+function setReservation($email, $date, $exped, $id_origin, $id_destination, $seat){
+    $bd = loadBBDD();
+    $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $query = $bd->prepare("SELECT dni FROM viajeros WHERE email=?");
+    $query->bindParam(1, $email);
+    $query->execute();
+    $r = $query->fetch(PDO::FETCH_ASSOC);
+
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("INSERT INTO asignacion_asiento VALUES(?,?,?,?,?,?,1)");
+        $query->bindParam(1, $r['dni']);
+        $query->bindParam(2, $date);
+        $query->bindParam(3, $exped);
+        $query->bindParam(4, $id_origin);
+        $query->bindParam(5, $id_destination);
+        $query->bindParam(6, $seat);
+        $query->execute();
+        $bd->commit();
+
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'Ha habido un error con la compra, disculpe las molestias. 
+        Si ha sido efectuado un pago y no ha recibido su billete, 
+        contacte con Atención al Cliente';
+    }
+}
+
 function updateReservation($valid, $dni, $date, $exped, $seat){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -332,7 +361,7 @@ function updateUserProfile($mail, $profile){
     }
 }
 
-function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, $pass, $address){
+function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $address){
     $bd = loadBBDD();
 
     $query_select = $bd->prepare("SELECT COUNT(*) AS cuenta FROM usuarios WHERE email = ?");
@@ -351,15 +380,14 @@ function registerUser($name, $surname1, $surname2, $dni, $birth, $phone, $mail, 
         $query->bindParam(2, $pass);
         $query->execute();
 
-        $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)");
+        $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
         $query2->bindParam(1, $dni);
         $query2->bindParam(2, $mail);
         $query2->bindParam(3, $name);
-        $query2->bindParam(4, $surname1);
-        $query2->bindParam(5, $surname2);
-        $query2->bindParam(6, $phone);
-        $query2->bindParam(7, $address);
-        $query2->bindParam(8, $birth);
+        $query2->bindParam(4, $surname);
+        $query2->bindParam(5, $phone);
+        $query2->bindParam(6, $address);
+        $query2->bindParam(7, $birth);
         $query2->execute();
         $bd->commit();
         return 'OK';

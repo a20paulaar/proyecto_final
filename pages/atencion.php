@@ -44,7 +44,7 @@
     <div id="container">
         <section>
             <h2>Atención al Cliente</h2>
-            <form action="#" method="post">
+            <form action="../functions/atencion.php" method="post">
                     <div class="formarea">
                         <span>
                             <label for="nombre">Nombre: </label>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="formarea">
                         <span>
-                            <input class="form-control submit" type="submit" id="sesion" value="Enviar" />
+                            <input class="form-control submit" type="submit" name="atencion" value="Enviar" />
                         </span>
                     </div>
             </form>
@@ -85,7 +85,11 @@
             <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
         </div>
     </footer>
-
+    <?php if(isset($_GET["exito"])){?>
+        <script>alert("Mensaje enviado con éxito, gracias por su paciencia.");</script>
+    <?php } else if(isset($_GET["error"])){ ?>
+        <script>alert("Se ha producido un error al enviar su mensaje, disculpe las molestias.");</script>
+    <?php } ?>
     <script src="../js/script.js"></script>
 </body>
 </html>

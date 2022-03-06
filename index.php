@@ -18,6 +18,7 @@
             <div id="title">
                 TransMiño: Transportes do Miño S.A.
             </div>
+            <div id="username"></div>
             <nav id="nav">
                 <a id="mobile_menu" href="javascript:void(0);" class="menu_element" onclick="mobileMenu()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -78,15 +79,15 @@
                 <div class="formarea">
                     <span id="formarea_anc">
                         <label for="anc">Ancianos (+65)</label><br/>
-                        <input class="form-control" type="number" id="anc" value="0" />
+                        <input class="form-control" type="number" id="anc" name="anc" value="0" />
                     </span>
                     <span id="formarea_adu">
                         <label for="adu">Adultos (16-64)</label><br/>
-                        <input class="form-control" type="number" id="adu" value="0" />
+                        <input class="form-control" type="number" id="adu" name="adu" value="0" />
                     </span>
                     <span id="formarea_jov">
                         <label for="jov">Jóvenes (-15)</label><br/>
-                        <input class="form-control"type="number" id="jov" value="0" />
+                        <input class="form-control"type="number" id="jov" name="jov" value="0" />
                     </span>
                 </div>
                 <div class="formarea">
@@ -113,5 +114,11 @@
 
     <script src="js/script.js"></script>
     <script src="js/script_index.js"></script>
+
+    <?php if(isset($_SESSION["nombre"])){ ?>
+    <script>
+        sessionStorage.setItem('nombre', '<?=$_SESSION["nombre"];?>');
+    </script>
+    <?php } ?>
 </body>
 </html>

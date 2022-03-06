@@ -2,16 +2,15 @@
 include 'bd.php';
 //var_dump($_POST); die();
 /*EJEMPLO
-array(6) { ["trayecto"]=> string(2) "iv" ["origen"]=> string(1) "1" 
-    ["destino"]=> string(1) "4" ["ida"]=> string(10) "2022-03-01" 
-    ["vuelta"]=> string(10) "2022-03-03" ["step"]=> string(7) "Comprar" } 
+array(9) { ["trayecto"]=> string(2) "iv" ["origen"]=> string(1) "1" 
+    ["destino"]=> string(1) "3" ["ida"]=> string(10) "2022-03-05" 
+    ["vuelta"]=> string(10) "2022-03-05" ["anc"]=> string(1) "0" 
+    ["adu"]=> string(1) "1" ["jov"]=> string(1) "1" ["step"]=> string(7) "Comprar" } 
 */
+
 if($_POST['step']=='Comprar'){
 /* 
-    Llamar en bd.php a tabla horarios 
-
-    SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h
-    WHERE h.id_parada IN(<id parada origen>,<id parada destino>)
+    Llamar en bd.php a tabla horarios
 */
     $horarios = loadSchedulesBetween($_POST['origen'], $_POST['destino']);
     $horarios_copy = $horarios;
@@ -27,6 +26,9 @@ if($_POST['step']=='Comprar'){
     }
 
     $horarios['date'] = $_POST['ida'];
+    $horarios['people']['anc'] = $_POST['anc'];
+    $horarios['people']['adu'] = $_POST['adu'];
+    $horarios['people']['jov'] = $_POST['jov'];
 
     setcookie("traveldata_i", json_encode($horarios), ['path' => '/']);
 
@@ -38,6 +40,9 @@ if($_POST['step']=='Comprar'){
         }
 
         $horarios_copy['date'] = $_POST['vuelta'];
+        $horarios_copy['people']['anc'] = $_POST['anc'];
+        $horarios_copy['people']['adu'] = $_POST['adu'];
+        $horarios_copy['people']['jov'] = $_POST['jov'];
 
         setcookie("traveldata_v", json_encode($horarios_copy), ['path' => '/']);
     }
@@ -45,25 +50,57 @@ if($_POST['step']=='Comprar'){
     header("Location: ../pages/compra.php");
 }
 else if($_POST['step']=='Pagar'){
+    // TODO Repreguntar por si durante el proceso, ya otro usuario asignó el asiento
 
+    //Guardar en la base de datos la reserva
+    $values = explode("_", $_POST['h_ida']);
+    $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_ida']);
+
+    if(isset($_POST['h_vuelta']) && $result == 'OK'){
+        $values = explode("_", $_POST['h_vuelta']);
+        $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_vuelta']);     
+    }
+
+    //Hacer el pago y cargar una página de success/error
+    if($result == 'OK'){
+        //Borrar cookies tras registrar el viaje
+        setcookie('traveldata_i', '', time() - 3600);
+        setcookie('traveldata_v', '', time() - 3600);
+
+        simulatePayment($_POST); //Simular alguna manera de pago
+    }
+    else{
+        $result = urlencode($result);
+        $result = str_replace('%0D%0A', ' ', $result); //Quitar todos los saltos de línea
+        header("Location: ../pages/compra.php?error=".$result);
+    }
 }
-else{
+
+function simulatePayment($post_data){
     /*
-TODO, recibiendo llamada del pages/compra
-    Cuando seleccionen un viaje, evento:
-    Para la asignación de asiento, ponle en la vista un select-option de, por ejemplo, 
-    50 asientos
-    Haz una llamada en bd.php a tabla asignacion_asiento de
-
-    SELECT num_asiento FROM asignacion_asiento 
-    WHERE fecha_viaje=<fecha viaje>
-    AND id_expedicion=<id expedicion seleccionada> 
-    AND (id_parada_origen BETWEEN <id parada origen> AND <id parada destino> 
-        OR id_parada_destino BETWEEN <id parada origen> AND <id parada destino>)
-
-    Y las que devuelva en teoría tienen que ser options inhabilitadas
-
-    [De momento solo para ida. 
-    OJO, para ida/vuelta tiene que haber dos formularios en lugar de uno]
+        Un ejemplo de pasarela estaría aquí:
+        https://www.jose-aguilar.com/blog/como-implementar-una-pasarela-de-pago-mediante-tarjeta-de-credito-con-php/
+        (Solo como referencia)
     */
+
+    // Hay que simular un formulario invisible para mandar datos a una supuesta pasarela
+    // ya que necesito mandarlo a una API externa con POST
+    ?>
+        <form id="realizarPago" action="pseudopasarela.php" method="post">
+        <input type='hidden' name='name' value='<?php echo $post_data["nombre"]; ?>'>
+
+    <?php if($post_data["forma_pago"] == 't'){ ?>
+        <input type='hidden' name='number' value='<?php echo $post_data["cod_tarjeta"]; ?>'>
+        <input type='hidden' name='cvv' value='<?php echo $post_data["cvv"]; ?>'>
+        <input type='hidden' name='amount' value='<?php echo $post_data["total"]; ?>'>
+    <?php } ?>
+
+        <input type='hidden' name='method' value='<?php echo $post_data["forma_pago"]; ?>'>
+        </form>
+        <script>
+        $(document).ready(function () {
+            $("#realizarPago").submit();
+        });
+        </script>
+    <?php
 }

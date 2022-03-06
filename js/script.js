@@ -1,5 +1,9 @@
 cargarUltimasNoticias();
 
+if(sessionStorage.getItem('nombre') !== null){
+    $('#username').text("Estás conectado como: " + sessionStorage.getItem('nombre'));
+}
+
 function mobileMenu() {
     var x = document.getElementById("links");
     if (x.style.display === "flex") {

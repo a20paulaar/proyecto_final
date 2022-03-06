@@ -43,12 +43,9 @@
     </header>
     <div id="container">
         <section>
-            <h2>Simulador de tarifas</h2>
-            <div id="simulador" class="row"></div>
-            <div id="notas" class="row">
-                Se aplica un descuento de jóvenes del 10% y de ancianos del 50%.
-                Estos descuentos serán revisados con la documentación correspondiente para ello (Tarjeta Joven o Carnet de pensionista)
-            </div>
+            <h2>Pago aceptado</h2>
+            Se ha mandado un correo con la confirmación. 
+            Este correo no certifica un viaje, el cual será valido cuando se acepte la reserva
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -62,10 +59,9 @@
             <a href="#"><img src="../images/twitter.png" alt="Twitter"></a>
             <a href="#"><img src="../images/instagram.png" alt="Instagram"></a>
             <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
-        </div>   
+        </div>
     </footer>
 
     <script src="../js/script.js"></script>
-    <script src="../js/script_tarifas.js"></script>
 </body>
 </html>

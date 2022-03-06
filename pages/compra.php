@@ -25,17 +25,17 @@
                     </svg>
                 </a>
                 <div id="links">
-                    <span><a class="menu_element" href="pages/tarifas.php">Tarifas</a></span>
-                    <span><a class="menu_element" href="pages/horarios.php">Horarios</a></span>
-                    <span><a class="menu_element" href="pages/atencion.php">Atención al cliente</a></span>
+                    <span><a class="menu_element" href="../pages/tarifas.php">Tarifas</a></span>
+                    <span><a class="menu_element" href="../pages/horarios.php">Horarios</a></span>
+                    <span><a class="menu_element" href="../pages/atencion.php">Atención al cliente</a></span>
                     <?php if(!isset($_SESSION)) { ?>
-                    <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>
+                    <span><a class="menu_element" href="../pages/sesion.php">Iniciar sesión</a></span>
                     <?php } else { ?>
                     <span><a class="menu_element" href="../pages/perfil">Mi perfil</a></span>
-                    <span><a class="menu_element" href="functions/sesion.php?session=close">Cerrar sesión</a></span>
+                    <span><a class="menu_element" href="../functions/sesion.php?session=close">Cerrar sesión</a></span>
                     <?php } ?>
                     <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
-                    <span><a class="menu_element" href="pages/admin.php">Administración</a></span>
+                    <span><a class="menu_element" href="../pages/admin.php">Administración</a></span>
                     <?php } ?>
                 </div>
             </nav>
@@ -44,52 +44,81 @@
     <div id="container">
         <section>
             <h2>Comprar billetes</h2>
-            <form action="comprar.php" method="post" onsubmit="return validarCompra()">
+            <form action="../functions/compra.php" method="post" onsubmit="return validarCompra()">
                 <div id="ida">
                     <h3>Trayecto de ida</h3>
-                    <div class="formarea">
-                        <table id="t_ida">
-                        </table>
-                    </div>
-                    <div class="formarea">
-                        <span id="formarea_ida">
-                            <label class="form-check-label" for="a_ida">Asientos disponibles:</label>
-                            <select id="a_ida" name="a_ida">
+                    <div class="row">
+                        <div id="trayectos_ida" class="formarea col-6">
+                            <table id="t_ida"><tr><th>SALIDA</th><th>LLEGADA</th><th></th></tr></table>
+                        </div>
+                        <div class="formarea asientos_ida col-4">
+                            <span>
+                                <label class="form-check-label" for="a_ida">Asientos disponibles (CTRL + Clic para asientos adicionales):</label>
+                                <a href="../images/seats.png" target="_blank">Guía de asientos</a>
+                            </span>
+                        </div>
+                        <div class="formarea asientos_ida col-2">
+                            <select id="a_ida" name="a_ida[]" multiple>
                                 <option>Por favor, seleccione trayecto</option>
                             </select>
-                            <a href="../images/seats.png" target="_blank">Guía de asientos</a>
-                        </span>
+                        </div>
                     </div>
                 </div>
                 <div id="vuelta">
                     <h3>Trayecto de vuelta</h3>
-                    <div class="formarea">
-                        <table id="t_vuelta">
-                        </table>
-                    </div>
-                    <div class="formarea">
-                        <span id="formarea_vuelta">
-                            <label class="form-check-label" for="a_vuelta">Asientos disponibles:</label>
-                            <select id="a_vuelta" name="a_vuelta">
+                    <div class="row">
+                        <div id="trayectos_vuelta" class="formarea col-6">
+                            <table id="t_vuelta"><tr><th>SALIDA</th><th>LLEGADA</th><th></th></tr></table>
+                        </div>
+                        <div class="formarea asientos_vuelta col-4">
+                            <span>
+                                <label class="form-check-label" for="a_vuelta">Asientos disponibles (CTRL + Clic para asientos adicionales):</label>
+                                <a href="../images/seats.png" target="_blank">Guía de asientos</a>
+                            </span>
+                        </div>
+                        <div class="formarea asientos_vuelta col-2">
+                            <select id="a_vuelta" name="a_vuelta[]" multiple>
                                 <option>Por favor, seleccione trayecto</option>
                             </select>
-                            <a href="../images/seats.png" target="_blank">Guía de asientos</a>
-                        </span>
+                        </div>
                     </div>
                 </div>
-                <div class="formarea">
-                    <span>
-                        <label for="pago">Seleccione una forma de pago:</label>
-                        <select name="pago" id="pago">
-                            <option value="PayPal">PayPal</option>
-                            <option value="Tarjeta">Tarjeta de crédito / débito</option>
-                            <option value="Bizum">Bizum</option>
+                <div id="viajeros" class="formarea"></div>
+                <div id="pago">
+                    <div class="formarea"><table id="t_pago"></table></div>
+                    <div id="forma_pago" class="formarea">
+                        <label for="forma_pago">Seleccione una forma de pago:</label>
+                        <select name="forma_pago" id="forma_pago_seleccionar">
+                            <option value="" selected disabled>Seleccione método de pago</option>
+                            <option value="p">PayPal</option>
+                            <option value="t">Tarjeta de crédito / débito</option>
                         </select>
-                    </span>
+                    </div>
+                    <div id="datos_pago" class="formarea">
+                        <span id="datos_pago_paypal">Será redirigido a PayPal para que haga login y finalice su proceso</span>
+                        <div id="datos_pago_tarjeta" class="row">
+                            <span class="col-12">
+                                <label for="nombre">Nombre:</label>
+                                <input type='text' id='nombre' name='nombre' class='form-control' />
+                            </span>
+                            <span class="col-8">
+                                <label for="cod_tarjeta">Número:</label>
+                                <input type='text' id='cod_tarjeta' name='cod_tarjeta' class='form-control' />
+                            </span>
+                            <span class="col-4">
+                                <label for="cvv">CVC/CVV:</label>
+                                <input type='text' id='cvv' name='cvv' class='form-control' />
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="formarea">
+                <div id="confirmar" class="formarea">
                     <span id="formarea_conf">
-                        <input class="form-control submit" type="submit" id="submit" value="Comprar" />
+                        <input class="form-control submit" type="submit" id="submit" value="Pagar" />
+                    </span>
+                    <span id="compra_anonima">
+                        Para comprar tiene que <a class='menu_element' href='../pages/sesion.php'>Iniciar sesion</a>
+                         o <a class='menu_element' href='../pages/registro.php'>Registrarse</a>
                     </span>
                 </div>
             </form>
@@ -123,11 +152,17 @@
         // var json_traveldata = JSON.parse('<?= $_COOKIE["traveldata_v"] ?>');
         // console.log(json_traveldata);
 
-        <? if(array_key_exists('traveldata_v', $_COOKIE)){ ?>
+        <?php if(array_key_exists('traveldata_v', $_COOKIE)){ ?>
             gestionarDatosCompra(JSON.parse('<?= $_COOKIE["traveldata_i"] ?>'), JSON.parse('<?= $_COOKIE["traveldata_v"] ?>'));
-        <? } else { ?>
+        <?php } else { ?>
             gestionarDatosCompra(JSON.parse('<?= $_COOKIE["traveldata_i"] ?>'));
-        <? } ?>
+        <?php } ?>
     </script>
+    <?php if(isset($_GET['error'])){ ?>
+        <script> alert("<?= $_GET['error'] ?>") </script>
+    <?php } ?>
+    <?php if(!isset($_SESSION['email'])){ ?>
+        <script>invitado() //Hay alguna manera más oculta por PHP?</script>
+    <?php } ?>
 </body>
 </html>

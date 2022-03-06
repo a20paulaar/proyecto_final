@@ -55,12 +55,8 @@
                         <input class="form-control" type="text" name="nombre" id="nombre" required>
                     </span>
                     <span>
-                        <label for="apellido1">Primer Apellido:</label>
-                        <input class="form-control" type="text" name="apellido1" id="apellido1" required>
-                    </span>
-                    <span>
-                        <label for="apellido2">Segundo Apellido:</label>
-                        <input class="form-control" type="text" name="apellido2" id="apellido2">
+                        <label for="apellidos">Apellidos:</label>
+                        <input class="form-control" type="text" name="apellidos" id="apellidos" required>
                     </span>
                 </div>
                 <div class="formarea">

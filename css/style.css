@@ -55,10 +55,7 @@ body{
 article{
     border-width: 2px 0;
     border-style: solid;
-    border-image: 
-    linear-gradient(
-    to right, rgba(0,0,0,0), black, rgba(0,0,0,0)
-    ) 1 0 100%;
+    border-image: linear-gradient(to right, rgba(0,0,0,0), black, rgba(0,0,0,0)) 1 0 100%;
 }
 
 #anc, #adu, #jov{
@@ -68,6 +65,44 @@ article{
 .submit:hover, #profile button:hover{
     background-color: rgba(64,64,255,0.3);
     color: white;
+}
+
+.asientos_ida, .asientos_vuelta{
+    visibility: hidden;
+}
+
+.viajero_adicional{
+    display: flex;
+}
+
+.help{
+    vertical-align: super;
+    cursor: help;
+}
+
+#ida, #vuelta, #viajeros, #pago, #t_pago{
+    margin: 1em auto;
+}
+
+#ida table *, #vuelta table *{
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#t_pago{
+    width: 100%;
+}
+
+#t_pago>tr>td:last-child, #t_pago>tr>th:last-child, #total_price{
+    text-align: right;
+}
+
+#total_price{
+    font-weight: bold;
+}
+
+#datos_pago_paypal, #datos_pago_tarjeta, #compra_anonima{
+    display: none;
 }
 
 #profile form{

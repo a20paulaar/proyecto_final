@@ -67,7 +67,7 @@ else if($_POST['step']=='Pagar'){
         setcookie('traveldata_i', '', time() - 3600);
         setcookie('traveldata_v', '', time() - 3600);
 
-        simulatePayment($_POST); //Simular alguna manera de pago
+        doPayment($_POST); //Simular alguna manera de pago
     }
     else{
         $result = urlencode($result);
@@ -76,31 +76,33 @@ else if($_POST['step']=='Pagar'){
     }
 }
 
-function simulatePayment($post_data){
-    /*
-        Un ejemplo de pasarela estaría aquí:
-        https://www.jose-aguilar.com/blog/como-implementar-una-pasarela-de-pago-mediante-tarjeta-de-credito-con-php/
-        (Solo como referencia)
-    */
+function doPayment($post_data){
+    if(insertPayment($_SESSION['email'], str_replace(' €', '', $post_data["total"]), $post_data["forma_pago"], date("Y-m-d H:i:s")) == 'OK'){
+        /*
+            Un ejemplo de pasarela estaría aquí:
+            https://www.jose-aguilar.com/blog/como-implementar-una-pasarela-de-pago-mediante-tarjeta-de-credito-con-php/
+            (Solo como referencia)
+        */
 
-    // Hay que simular un formulario invisible para mandar datos a una supuesta pasarela
-    // ya que necesito mandarlo a una API externa con POST
-    ?>
-        <form id="realizarPago" action="pseudopasarela.php" method="post">
-        <input type='hidden' name='name' value='<?php echo $post_data["nombre"]; ?>'>
+        // Hay que simular un formulario invisible para mandar datos a una supuesta pasarela
+        // ya que necesito mandarlo a una API externa con POST
+        ?>
+            <form id="realizarPago" action="pseudopasarela.php" method="post">
+            <input type='hidden' name='name' value='<?php echo $post_data["nombre"]; ?>'>
 
-    <?php if($post_data["forma_pago"] == 't'){ ?>
-        <input type='hidden' name='number' value='<?php echo $post_data["cod_tarjeta"]; ?>'>
-        <input type='hidden' name='cvv' value='<?php echo $post_data["cvv"]; ?>'>
-        <input type='hidden' name='amount' value='<?php echo $post_data["total"]; ?>'>
-    <?php } ?>
+        <?php if($post_data["forma_pago"] == 't'){ ?>
+            <input type='hidden' name='number' value='<?php echo $post_data["cod_tarjeta"]; ?>'>
+            <input type='hidden' name='cvv' value='<?php echo $post_data["cvv"]; ?>'>
+            <input type='hidden' name='amount' value='<?php echo $post_data["total"]; ?>'>
+        <?php } ?>
 
-        <input type='hidden' name='method' value='<?php echo $post_data["forma_pago"]; ?>'>
-        </form>
-        <script>
-        $(document).ready(function () {
-            $("#realizarPago").submit();
-        });
-        </script>
-    <?php
+            <input type='hidden' name='method' value='<?php echo $post_data["forma_pago"]; ?>'>
+            </form>
+            <script>
+            $(document).ready(function () {
+                $("#realizarPago").submit();
+            });
+            </script>
+        <?php
+    }
 }

@@ -11,6 +11,7 @@ function cargarReservas(){
         for(var reserva of listaReservas){
             $('#lista_reservas').append(
                 '<tr>'+
+                '<td>'+reserva.email+'</td>'+
                 '<td>'+reserva.dni+'</td>'+
                 '<td>'+reserva.date+'</td>'+
                 '<td>'+reserva.start_stop_name+' ('+ reserva.start_time +')'+'</td>'+
@@ -19,6 +20,7 @@ function cargarReservas(){
                 '<td>'+
                     '<form method="post" action="../functions/admin.php">'+
                         '<input type="hidden" name="values" value="'+reserva.dni+'_'+reserva.date+'_'+reserva.exped+'_'+reserva.seat+'" />'+
+                        '<input type="hidden" name="email" value="'+reserva.email+'" />'+
                         '<input type="submit" name="reservas_OK" value="Validar" />'+
                         '<input type="submit" name="reservas_NOK" value="Denegar" />'+
                     '</form>'+

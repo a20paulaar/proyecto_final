@@ -80,11 +80,11 @@ article{
     cursor: help;
 }
 
-#ida, #vuelta, #viajeros, #pago, #t_pago{
+#trayecto_ida, #trayecto_vuelta, #viajeros, #pago, #t_pago{
     margin: 1em auto;
 }
 
-#ida table *, #vuelta table *{
+#trayecto_ida table *, #trayecto_vuelta table *{
     padding-left: 1em;
     padding-right: 1em;
 }

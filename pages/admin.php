@@ -58,7 +58,7 @@
                     <div id="div_lista_reservas" class="collapse" aria-labelledby="headingOne" data-parent="#admin">
                         <div class="card-body">
                             <table id="lista_reservas" class="table"><tr>
-                                <th>DNI</th><th>Fecha</th><th>Origen (Hora)</th><th>Destino (Hora)</th><th>Asiento</th><th>&nbsp;</th>
+                                <th>E-mail</th><th>DNI</th><th>Fecha</th><th>Origen (Hora)</th><th>Destino (Hora)</th><th>Asiento</th><th>&nbsp;</th>
                             </tr></table>
                         </div>
                     </div>

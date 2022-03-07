@@ -45,10 +45,10 @@
         <section>
             <h2>Comprar billetes</h2>
             <form action="../functions/compra.php" method="post" onsubmit="return validarCompra()">
-                <div id="ida">
+                <div id="trayecto_ida">
                     <h3>Trayecto de ida</h3>
                     <div class="row">
-                        <div id="trayectos_ida" class="formarea col-6">
+                        <div class="formarea col-6">
                             <table id="t_ida"><tr><th>SALIDA</th><th>LLEGADA</th><th></th></tr></table>
                         </div>
                         <div class="formarea asientos_ida col-4">
@@ -64,10 +64,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="vuelta">
+                <div id="trayecto_vuelta">
                     <h3>Trayecto de vuelta</h3>
                     <div class="row">
-                        <div id="trayectos_vuelta" class="formarea col-6">
+                        <div class="formarea col-6">
                             <table id="t_vuelta"><tr><th>SALIDA</th><th>LLEGADA</th><th></th></tr></table>
                         </div>
                         <div class="formarea asientos_vuelta col-4">

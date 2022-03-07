@@ -7,7 +7,7 @@ if(isset($_POST['method'])){
         case 'loadSchedule': loadSchedule(); break;
         case 'loadFares': loadFares(); break;
         case 'loadUsers': loadUsers(); break;
-        case 'loadPendingReservations': loadPendingReservations(); break;
+        case 'loadPendingReservations': loadPendingReservations(null); break;
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
         //case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
@@ -33,9 +33,9 @@ function loadBBDD() {
     $usuario = getPerfilUsuario();
     try {
         $res = readConfig(dirname(__FILE__) . "/../config/configuracion.xml", dirname(__FILE__) . "/../config/configuracion.xsd", $usuario);
-        $bd = new PDO($res[0], $res[1], $res[2]);
+        $bd = new \PDO($res[0], $res[1], $res[2]);
         return $bd;
-    } catch (\Exception $e) {
+    } catch (\PDOException $e) {
         echo $e->getMessage();
         exit();
     }
@@ -166,9 +166,9 @@ function loadUsers(){
     echo json_encode($json);
 }
 
-function loadPendingReservations(){
+function loadPendingReservations($email = null){
     $bd = loadBBDD();
-    $query = "SELECT a.dni, a.fecha_viaje, a.id_expedicion, 
+    $query_string = "SELECT a.email, a.dni, a.fecha_viaje, a.id_expedicion, 
         a.id_parada_origen, p1.nombre AS nombre_parada_origen, h1.hora AS hora_origen,
         a.id_parada_destino, p2.nombre AS nombre_parada_destino, h2.hora AS hora_destino,
         a.num_asiento
@@ -177,19 +177,26 @@ function loadPendingReservations(){
     JOIN paradas p2 ON p2.id_parada = a.id_parada_destino
     JOIN horarios h1 ON h1.id_parada = a.id_parada_origen AND h1.id_expedicion = a.id_expedicion
     JOIN horarios h2 ON h2.id_parada = a.id_parada_destino AND h2.id_expedicion = a.id_expedicion
-    WHERE estado_reserva = 1"; // 0: En compra (No se usa) - 1: Reserva pendiente - 2: Reserva confirmada
-    $resul = $bd->query($query);
+    WHERE a.estado_reserva = 1"; // 0: En compra (No se usa) - 1: Reserva pendiente - 2: Reserva confirmada
+    if(!is_null($email)){
+        $query_string .= " AND a.email = ?";
+    }
+    $query = $bd->prepare($query_string);
+    $query->bindParam(1, $email); //En teoría si no hay parámetros no debería pasar nada
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
 
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
-            'dni' => $r['dni'], 'date' => $r['fecha_viaje'], 'exped' => $r['id_expedicion'],
+            'email' => $r['email'], 'dni' => $r['dni'], 'date' => $r['fecha_viaje'], 'exped' => $r['id_expedicion'],
             'start_stop' => $r['id_parada_origen'], 'start_stop_name' => $r['nombre_parada_origen'], 'start_time' => $r['hora_origen'],
             'end_stop' => $r['id_parada_destino'], 'end_stop_name' => $r['nombre_parada_destino'], 'end_time' => $r['hora_destino'],
             'seat' => $r['num_asiento']
         ];
     }
-    echo json_encode($json);
+    if(is_null($email)) echo json_encode($json); //Via POST
+    else return $json; //Via PHP
 }
 
 function loadNews(){
@@ -263,6 +270,17 @@ function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
     };
     $seats = [2,3,4,5,9,20];
     echo json_encode($seats);
+}
+
+function loadLastPayment($email){
+    $query = $bd->prepare("SELECT email, cantidad, metodo, fecha_hora 
+    FROM transacciones
+    WHERE fecha_hora=? ORDER BY fecha_hora DESC LIMIT 1");
+
+    $query->bindParam(1, $email);
+    $r = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $r;
 }
 
 //ACTUALIZAR DATOS
@@ -412,5 +430,23 @@ function updateProfileInfo($mail, $phone, $address){
     } catch (\Throwable $th) {
         $bd->rollBack();
         return 'ERROR DE BASE DE DATOS. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+function insertPayment($email, $cantidad, $metodo, $fecha_hora){
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("INSERT INTO transacciones VALUES(?, ?, ?, ?)");
+
+        $query->bindParam(1, $email);
+        $query->bindParam(2, $cantidad);
+        $query->bindParam(3, $metodo);
+        $query->bindParam(4, $fecha_hora);
+        $query->execute();
+        $bd->commit();
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
     }
 }

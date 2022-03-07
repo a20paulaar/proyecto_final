@@ -6,7 +6,7 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
 
         if(exp != 'date' && exp != 'people'){
             let value = json_ida.date + "_" + exp + "_" + json_ida[exp][0].stop + "_" + json_ida[exp][1].stop;
-            $("#ida table").append(
+            $("#t_ida").append(
                 '<tr>' +
                     '<td>' + json_ida[exp][0].time + '</td><td>' + json_ida[exp][1].time + '</td>' +
                     '<td><input type="radio" name="h_ida" value="' + value + '" />' +
@@ -15,7 +15,7 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
         }
     }
 
-    $("#ida").append(
+    $("#trayecto_ida").append(
         '<input type="hidden" name="f_ida" value="' + json_ida.date + '" />'
     )
 
@@ -27,7 +27,7 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
     
             if(exp != 'date' && exp != 'people'){
                 let value = json_vuelta.date + "_" + exp + "_" + json_vuelta[exp][0].stop + "_" + json_vuelta[exp][1].stop;
-                $("#vuelta table").append(
+                $("#t_vuelta").append(
                     '<tr>' +
                         '<td>' + json_vuelta[exp][0].time + '</td><td>' + json_vuelta[exp][1].time + '</td>' +
                         '<td><input type="radio" name="h_vuelta" value="' + value + '" />' +
@@ -36,12 +36,12 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
             }
         }
     
-        $("#vuelta").append(
+        $("#trayecto_vuelta").append(
             '<input type="hidden" name="f_vuelta" value="' + json_vuelta.date + '" />'
         )
     }
     else{
-        $('#vuelta').remove();
+        $('#trayecto_vuelta').remove();
     }
 
     ////////
@@ -144,7 +144,7 @@ function validarCompra(){
     let msg = "";
     let result = true;
     let validar = ['ida'];
-    if($('#vuelta').length) validar = ['ida', 'vuelta'];
+    if($('#trayecto_vuelta').length) validar = ['ida', 'vuelta'];
 
     for(v of validar){
         if($('#a_'+v).val()=="" || !$("input[name='h_"+v+"']:checked").val()){

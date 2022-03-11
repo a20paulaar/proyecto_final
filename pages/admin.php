@@ -93,6 +93,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="admin_registro" class="card">
+                    <div class="card-header" id="headingOne">
+                        <h4 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#div_lista_registro" aria-expanded="false" aria-controls="div_lista_registro">
+                            <h4>Registro de sesiones</h4>
+                            </button>
+                        </h4>
+                    </div>
+                    <div id="div_lista_registro" class="collapse" aria-labelledby="headingOne" data-parent="#admin">
+                        <div class="card-body">
+                            <table id="lista_registro" class="table"><tr/></table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

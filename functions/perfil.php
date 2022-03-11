@@ -55,6 +55,7 @@ if(isset($_POST['method'])){ // NO es una llamada desde el formulario, sino desd
 
     $result = updateProfileInfo('usuario@mail.com', $_POST['telefono'], $_POST['direccion']);
     if($result == 'OK'){
+        updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),1);
         header('Location: ../pages/perfil.php');
     }
     else{

@@ -85,3 +85,22 @@ function cargarTarifas(){
         }
     });
 }
+
+function cargarRegistro(){
+    $.post("../functions/bd.php", {
+        method: "loadRegister"
+    },
+    function(data, status){
+        var listaRegistro = JSON.parse(data);
+        for(var registro of listaRegistro){
+            $('#lista_registro').append(
+                '<tr>'+
+                '<td>'+registro.usuario+'</td>'+
+                '<td>'+registro.fecha+'</td>'+
+                '<td>'+ (registro.tipo == 1 ? 'SESION' : 'MODIFICACION') +
+                '</td>'+
+                '</tr>'
+            );
+        }
+    });
+}

@@ -14,6 +14,7 @@ if(isset($_POST['method'])){
         case 'loadProfileInfo': loadProfileInfo('usuario@mail.com'); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
+        case 'loadRegister': loadRegister(); break;
     }
 }
 
@@ -43,11 +44,11 @@ function loadBBDD() {
 
 function readConfig($fichero_config_BBDD, $esquema, $usuario) {
 
-    $config = new DOMDocument();
+    $config = new \DOMDocument();
     $config->load($fichero_config_BBDD);
     $res = $config->schemaValidate($esquema);
     if ($res === FALSE) {
-        throw new InvalidArgumentException("Revise el fichero de configuración");
+        throw new \InvalidArgumentException("Revise el fichero de configuración");
     }
     $datos = simplexml_load_file($fichero_config_BBDD);   
     $configuracion = $datos->xpath("//configuracion");    
@@ -268,7 +269,6 @@ function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
     foreach ($resul as $r) {
         $seats[] = $r['num_asiento'];
     };
-    $seats = [2,3,4,5,9,20];
     echo json_encode($seats);
 }
 
@@ -278,9 +278,22 @@ function loadLastPayment($email){
     WHERE fecha_hora=? ORDER BY fecha_hora DESC LIMIT 1");
 
     $query->bindParam(1, $email);
+    $query->execute();
     $r = $query->fetch(PDO::FETCH_ASSOC);
 
     return $r;
+}
+
+function loadRegister(){
+    $query = $bd->prepare("SELECT usuario, fecha, tipo 
+    FROM registro ORDER BY id DESC LIMIT 30");
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = ['usuario' => $r['usuario'], 'fecha' => $r['fecha'], 'tipo' => $r['tipo']];
+    }
+    echo json_encode($json);
 }
 
 //ACTUALIZAR DATOS
@@ -442,6 +455,23 @@ function insertPayment($email, $cantidad, $metodo, $fecha_hora){
         $query->bindParam(2, $cantidad);
         $query->bindParam(3, $metodo);
         $query->bindParam(4, $fecha_hora);
+        $query->execute();
+        $bd->commit();
+        return 'OK';
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+function updateRegister($mail, $date, $type){
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("INSERT INTO registro VALUES(?, ?, ?)");
+
+        $query->bindParam(1, $mail);
+        $query->bindParam(2, $date);
+        $query->bindParam(3, $type);
         $query->execute();
         $bd->commit();
         return 'OK';

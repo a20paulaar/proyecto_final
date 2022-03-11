@@ -12,6 +12,7 @@ if(isset($_POST["registro"])){
         session_start();
         $_SESSION["rol"] = $perfil;
         $_SESSION["email"] = $_POST["email"];
+        updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),2);
         $perfil_info = json_decode(loadProfileInfo($_POST['email']));
         $_SESSION["nombre"] = $perfil_info["nombre"] . " " . $perfil_info["apellidos"];
         header("Location: ../index.php");

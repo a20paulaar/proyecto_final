@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="gl">
 <head>
@@ -31,21 +34,22 @@
                     <span><a class="menu_element" href="../pages/tarifas.php">Tarifas</a></span>
                     <span><a class="menu_element" href="../pages/horarios.php">Horarios</a></span>
                     <span><a class="menu_element" href="../pages/atencion.php">Atención al cliente</a></span>
-                    <? if(!isset($_SESSION)) { ?>
+                    <?php if(!isset($_SESSION["email"])) { ?>
                     <span><a class="menu_element" href="../pages/sesion.php">Iniciar sesión</a></span>
-                    <? } else { ?>
-                    <span><a class="menu_element" href="../pages/perfil">Mi perfil</a></span>
+                    <?php } else { ?>
+                    <span><a class="menu_element" href="../pages/perfil.php">Mi perfil</a></span>
                     <span><a class="menu_element" href="../functions/sesion.php?session=close">Cerrar sesión</a></span>
-                    <? } ?>
-                    <? if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
+                    <?php } ?>
+                    <?php if(isset($_SESSION["rol"])&&$_SESSION["rol"]==1){ ?>
                     <span><a class="menu_element" href="../pages/admin.php">Administración</a></span>
-                    <? } ?>
+                    <?php } ?>
                 </div>
             </nav>
         </div>
     </header>
     <div id="container">
         <section>
+        <?php if(isset($_SESSION["rol"])&&$_SESSION["rol"]==1){ ?>
             <h2>Panel de administración</h2>
             <div id="admin">
                 <div id="admin_reservas" class="card">
@@ -110,6 +114,11 @@
                     </div>
                 </div>
             </div>
+            <?php } else { ?>
+                <div class="error">
+                    Acceso denegado.
+                </div>
+            <?php } ?>
         </section>
     </div>
     <footer>

@@ -1,6 +1,7 @@
 <?php
 /*Si se necesita llamar directamente a la BD desde el front (p.ej. AJAX) 
 incluir aquí la referencia al método que se llama*/
+session_start();
 if(isset($_POST['method'])){
     switch($_POST['method']){
         case 'loadStops': loadStops(); break;
@@ -26,11 +27,11 @@ function getPerfilUsuario(){
     $perfil = isset($_SESSION["rol"]) ? $_SESSION["rol"] : 3;
     switch($perfil){
         case 1:
-            return "admin";
+            return "a9da_admin";
         case 2:
-            return "user";
+            return "a9da_user";
         default:
-            return "guest";
+            return "a9da_guest";
     }
 }
 
@@ -106,7 +107,7 @@ function loadStops(){
 
     $json = [];
     foreach ($resul as $r) {
-        $json['paradas'][] = ['id' => $r['id_parada'], 'name' => $r['nombre']];
+        $json['paradas'][] = ['id' => $r['id_parada'], 'name' => utf8_encode($r['nombre'])];
     }
     echo json_encode($json);
 }
@@ -135,7 +136,7 @@ function validUser($user, $pass){
  *
  * @return void
  */
-function getSchedule(){
+function loadSchedule(){
     $bd = loadBBDD();
     $query = "SELECT h.id_expedicion, h.hora, h.id_parada, p.nombre FROM horarios h
     JOIN paradas p ON h.id_parada = p.id_parada";
@@ -143,7 +144,7 @@ function getSchedule(){
 
     $json = [];
     foreach ($resul as $r) {
-        $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => $r['nombre'], 'hour' => $r['hora']];
+        $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => utf8_encode($r['nombre']), 'hour' => $r['hora']];
     }
     echo json_encode($json);
 }
@@ -194,7 +195,7 @@ function loadFares(){
     foreach ($resul as $r) {
         $json[] = [
             'between' => [$r['id_parada_origen'], $r['id_parada_destino']],
-            'between_n' => [$r['nombre_parada_origen'], $r['nombre_parada_destino']], 
+            'between_n' => [utf8_encode($r['nombre_parada_origen']), utf8_encode($r['nombre_parada_destino'])], 
             'price' => $r['precio']
         ];
     }
@@ -226,7 +227,7 @@ function loadUsers(){
  */
 function loadPendingReservations($email = null){
     $bd = loadBBDD();
-    $query_string = "SELECT a.email, a.dni, a.fecha_viaje, a.id_expedicion, 
+    $query_string = "SELECT v.email, a.dni, a.fecha_viaje, a.id_expedicion, 
         a.id_parada_origen, p1.nombre AS nombre_parada_origen, h1.hora AS hora_origen,
         a.id_parada_destino, p2.nombre AS nombre_parada_destino, h2.hora AS hora_destino,
         a.num_asiento
@@ -235,9 +236,10 @@ function loadPendingReservations($email = null){
     JOIN paradas p2 ON p2.id_parada = a.id_parada_destino
     JOIN horarios h1 ON h1.id_parada = a.id_parada_origen AND h1.id_expedicion = a.id_expedicion
     JOIN horarios h2 ON h2.id_parada = a.id_parada_destino AND h2.id_expedicion = a.id_expedicion
+    JOIN viajeros v ON v.dni = a.dni
     WHERE a.estado_reserva = 1"; // 0: En compra (No se usa) - 1: Reserva pendiente - 2: Reserva confirmada
     if(!is_null($email)){
-        $query_string .= " AND a.email = ?";
+        $query_string .= " AND v.email = ?";
     }
     $query = $bd->prepare($query_string);
     $query->bindParam(1, $email); //En teoría si no hay parámetros no debería pasar nada
@@ -248,8 +250,8 @@ function loadPendingReservations($email = null){
     foreach ($resul as $r) {
         $json[] = [
             'email' => $r['email'], 'dni' => $r['dni'], 'date' => $r['fecha_viaje'], 'exped' => $r['id_expedicion'],
-            'start_stop' => $r['id_parada_origen'], 'start_stop_name' => $r['nombre_parada_origen'], 'start_time' => $r['hora_origen'],
-            'end_stop' => $r['id_parada_destino'], 'end_stop_name' => $r['nombre_parada_destino'], 'end_time' => $r['hora_destino'],
+            'start_stop' => $r['id_parada_origen'], 'start_stop_name' => utf8_encode($r['nombre_parada_origen']), 'start_time' => $r['hora_origen'],
+            'end_stop' => $r['id_parada_destino'], 'end_stop_name' => utf8_encode($r['nombre_parada_destino']), 'end_time' => $r['hora_destino'],
             'seat' => $r['num_asiento']
         ];
     }
@@ -272,7 +274,7 @@ function loadNews(){
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
-            'id' => $r['id_noticia'], 'title' => $r['titulo'], 'text' => $r['noticia'], 'has_pic' => $r['imagen'] 
+            'id' => $r['id_noticia'], 'title' => utf8_encode($r['titulo']), 'text' => utf8_encode($r['noticia']), 'has_pic' => $r['imagen'] 
         ];
     }
     echo json_encode($json);
@@ -295,7 +297,7 @@ function loadNew($id){
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
-            'title' => $r['titulo'], 'text' => $r['noticia'], 'has_pic' => $r['imagen'] 
+            'title' => utf8_encode($r['titulo']), 'text' => utf8_encode($r['noticia']), 'has_pic' => $r['imagen'] 
         ];
     }
     echo json_encode($json);
@@ -316,11 +318,15 @@ function loadProfileInfo($email){
     $query->execute();
     $r = $query->fetch(PDO::FETCH_ASSOC);
 
-    $json[] = [
-        'nombre' => $r['nombre'], 'apellidos' => $r['apellidos'], 'email' => $r['email'], 
-        'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => $r['direccion']
+    $json = [
+        'nombre' => utf8_encode($r['nombre']), 'apellidos' => utf8_encode($r['apellidos']), 'email' => $r['email'], 
+        'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => utf8_encode($r['direccion'])
     ];
-    echo json_encode($json);
+    if(isset($_POST['method'])){
+        echo json_encode($json);
+    } else {
+        return json_encode($json);
+    }
 }
 
 /**
@@ -362,6 +368,7 @@ function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
  * @return void
  */
 function loadLastPayment($email){
+    $bd = loadBBDD();
     $query = $bd->prepare("SELECT email, cantidad, metodo, fecha_hora 
     FROM transacciones
     WHERE fecha_hora=? ORDER BY fecha_hora DESC LIMIT 1");
@@ -379,8 +386,10 @@ function loadLastPayment($email){
  * @return void
  */
 function loadRegister(){
+    $bd = loadBBDD();
     $query = $bd->prepare("SELECT usuario, fecha, tipo 
     FROM registro ORDER BY id DESC LIMIT 30");
+
     $query->execute();
     $resul = $query->fetchAll(PDO::FETCH_ASSOC);
     $json = [];
@@ -547,12 +556,14 @@ function updateUserProfile($mail, $profile){
 function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $address){
     $bd = loadBBDD();
 
-    $query_select = $bd->prepare("SELECT COUNT(*) AS cuenta FROM usuarios WHERE email = ?");
-    $query_select->bindParam(1, $mail);
-    $query_select->execute();
-    
-    if($result_select=$query_select->fetch()){
-        if($result_select['cuenta']) return "Ya existe una cuenta con este email";
+    if(!is_null($pass)){ //Si el password es null, no estamos registrando usuario, estamos añadiendo un viajero (SOLO PARA LOS VIAJEROS ADICIONALES EN EL PROCESO DE COMPRA)
+        $query_select = $bd->prepare("SELECT COUNT(*) AS cuenta FROM usuarios WHERE email = ?");
+        $query_select->bindParam(1, $mail);
+        $query_select->execute();
+        
+        if($result_select=$query_select->fetch()){
+            if($result_select['cuenta']) return "Ya existe una cuenta con este email";
+        }
     }
 
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -560,7 +571,7 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
     try {
         $main = 0;
         if(!is_null($pass)){ //Si el password es null, no estamos registrando usuario, estamos añadiendo un viajero (SOLO PARA LOS VIAJEROS ADICIONALES EN EL PROCESO DE COMPRA)
-            $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)"); //Falta la query de inserción y los binds (no tengo la bd a mano en clase).
+            $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)");
             $query->bindParam(1, $mail);
             $query->bindParam(2, $pass);
             $query->execute();
@@ -568,18 +579,13 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
             $main = 1;
         }
 
-        $query2 = $bd->prepare("
-            INSERT INTO viajeros(dni, email, nombre, apellidos, telefono, direccion, fecha_nacimiento, principal) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE
-            nombre = VALUES(nombre), apellidos = VALUES(apellidos), telefono = VALUES(telefono), direccion = VALUES(direccion)
-        ");
+        $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $query2->bindParam(1, $dni);
         $query2->bindParam(2, $mail);
-        $query2->bindParam(3, $name);
-        $query2->bindParam(4, $surname);
+        $query2->bindParam(3, utf8_decode($name));
+        $query2->bindParam(4, utf8_decode($surname));
         $query2->bindParam(5, $phone);
-        $query2->bindParam(6, $address);
+        $query2->bindParam(6, utf8_decode($address));
         $query2->bindParam(7, $birth);
         $query2->bindParam(8, $main);
         $query2->execute();
@@ -658,7 +664,7 @@ function updateRegister($mail, $date, $type){
     $bd = loadBBDD();
     $bd->beginTransaction();
     try {
-        $query = $bd->prepare("INSERT INTO registro VALUES(?, ?, ?)");
+        $query = $bd->prepare("INSERT INTO registro VALUES(null,?, ?, ?)");
 
         $query->bindParam(1, $mail);
         $query->bindParam(2, $date);

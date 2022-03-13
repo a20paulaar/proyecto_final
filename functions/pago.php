@@ -1,5 +1,6 @@
 <?php
 require 'bd.php';
+session_start();
 
 $reservation_data = loadPendingReservations($_SESSION['email']);
 $payment_data = loadLastPayment($_SESSION['email']);

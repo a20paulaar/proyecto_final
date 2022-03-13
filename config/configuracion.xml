@@ -2,26 +2,26 @@
 <configuraciones>
     <configuracion>
         <ip>127.0.0.1</ip>
-        <nombre>transminho</nombre>
+        <nombre>a9da_transminho</nombre>
         <usuario>root</usuario>
         <clave></clave>    
     </configuracion>
     <configuracion>
         <ip>127.0.0.1</ip>
-        <nombre>transminho</nombre>
-        <usuario>admin</usuario>
-        <clave>1234</clave>    
+        <nombre>a9da_transminho</nombre>
+        <usuario>a9da_admin</usuario>
+        <clave>Transminho1*</clave>    
     </configuracion>
     <configuracion>
         <ip>127.0.0.1</ip>
-        <nombre>transminho</nombre>
-        <usuario>user</usuario>
-        <clave>1234</clave>    
+        <nombre>a9da_transminho</nombre>
+        <usuario>a9da_user</usuario>
+        <clave>123456</clave>    
     </configuracion>
     <configuracion>
         <ip>127.0.0.1</ip>
-        <nombre>transminho</nombre>
-        <usuario>guest</usuario>
-        <clave></clave>    
+        <nombre>a9da_transminho</nombre>
+        <usuario>a9da_guest</usuario>
+        <clave>123456</clave>    
     </configuracion>
 </configuraciones>

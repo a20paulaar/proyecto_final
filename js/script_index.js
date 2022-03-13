@@ -1,3 +1,10 @@
+$(function(){
+    if(!window.location.hash) { //Se necesita una primera recarga para completar el seteo de session storage
+        window.location = window.location + '#i';
+        window.location.reload();
+    }
+});
+
 var today = todayToInput();
 var max = todayToInput(90); //Se pueden pedir billetes hasta dentro de 90 días
 

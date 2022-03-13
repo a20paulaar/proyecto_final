@@ -146,6 +146,12 @@ article{
     margin: 2em;
     width: 50% !important;
 }
+.error{
+    width: 100%;
+    text-align: center;
+    font-size: large;
+    text-decoration: dashed;
+}
 
 footer{
     margin: 1em auto;

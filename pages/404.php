@@ -8,8 +8,10 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style_admin.css">
     <title>TransMiño</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
@@ -47,39 +49,9 @@ session_start();
     </header>
     <div id="container">
         <section>
-            <h2>Atención al Cliente</h2>
-            <form action="../functions/atencion.php" method="post">
-                    <div class="formarea">
-                        <span>
-                            <label for="nombre">Nombre: </label>
-                            <input class="form-control" type="text" name="nombre" id="nombre">
-                        </span>
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <label for="email">E-mail: </label>
-                            <input class="form-control" type="email" name="email" id="email">
-                        </span>
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <label for="pass">Mensaje: </label>
-                            <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>
-                        </span>                    
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <input class="form-control submit" type="submit" name="atencion" value="Enviar" />
-                        </span>
-                    </div>
-            </form>
-            <p class="menu_element">También puedes ponerte en contacto con nosotros a través de nuestras redes sociales.</p>
+            <h2>404: Página no encontrada</h2>
+            <p>La página especificada no ha podido ser encontrada. Contacte con el administrador del sitio.</p>
         </section>
-        <aside>
-            <h2>Noticias</h2>
-            <div></div>
-            <!-- <a class="menu_element" href="#">Ver noticias anteriores</a> -->
-        </aside>
     </div>
     <footer>
         <div id="copy">&copy; TransMiño Transportes do Miño S.A. 2022</div>
@@ -89,11 +61,7 @@ session_start();
             <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
         </div>
     </footer>
-    <?php if(isset($_GET["exito"])){?>
-        <script>alert("Mensaje enviado con éxito, gracias por su paciencia.");</script>
-    <?php } else if(isset($_GET["error"])){ ?>
-        <script>alert("Se ha producido un error al enviar su mensaje, disculpe las molestias.");</script>
-    <?php } ?>
+
     <script src="../js/script.js"></script>
 </body>
 </html>

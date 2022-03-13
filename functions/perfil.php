@@ -1,6 +1,6 @@
 <?php
 require 'bd.php';
-
+session_start();
 /**
  * Comprueba que no haya errores en la subida del fichero
  *
@@ -31,27 +31,23 @@ function comprobarErrorSubida($fichero) {
  * @param String $files Ruta del fichero
  * @return void
  */
-function moverFichero($email, $files) {
+function moverFichero($email, $file) {
     $result = false;
     $text = "";
-    foreach ($files as $file) {
-        if ($file['size'] > 1000000) {
-            $result = true;
-            $msg .= "Tamaño del archivo muy grande";
-            break;
-        }
+    if ($file['size'] > 1000000) {
+        $result = true;
+        $msg .= "Tamaño del archivo muy grande";
     }
+
     if (!$result) {
-        if (!file_exists($email)) {
-            mkdir($email, 0775, true);
+        if (!file_exists('../images/'. $email)) {
+            mkdir('../images/'.$email, 0775, true);
         }
-        foreach ($files as $file) {
-            $result = comprobarErrorSubida($file);
-            if (!$result) {
-                $origin = $file['tmp_name'];
-                $destiny = "../images/$email/user.png";
-                $result = move_uploaded_file($origin, $destiny);
-            }
+        $result = comprobarErrorSubida($file);
+        if (!$result) {
+            $origin = $file['tmp_name'];
+            $destiny = "../images/$email/$file";
+            $result = move_uploaded_file($origin, $destiny);
         }
     }
     return $result;

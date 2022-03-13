@@ -26,6 +26,7 @@ function cargarHorarios(){
         method: "loadSchedule"
     },
     function(data, status){
+        console.log(data);
         var json = JSON.parse(data);
         var paradas = json.paradas;
         for(var i in paradas){

@@ -34,7 +34,7 @@
                     <?php } else { ?>
                     <span><a class="menu_element" href="../functions/sesion.php?session=close">Cerrar sesión</a></span>
                     <?php } ?>
-                    <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
+                    <?php if(isset($_SESSION)&&$_SESSION["rol"]==1){ ?>
                     <span><a class="menu_element" href="../pages/admin.php">Administración</a></span>
                     <?php } ?>
                 </div>

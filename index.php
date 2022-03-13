@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="gl">
 <head>
@@ -29,13 +32,13 @@
                     <span><a class="menu_element" href="pages/tarifas.php">Tarifas</a></span>
                     <span><a class="menu_element" href="pages/horarios.php">Horarios</a></span>
                     <span><a class="menu_element" href="pages/atencion.php">Atención al cliente</a></span>
-                    <?php if(!isset($_SESSION)) { ?>
+                    <?php if(!isset($_SESSION["email"])) { ?>
                     <span><a class="menu_element" href="pages/sesion.php">Iniciar sesión</a></span>
                     <?php } else { ?>
-                    <span><a class="menu_element" href="../pages/perfil">Mi perfil</a></span>
+                    <span><a class="menu_element" href="pages/perfil.php">Mi perfil</a></span>
                     <span><a class="menu_element" href="functions/sesion.php?session=close">Cerrar sesión</a></span>
                     <?php } ?>
-                    <?php if(isset($_SESSION)&&$_SESSION["rol"]==2){ ?>
+                    <?php if(isset($_SESSION["rol"])&&$_SESSION["rol"]==1){ ?>
                     <span><a class="menu_element" href="pages/admin.php">Administración</a></span>
                     <?php } ?>
                 </div>
@@ -79,15 +82,15 @@
                 <div class="formarea">
                     <span id="formarea_anc">
                         <label for="anc">Ancianos (+65)</label><br/>
-                        <input class="form-control" type="number" id="anc" name="anc" value="0" />
+                        <input class="form-control" type="number" id="anc" name="anc" value="0" min="0"/>
                     </span>
                     <span id="formarea_adu">
                         <label for="adu">Adultos (16-64)</label><br/>
-                        <input class="form-control" type="number" id="adu" name="adu" value="0" />
+                        <input class="form-control" type="number" id="adu" name="adu" value="0" min="0"/>
                     </span>
                     <span id="formarea_jov">
                         <label for="jov">Jóvenes (-15)</label><br/>
-                        <input class="form-control"type="number" id="jov" name="jov" value="0" />
+                        <input class="form-control" type="number" id="jov" name="jov" value="0" min="0"/>
                     </span>
                 </div>
                 <div class="formarea">
@@ -114,11 +117,14 @@
 
     <script src="js/script.js"></script>
     <script src="js/script_index.js"></script>
-
-    <?php if(isset($_SESSION["nombre"])){ ?>
     <script>
+        $(function(){
+    <?php if(isset($_SESSION["nombre"])){ ?>
         sessionStorage.setItem('nombre', '<?=$_SESSION["nombre"];?>');
-    </script>
+    <?php } else { ?>
+        sessionStorage.removeItem('nombre');
     <?php } ?>
+        });
+    </script>
 </body>
 </html>

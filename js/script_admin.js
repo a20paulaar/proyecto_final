@@ -1,6 +1,7 @@
 cargarReservas();
 cargarUsuarios();
 cargarTarifas();
+cargarRegistro();
 
 /**
  * Carga las reservas pendientes de aceptar o denegar por el administrador

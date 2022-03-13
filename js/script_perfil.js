@@ -9,11 +9,11 @@ function cargarInformacionPerfil(){
     },
     function(data, status){
         var json = JSON.parse(data);
-        for(let dato in json[0]){
+        for(let dato in json){
             if(['nombre', 'apellidos', 'dni', 'fecha_nacimiento', 'email'].includes(dato)){
-                $('#' + dato).after('<input type="text" class="readonly form-control-plaintext" value="'+ json[0][dato] + '" readonly />');
+                $('#' + dato).after('<input type="text" class="readonly form-control-plaintext" value="'+ json[dato] + '" readonly />');
             } else {
-                $('#' + dato).after('<input type="text" name="' + dato + '" class="form-control-plaintext" value="'+ json[0][dato] + '" readonly />');
+                $('#' + dato).after('<input type="text" name="' + dato + '" class="form-control-plaintext" value="'+ json[dato] + '" readonly />');
             }   
         }
     });

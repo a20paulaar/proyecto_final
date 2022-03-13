@@ -31,10 +31,10 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
             console.log(json_vuelta[exp]);
     
             if(exp != 'date' && exp != 'people'){
-                let value = json_vuelta.date + "_" + exp + "_" + json_vuelta[exp][0].stop + "_" + json_vuelta[exp][1].stop;
+                let value = json_vuelta.date + "_" + exp + "_" + json_vuelta[exp][1].stop + "_" + json_vuelta[exp][0].stop;
                 $("#t_vuelta").append(
                     '<tr>' +
-                        '<td>' + json_vuelta[exp][0].time + '</td><td>' + json_vuelta[exp][1].time + '</td>' +
+                        '<td>' + json_vuelta[exp][1].time + '</td><td>' + json_vuelta[exp][0].time + '</td>' +
                         '<td><input type="radio" name="h_vuelta" value="' + value + '" />' +
                     '</tr>'
                 );
@@ -127,7 +127,9 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
         }
 
         precio_base = Math.round(precio_base * 100) / 100;
-
+        if(json_vuelta!=null){
+            precio_base = precio_base*2;
+        }
         let precio_adu = precio_base * json_ida.people.adu;
         let precio_anc = precio_base * 0.5 * json_ida.people.anc;
         let precio_jov = precio_base * 0.9 * json_ida.people.jov;

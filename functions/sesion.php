@@ -7,6 +7,7 @@ if(isset($_POST["registro"])){
     header("Location: ../pages/sesion.php");
 } else if(isset($_GET["session"])){
     if($_GET["session"]=="close"){
+        session_unset();
         session_destroy();
         header("Location: ../index.php");
     }
@@ -18,8 +19,8 @@ else if(isset($_POST["session"])){
         session_start();
         $_SESSION["rol"] = $perfil;
         $_SESSION["email"] = $_POST["email"];
-        updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),2);
-        $perfil_info = json_decode(loadProfileInfo($_POST['email']));
+        updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),1);
+        $perfil_info = json_decode(loadProfileInfo($_POST['email']), true);
         $_SESSION["nombre"] = $perfil_info["nombre"] . " " . $perfil_info["apellidos"];
         header("Location: ../index.php");
     } else {

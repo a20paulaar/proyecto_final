@@ -43,8 +43,6 @@ if($_POST['step']=='Comprar'){
     header("Location: ../pages/compra.php");
 }
 else if($_POST['step']=='Pagar'){
-    // TODO Repreguntar por si durante el proceso, ya otro usuario asignó el asiento
-
     //Guardar en la base de datos la reserva
     $values = explode("_", $_POST['h_ida']);
     $seats = (is_array($_POST["a_ida"]) ? $_POST['a_ida'] : [$_POST['a_ida']]);
@@ -65,8 +63,22 @@ else if($_POST['step']=='Pagar'){
 
 
     if(isset($_POST['h_vuelta']) && $result == 'OK'){
+        //Guardar en la base de datos la reserva
         $values = explode("_", $_POST['h_vuelta']);
-        if($result == 'OK') $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_vuelta']);     
+        $seats = (is_array($_POST["a_vuelta"]) ? $_POST['a_vuelta'] : [$_POST['a_vuelta']]);
+
+        //Primero reservamos para el usuario
+        $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $seats[0]);
+
+        //Retiro el primer asiento del array porque ya se le ha asignado (No reasignamos para poder coger el mismo indice que los IDs del formulario de viajeros adicionales, que empieza en 1)
+        unset($seats[0]);
+
+        //Si hay viajeros adicionales, reservamos para ellos
+        foreach ($seats as $id => $seat) {
+            //No añadimos al viajero a la lista de viajeros porque se tiene que haber hecho a la ida ya
+            //Luego asignamos al viajero (mediante su DNI) al asiento
+            if($result == 'OK') $result = setReservation(null, $values[0], $values[1], $values[2], $values[3], $seat, $_POST["dni_".$id]);
+        }
     }
 
     //Hacer el pago y cargar una página de success/error
@@ -76,6 +88,7 @@ else if($_POST['step']=='Pagar'){
         setcookie('traveldata_v', '', time() - 3600);
 
         doPayment($_POST); //Simular alguna manera de pago
+        header('Location:../pages/pago.php');
     }
     else{
         $result = urlencode($result);

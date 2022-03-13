@@ -1,5 +1,6 @@
 <?php
 require 'bd.php';
+require 'mailer.php';
 
 if(isset($_POST['tarifas'])) actualizarTarifas();
 if(isset($_POST['reservas_OK']) || isset($_POST['reservas_NOK'])) actualizarReservas();

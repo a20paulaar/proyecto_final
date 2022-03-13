@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Transmiño: Referencia del Archivo functions/compra.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Transmiño
+   </div>
+   <div id="projectbrief">Proyecto multimódulo DAW</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Buscar','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_35baea09d55bebfe17654fdf4bf061ce.html">functions</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funciones</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del Archivo compra.php</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:aee20419f5e3b96d44120a054b7e57fcd"><td class="memItemLeft" align="right" valign="top">if($_POST['step']=='Comprar') <a class="el" href="functions_2sesion_8php.html#add59c6ea738532bd75f940572ffb1182">else</a> if( $_POST[ 'step']=='Pagar')&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="functions_2compra_8php.html#aee20419f5e3b96d44120a054b7e57fcd">doPayment</a> ($post_data)</td></tr>
+<tr class="separator:aee20419f5e3b96d44120a054b7e57fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de las funciones</h2>
+<a id="aee20419f5e3b96d44120a054b7e57fcd" name="aee20419f5e3b96d44120a054b7e57fcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee20419f5e3b96d44120a054b7e57fcd">&#9670;&nbsp;</a></span>doPayment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">if( $_POST[ 'step']=='Comprar') <a class="el" href="functions_2sesion_8php.html#add59c6ea738532bd75f940572ffb1182">else</a> if($_POST['step']=='Pagar') doPayment </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$post_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Se efectua un pago mediante un pseudoformulario</p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">Array</td><td class="paramname">$post_data</td><td>Valores recibidos por POST </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>void </dd></dl>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>                              {</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span>(<a class="code hl_function" href="bd_8php.html#a693f42eae7c2a4cb046c6612ce690a0e">insertPayment</a>($_SESSION[<span class="stringliteral">&#39;email&#39;</span>], str_replace(<span class="stringliteral">&#39; €&#39;</span>, <span class="stringliteral">&#39;&#39;</span>, $post_data[<span class="stringliteral">&quot;total&quot;</span>]), $post_data[<span class="stringliteral">&quot;forma_pago&quot;</span>], date(<span class="stringliteral">&quot;Y-m-d H:i:s&quot;</span>)) == <span class="stringliteral">&#39;OK&#39;</span>){</div>
+<div class="line"><span class="lineno">  108</span>        <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  109</span><span class="comment">            Un ejemplo de pasarela estaría aquí:</span></div>
+<div class="line"><span class="lineno">  110</span><span class="comment">            https://www.jose-aguilar.com/blog/como-implementar-una-pasarela-de-pago-mediante-tarjeta-de-credito-con-php/</span></div>
+<div class="line"><span class="lineno">  111</span><span class="comment">            (Solo como referencia)</span></div>
+<div class="line"><span class="lineno">  112</span><span class="comment">        */</span></div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>        <span class="comment">// Hay que simular un formulario invisible para mandar datos a una supuesta pasarela</span></div>
+<div class="line"><span class="lineno">  115</span>        <span class="comment">// ya que necesito mandarlo a una API externa con POST</span></div>
+<div class="line"><span class="lineno">  116</span>        ?&gt;</div>
+<div class="line"><span class="lineno">  117</span>            &lt;form <span class="keywordtype">id</span>=<span class="stringliteral">&quot;realizarPago&quot;</span> action=<span class="stringliteral">&quot;pseudopasarela.php&quot;</span> method=<span class="stringliteral">&quot;post&quot;</span>&gt;</div>
+<div class="line"><span class="lineno">  118</span>            &lt;input type=<span class="stringliteral">&#39;hidden&#39;</span> name=<span class="stringliteral">&#39;name&#39;</span> value=<span class="stringliteral">&#39;&lt;?php echo $post_data[&quot;nombre&quot;]; ?&gt;&#39;</span>&gt;</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>        &lt;?php <span class="keywordflow">if</span>($post_data[<span class="stringliteral">&quot;forma_pago&quot;</span>] == <span class="charliteral">&#39;t&#39;</span>){ ?&gt;</div>
+<div class="line"><span class="lineno">  121</span>            &lt;input type=<span class="stringliteral">&#39;hidden&#39;</span> name=<span class="stringliteral">&#39;number&#39;</span> value=<span class="stringliteral">&#39;&lt;?php echo $post_data[&quot;cod_tarjeta&quot;]; ?&gt;&#39;</span>&gt;</div>
+<div class="line"><span class="lineno">  122</span>            &lt;input type=<span class="stringliteral">&#39;hidden&#39;</span> name=<span class="stringliteral">&#39;cvv&#39;</span> value=<span class="stringliteral">&#39;&lt;?php echo $post_data[&quot;cvv&quot;]; ?&gt;&#39;</span>&gt;</div>
+<div class="line"><span class="lineno">  123</span>            &lt;input type=<span class="stringliteral">&#39;hidden&#39;</span> name=<span class="stringliteral">&#39;amount&#39;</span> value=<span class="stringliteral">&#39;&lt;?php echo $post_data[&quot;total&quot;]; ?&gt;&#39;</span>&gt;</div>
+<div class="line"><span class="lineno">  124</span>        &lt;?php } ?&gt;</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>            &lt;input type=<span class="stringliteral">&#39;hidden&#39;</span> name=<span class="stringliteral">&#39;method&#39;</span> value=<span class="stringliteral">&#39;&lt;?php echo $post_data[&quot;forma_pago&quot;]; ?&gt;&#39;</span>&gt;</div>
+<div class="line"><span class="lineno">  127</span>            &lt;/form&gt;</div>
+<div class="line"><span class="lineno">  128</span>            &lt;script&gt;</div>
+<div class="line"><span class="lineno">  129</span>            $(document).ready(<span class="keyword">function</span> () {</div>
+<div class="line"><span class="lineno">  130</span>                $(<span class="stringliteral">&quot;#realizarPago&quot;</span>).submit();</div>
+<div class="line"><span class="lineno">  131</span>            });</div>
+<div class="line"><span class="lineno">  132</span>            &lt;/script&gt;</div>
+<div class="line"><span class="lineno">  133</span>        &lt;?php</div>
+<div class="line"><span class="lineno">  134</span>    }</div>
+<div class="line"><span class="lineno">  135</span>}</div>
+<div class="ttc" id="abd_8php_html_a693f42eae7c2a4cb046c6612ce690a0e"><div class="ttname"><a href="bd_8php.html#a693f42eae7c2a4cb046c6612ce690a0e">insertPayment</a></div><div class="ttdeci">insertPayment($mail, $quantity, $method, $date)</div><div class="ttdef"><b>Definition:</b> bd.php:636</div></div>
+</div><!-- fragment --><div class="dynheader">
+Gráfico de llamadas para esta función:</div>
+<div class="dyncontent">
+<div class="center"><img src="functions_2compra_8php_aee20419f5e3b96d44120a054b7e57fcd_cgraph.png" border="0" usemap="#afunctions_2compra_8php_aee20419f5e3b96d44120a054b7e57fcd_cgraph" alt=""/></div>
+</div>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado el Lunes, 14 de Marzo de 2022 00:51:24 para Transmiño por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
+</small></address>
+</body>
+</html>

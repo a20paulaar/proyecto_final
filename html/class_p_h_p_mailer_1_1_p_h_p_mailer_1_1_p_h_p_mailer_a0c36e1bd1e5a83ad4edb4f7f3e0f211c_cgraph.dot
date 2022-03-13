@@ -1,0 +1,44 @@
+digraph "PHPMailer\PHPMailer\PHPMailer\attachAll"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\attachAll",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\encodeFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#ace817a44b755bb05325da297aff54cc9",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\edebug",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a39eadd6ab95a3dc3c7ec249fd694f021",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\encodeString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#adf1be0fc8f6568fc5e55a5bdef037b15",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\encodeQP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#ac4459516a6631f487743a77c199bd8c3",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\lang",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a3acee11d1ea952f5926356da4cd01aa1",tooltip=" "];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\setLanguage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a76ed5e99329ddb1e186858f832a1a212",tooltip=" "];
+  Node4 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\setError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#ab9ceb1c882037ec7e3874f9f805ffa6e",tooltip=" "];
+  Node8 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\encodeHeader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a0d2565d7fed06cf340653885436f93cd",tooltip=" "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\base64EncodeWrapMB",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a4a424b86108eaafe1d8369db737cc47f",tooltip=" "];
+  Node9 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\encodeQ",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a72e2d86d123bd899dd9334c3c464ca28",tooltip=" "];
+  Node9 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\has8bitChars",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#afe16e85960abfd23ea1ac9ea75ae6720",tooltip=" "];
+  Node9 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\hasMultiBytes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a2ca3a330020bf44d4e4df096a2f66be2",tooltip=" "];
+  Node9 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\wrapText",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a94a6b50e8ce53dd6ddd1d4d5341adc73",tooltip=" "];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\utf8CharBoundary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#abc9948dedc04830eaea5462c0ade83ad",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\isError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a4f473f38c0b61b399dd1331809c8097f",tooltip=" "];
+  Node1 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\secureHeader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a9d10e00915a06b82690a52bed37de80f",tooltip=" "];
+}

@@ -1,0 +1,12 @@
+digraph "PHPMailer\PHPMailer\SMTP\getSMTPConnection"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PHPMailer\\PHPMailer\l\\SMTP\\getSMTPConnection",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PHPMailer\\PHPMailer\l\\SMTP\\edebug",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_s_m_t_p.html#a428c75f1ab137d95c57567459f51e876",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PHPMailer\\PHPMailer\l\\SMTP\\setError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_s_m_t_p.html#af37a69128fef73b63bcbbe5ed1f1e89e",tooltip=" "];
+}

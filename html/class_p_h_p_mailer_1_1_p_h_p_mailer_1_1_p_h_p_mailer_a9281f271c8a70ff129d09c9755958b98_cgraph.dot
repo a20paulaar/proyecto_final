@@ -1,0 +1,17 @@
+digraph "PHPMailer\PHPMailer\PHPMailer\addAnAddress"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\addAnAddress",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\edebug",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a39eadd6ab95a3dc3c7ec249fd694f021",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\lang",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a3acee11d1ea952f5926356da4cd01aa1",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\setLanguage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#a76ed5e99329ddb1e186858f832a1a212",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PHPMailer\\PHPMailer\l\\PHPMailer\\setError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_p_h_p_mailer_1_1_p_h_p_mailer_1_1_p_h_p_mailer.html#ab9ceb1c882037ec7e3874f9f805ffa6e",tooltip=" "];
+  Node5 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

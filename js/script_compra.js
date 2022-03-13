@@ -1,3 +1,8 @@
+/**
+ * Rellena el formulario con los datos de viajes provenientes de cookies formateados a JSON
+ * @param {*} json_ida 
+ * @param {*} json_vuelta 
+ */
 function gestionarDatosCompra(json_ida, json_vuelta = null){
     console.log(json_ida, json_vuelta);
 
@@ -138,9 +143,11 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
     });
 
 }
-
+/**
+ * Valida que los datos de la compra sean correctos
+ * @returns Mensaje de error (si lo hubiera)
+ */
 function validarCompra(){ 
-//TODO revisar si los datos personales están validados
     let msg = "";
     let result = true;
     let validar = ['ida'];
@@ -179,9 +186,12 @@ function validarCompra(){
     return result;
 }
 
-function invitado(){ //No permitir comprar si no estás registrado
-    //Deshabilitar o quitar sección de Asientos disponibles, forma de pago y comprar
-    //En su lugar que abajo salga un mensaje del tipo "Para comprar tiene que <a>Iniciar sesion</a> o <a>Registrarse</a>"
+/**
+ * No permitir comprar si no estás registrado
+ * Quita la sección de Asientos disponibles, forma de pago y comprar
+ * Y se añade un aviso para hacer login o registrarse
+ */
+function invitado(){ 
     $('#viajeros').remove();
     $('#forma_pago').remove();
     $('#datos_pago').remove();
@@ -225,5 +235,3 @@ $('#forma_pago_seleccionar').change(function(){
         $('#datos_pago_tarjeta').css("display", "flex");
     }
 });
-//TODO evento al seleccionar tarjeta o Paypal, que salga o un formulario de meter datos
-//de la tarjeta o un aviso de que se redirigirá a Paypal

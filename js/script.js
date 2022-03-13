@@ -1,9 +1,13 @@
 cargarUltimasNoticias();
 
+// Si existe un sessionStorage de nombre, pone el mensaje en el elemento de id username
 if(sessionStorage.getItem('nombre') !== null){
     $('#username').text("Estás conectado como: " + sessionStorage.getItem('nombre'));
 }
 
+/**
+ * Cambia la visibilidad del menú hamburguesa según sea móvil o no
+ */
 function mobileMenu() {
     var x = document.getElementById("links");
     if (x.style.display === "flex") {
@@ -13,6 +17,9 @@ function mobileMenu() {
     }
 }
 
+/**
+ * Carga las últimas noticias para mostrarlas en el lateral
+ */
 function cargarUltimasNoticias(){
     let call = (window.location.pathname.indexOf('index.php')!=-1 ? "":"../");
     $.post(call + "functions/bd.php", {
@@ -34,13 +41,17 @@ function cargarUltimasNoticias(){
     });
 }
 
-function validar(){
+/**
+ * Valida los campos del formulario de registro antes de introducirlos en la BD
+ * @returns Mensaje de error (si lo hubiera)
+ */
+function validarRegistro(){
     let msg = "";
     let result = true;
     let matchName = /^[\u0041-\u005A\u0061-\u007A\u00C0-\u017E \-]+$/;
-    let matchEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/;
+    let matchEmail = /^[\w]+@([\w-]+\.)+[\w-]{2,4}$/g;
     
-    if(!matchName.test($('#nombre').val()) || !matchName.test($('#apellido1').val()) || !matchName.test($('#apellido2').val())){
+    if(!matchName.test($('#nombre').val()) || !matchName.test($('#apellidos').val())){
         msg += "El nombre/apellidos contiene caracteres invalidos\n";
         result = false;
     }

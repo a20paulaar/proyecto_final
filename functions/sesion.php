@@ -5,7 +5,13 @@ include 'mailer.php';
 if(isset($_POST["registro"])){
     registrarUsuario();
     header("Location: ../pages/sesion.php");
-} else if($_GET["session"]!="close"){
+} else if(isset($_GET["session"])){
+    if($_GET["session"]=="close"){
+        session_destroy();
+        header("Location: ../index.php");
+    }
+}
+else if(isset($_POST["session"])){
     $perfil = validUser($_POST['email'], $_POST['pass']);
     setcookie('email', $_POST['email'], time()+3600);
     if($perfil!=null){
@@ -20,10 +26,14 @@ if(isset($_POST["registro"])){
         header("Location: ../pages/sesion.php?error=true");
     }
 } else {
-    session_destroy();
-    header("Location: ../index.php");
+    header("Location: ../pages/sesion.php?error=true");
 }
 
+/**
+ * Llama a la función de la BD para introducir los datos del nuevo usuario
+ *
+ * @return void
+ */
 function registrarUsuario(){
     $result = registerUser($_POST["nombre"], $_POST["apellidos"], $_POST["dni"], $_POST["fecha_nac"], $_POST["movil"], $_POST["email"], $_POST["pass"], $_POST["direccion"]);
     if($result == 'OK'){

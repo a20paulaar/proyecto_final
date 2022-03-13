@@ -1,6 +1,12 @@
 <?php
 require 'bd.php';
 
+/**
+ * Comprueba que no haya errores en la subida del fichero
+ *
+ * @param String $fichero Ruta del fichero
+ * @return void
+ */
 function comprobarErrorSubida($fichero) {
     if (!isset($fichero['error'])) {
         $error = true;
@@ -18,6 +24,13 @@ function comprobarErrorSubida($fichero) {
     return $error;
 }
 
+/**
+ * Mueve el fichero, si no hay errores, al directorio del usuario y lo crea si no existe
+ *
+ * @param String $email Email del usuario
+ * @param String $files Ruta del fichero
+ * @return void
+ */
 function moverFichero($email, $files) {
     $result = false;
     $text = "";
@@ -45,15 +58,15 @@ function moverFichero($email, $files) {
 }
 
 if(isset($_POST['method'])){ // NO es una llamada desde el formulario, sino desde AJAX para comprobar si existe imagen
-    if(file_exists("../images/" . 'usuario@mail.com' . "/user.png")){
+    if(file_exists("../images/" . $_SESSION['email'] . "/user.png")){
         echo $_SESSION['email'];
     } else {
         echo "";
     }
 } else {
-    $subida = moverFichero('usuario@mail.com', $_POST['subir_img']);
+    $subida = moverFichero($_SESSION['email'], $_POST['subir_img']);
 
-    $result = updateProfileInfo('usuario@mail.com', $_POST['telefono'], $_POST['direccion']);
+    $result = updateProfileInfo($_SESSION['email'], $_POST['telefono'], $_POST['direccion']);
     if($result == 'OK'){
         updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),1);
         header('Location: ../pages/perfil.php');

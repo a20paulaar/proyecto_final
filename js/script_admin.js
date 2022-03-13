@@ -2,6 +2,9 @@ cargarReservas();
 cargarUsuarios();
 cargarTarifas();
 
+/**
+ * Carga las reservas pendientes de aceptar o denegar por el administrador
+ */
 function cargarReservas(){
     $.post("../functions/bd.php", {
         method: "loadPendingReservations"
@@ -31,6 +34,9 @@ function cargarReservas(){
     });
 }
 
+/**
+ * Carga una lista con todos los usuarios registrados
+ */
 function cargarUsuarios(){
     $.post("../functions/bd.php", {
         method: "loadUsers"
@@ -60,6 +66,9 @@ function cargarUsuarios(){
     });
 }
 
+/**
+ * Carga todas las tarifas entre paradas
+ */
 function cargarTarifas(){
     $.post("../functions/bd.php", {
         method: "loadFares"
@@ -86,6 +95,9 @@ function cargarTarifas(){
     });
 }
 
+/**
+ * Carga el registro de actividad de los usuarios (sesiones y modificaciones del perfil)
+ */
 function cargarRegistro(){
     $.post("../functions/bd.php", {
         method: "loadRegister"

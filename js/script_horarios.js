@@ -1,5 +1,8 @@
 cargarHorarios();
 
+/**
+ * Carga todas las paradas de la línea
+ */
 function cargarParadas(){
     $.post("../functions/bd.php", {
         method: "loadStops"
@@ -13,6 +16,9 @@ function cargarParadas(){
     });
 }
 
+/**
+ * Carga todos los horarios (de ida y de vuelta)
+ */
 function cargarHorarios(){
     cargarParadas();
 

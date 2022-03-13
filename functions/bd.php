@@ -10,14 +10,18 @@ if(isset($_POST['method'])){
         case 'loadPendingReservations': loadPendingReservations(null); break;
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
-        //case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
-        case 'loadProfileInfo': loadProfileInfo('usuario@mail.com'); break;
+        case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
         case 'loadRegister': loadRegister(); break;
     }
 }
 
+/**
+ * Función que obtiene el rol del usuario (anónimo, estándar o administrador) para conectarse a la BD
+ *
+ * @return void
+ */
 function getPerfilUsuario(){
     $perfil = isset($_SESSION["rol"]) ? $_SESSION["rol"] : 3;
     switch($perfil){
@@ -30,6 +34,11 @@ function getPerfilUsuario(){
     }
 }
 
+/**
+ * Realiza la conexión a la BD
+ *
+ * @return void
+ */
 function loadBBDD() {
     $usuario = getPerfilUsuario();
     try {
@@ -42,6 +51,14 @@ function loadBBDD() {
     }
 }
 
+/**
+ * Undocumented function
+ *
+ * @param String $fichero_config_BBDD Ruta al fichero XML
+ * @param String $esquema Ruta al fichero XSD
+ * @param String $usuario Tipo de usuario
+ * @return void
+ */
 function readConfig($fichero_config_BBDD, $esquema, $usuario) {
 
     $config = new \DOMDocument();
@@ -71,6 +88,11 @@ function readConfig($fichero_config_BBDD, $esquema, $usuario) {
 
 // CARGAR DATOS
 
+/**
+ * Carga las paradas de la línea desde la BD 
+ *
+ * @return void
+ */
 function loadStops(){
     $bd = loadBBDD();
     $ins = "SELECT id_parada, nombre FROM paradas";
@@ -89,6 +111,13 @@ function loadStops(){
     echo json_encode($json);
 }
 
+/**
+ * Valida el usuario, comprobando que el email y la contraseña coinciden con los guardados en la BD
+ *
+ * @param String $user Email del usuario
+ * @param String $pass Contraseña
+ * @return void
+ */
 function validUser($user, $pass){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT COUNT(*) AS cuenta, perfil FROM usuarios WHERE email = ? AND contrasenha = md5(?)");
@@ -101,6 +130,11 @@ function validUser($user, $pass){
     }
 }
 
+/**
+ * Recoge todos los horarios
+ *
+ * @return void
+ */
 function getSchedule(){
     $bd = loadBBDD();
     $query = "SELECT h.id_expedicion, h.hora, h.id_parada, p.nombre FROM horarios h
@@ -114,6 +148,13 @@ function getSchedule(){
     echo json_encode($json);
 }
 
+/**
+ * Recoge los horarios entre dos paradas especificadas
+ *
+ * @param String $id_origin Id de la parada de origen
+ * @param String $id_destination Id de la parada de destino
+ * @return void
+ */
 function loadSchedulesBetween($id_origin, $id_destination){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h
@@ -136,6 +177,11 @@ function loadSchedulesBetween($id_origin, $id_destination){
     return $data;
 }
 
+/**
+ * Carga todas las tarifas entre paradas
+ *
+ * @return void
+ */
 function loadFares(){
     $bd = loadBBDD();
     $query = "SELECT t.id_parada_origen, t.id_parada_destino, 
@@ -155,6 +201,11 @@ function loadFares(){
     echo json_encode($json);
 }
 
+/**
+ * Carga el email y el rol de todos los usuarios registrados
+ *
+ * @return void
+ */
 function loadUsers(){
     $bd = loadBBDD();
     $query = "SELECT email, perfil FROM usuarios";
@@ -167,6 +218,12 @@ function loadUsers(){
     echo json_encode($json);
 }
 
+/**
+ * Carga las reservas pendientes de confirmar
+ *
+ * @param String $email Email del usuario
+ * @return void
+ */
 function loadPendingReservations($email = null){
     $bd = loadBBDD();
     $query_string = "SELECT a.email, a.dni, a.fecha_viaje, a.id_expedicion, 
@@ -200,6 +257,11 @@ function loadPendingReservations($email = null){
     else return $json; //Via PHP
 }
 
+/**
+ * Carga la vista previa de las últimas noticias que se mostrarán en el lateral
+ *
+ * @return void
+ */
 function loadNews(){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT id_noticia, titulo, noticia, imagen 
@@ -216,6 +278,12 @@ function loadNews(){
     echo json_encode($json);
 }
 
+/**
+ * Carga una noticia en concreto, pasándole el id
+ *
+ * @param String $id
+ * @return void
+ */
 function loadNew($id){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT titulo, noticia, imagen 
@@ -233,6 +301,12 @@ function loadNew($id){
     echo json_encode($json);
 }
 
+/**
+ * Carga la información de un usuario especificado
+ *
+ * @param String $email Email del usuario
+ * @return void
+ */
 function loadProfileInfo($email){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT nombre, apellidos, email, dni, fecha_nacimiento, telefono, direccion 
@@ -249,6 +323,15 @@ function loadProfileInfo($email){
     echo json_encode($json);
 }
 
+/**
+ * Carga los asientos que están ocupados para una fecha y expedición entre dos paradas
+ *
+ * @param String $date Fecha del viaje
+ * @param String $expedition Id de expedición
+ * @param String $id_origin Id de la parada de origen
+ * @param String $id_destination Id de la parada de destino
+ * @return void
+ */
 function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT num_asiento FROM asignacion_asiento 
@@ -272,6 +355,12 @@ function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
     echo json_encode($seats);
 }
 
+/**
+ * Carga el último pago efectuado por el usuario
+ *
+ * @param String $email Email del usuario que ha pagado
+ * @return void
+ */
 function loadLastPayment($email){
     $query = $bd->prepare("SELECT email, cantidad, metodo, fecha_hora 
     FROM transacciones
@@ -284,6 +373,11 @@ function loadLastPayment($email){
     return $r;
 }
 
+/**
+ * Carga los últimos 30 registros de actividad de los usuarios (sesiones y modificaciones del perfil)
+ *
+ * @return void
+ */
 function loadRegister(){
     $query = $bd->prepare("SELECT usuario, fecha, tipo 
     FROM registro ORDER BY id DESC LIMIT 30");
@@ -298,6 +392,14 @@ function loadRegister(){
 
 //ACTUALIZAR DATOS
 
+/**
+ * Actualiza las tarifas entre dos paradas
+ *
+ * @param String $stop1 Parada 1
+ * @param String $stop2 Parada 2
+ * @param String $value Precio
+ * @return void
+ */
 function setFare($stop1, $stop2, $value){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -318,18 +420,38 @@ function setFare($stop1, $stop2, $value){
     }
 }
 
-function setReservation($email, $date, $exped, $id_origin, $id_destination, $seat){
+/**
+ * Asigna un viaje a un usuario
+ *
+ * @param String $email Email del viajero principal
+ * @param String $date Fecha del viaje
+ * @param String $exped Id de la expedición
+ * @param String $id_origin Id de la parada de origen
+ * @param String $id_destination Id de la parada de destino
+ * @param String $seat Número de asiento
+ * @param String $dni DNI del viajero si es conocido
+ * @return void
+ */
+function setReservation($email, $date, $exped, $id_origin, $id_destination, $seat, $dni = null){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = $bd->prepare("SELECT dni FROM viajeros WHERE email=?");
-    $query->bindParam(1, $email);
-    $query->execute();
-    $r = $query->fetch(PDO::FETCH_ASSOC);
+    if(!is_null($email)){
+        $query = $bd->prepare("SELECT dni FROM viajeros WHERE email=? AND principal=1");
+        $query->bindParam(1, $email);
+        $query->execute();
+        $r = $query->fetch(PDO::FETCH_ASSOC);
+        $dni = $r['dni'];
+    }
+    else if(is_null($dni)){
+        return 'Ha habido un error con la compra, disculpe las molestias. 
+        Si ha sido efectuado un pago y no ha recibido su billete, 
+        contacte con Atención al Cliente';
+    }
 
     $bd->beginTransaction();
     try {
         $query = $bd->prepare("INSERT INTO asignacion_asiento VALUES(?,?,?,?,?,?,1)");
-        $query->bindParam(1, $r['dni']);
+        $query->bindParam(1, $dni);
         $query->bindParam(2, $date);
         $query->bindParam(3, $exped);
         $query->bindParam(4, $id_origin);
@@ -347,6 +469,16 @@ function setReservation($email, $date, $exped, $id_origin, $id_destination, $sea
     }
 }
 
+/**
+ * Actualiza el estado de la reserva
+ *
+ * @param Boolean $valid Flag para saber si se valida o se deniega la reserva
+ * @param String $dni DNI del viajero asignado
+ * @param String $date Fecha del viaje
+ * @param String $exped Id de la expedición
+ * @param String $seat Número de asiento
+ * @return void
+ */
 function updateReservation($valid, $dni, $date, $exped, $seat){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -374,6 +506,13 @@ function updateReservation($valid, $dni, $date, $exped, $seat){
     }
 }
 
+/**
+ * Actualiza el rol del usuario (administrador o estándar)
+ *
+ * @param String $mail Email del usuario
+ * @param String $profile Rol al que se cambia el usuario 
+ * @return void
+ */
 function updateUserProfile($mail, $profile){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -392,6 +531,19 @@ function updateUserProfile($mail, $profile){
     }
 }
 
+/**
+ * Registra un nuevo usuario en la BD
+ *
+ * @param String $name Nombre 
+ * @param String $surname Apellidos
+ * @param String $dni DNI
+ * @param String $birth Fecha de nacimiento
+ * @param String $phone Número de teléfono
+ * @param String $mail Email
+ * @param String $pass Contraseña
+ * @param String $address Dirección
+ * @return void
+ */
 function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $address){
     $bd = loadBBDD();
 
@@ -406,12 +558,22 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $bd->beginTransaction();
     try {
-        $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)"); //Falta la query de inserción y los binds (no tengo la bd a mano en clase).
-        $query->bindParam(1, $mail);
-        $query->bindParam(2, $pass);
-        $query->execute();
+        $main = 0;
+        if(!is_null($pass)){ //Si el password es null, no estamos registrando usuario, estamos añadiendo un viajero (SOLO PARA LOS VIAJEROS ADICIONALES EN EL PROCESO DE COMPRA)
+            $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)"); //Falta la query de inserción y los binds (no tengo la bd a mano en clase).
+            $query->bindParam(1, $mail);
+            $query->bindParam(2, $pass);
+            $query->execute();
 
-        $query2 = $bd->prepare("INSERT INTO viajeros VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
+            $main = 1;
+        }
+
+        $query2 = $bd->prepare("
+            INSERT INTO viajeros(dni, email, nombre, apellidos, telefono, direccion, fecha_nacimiento, principal) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            nombre = VALUES(nombre), apellidos = VALUES(apellidos), telefono = VALUES(telefono), direccion = VALUES(direccion)
+        ");
         $query2->bindParam(1, $dni);
         $query2->bindParam(2, $mail);
         $query2->bindParam(3, $name);
@@ -419,6 +581,7 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
         $query2->bindParam(5, $phone);
         $query2->bindParam(6, $address);
         $query2->bindParam(7, $birth);
+        $query2->bindParam(8, $main);
         $query2->execute();
         $bd->commit();
         return 'OK';
@@ -428,6 +591,15 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
     }
 }
 
+/**
+ * Actualiza la información del usuario registrado
+ * Solo permitimos que modifique algunos datos
+ *
+ * @param String $mail Email del usuario
+ * @param String $phone Teléfono
+ * @param String $address Dirección
+ * @return void
+ */
 function updateProfileInfo($mail, $phone, $address){
     $bd = loadBBDD();
     $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -446,15 +618,25 @@ function updateProfileInfo($mail, $phone, $address){
     }
 }
 
-function insertPayment($email, $cantidad, $metodo, $fecha_hora){
+/**
+ * Añade una transacción monetaria a la BD
+ *
+ * @param String $mail Email del usuario
+ * @param String $quantity Cantidad abonada
+ * @param String $method Método de pago
+ * @param String $date Fecha y hora de la transacción
+ * @return void
+ */
+function insertPayment($mail, $quantity, $method, $date){
+    $bd = loadBBDD();
     $bd->beginTransaction();
     try {
         $query = $bd->prepare("INSERT INTO transacciones VALUES(?, ?, ?, ?)");
 
-        $query->bindParam(1, $email);
-        $query->bindParam(2, $cantidad);
-        $query->bindParam(3, $metodo);
-        $query->bindParam(4, $fecha_hora);
+        $query->bindParam(1, $mail);
+        $query->bindParam(2, $quantity);
+        $query->bindParam(3, $method);
+        $query->bindParam(4, $date);
         $query->execute();
         $bd->commit();
         return 'OK';
@@ -464,7 +646,16 @@ function insertPayment($email, $cantidad, $metodo, $fecha_hora){
     }
 }
 
+/**
+ * Actualiza la tabla de registro de eventos (sesiones y modificaciones de perfil)
+ *
+ * @param String $mail Email del usuario
+ * @param String $date Fecha y hora del evento
+ * @param String $type Tipo de evento (sesion/modificacion)
+ * @return void
+ */
 function updateRegister($mail, $date, $type){
+    $bd = loadBBDD();
     $bd->beginTransaction();
     try {
         $query = $bd->prepare("INSERT INTO registro VALUES(?, ?, ?)");

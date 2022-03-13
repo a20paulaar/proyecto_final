@@ -1,5 +1,8 @@
 cargarInformacionPerfil();
 
+/**
+ * Carga la información del perfil del usuario que tiene la sesión iniciada
+ */
 function cargarInformacionPerfil(){
     $.post("../functions/bd.php", {
         method: "loadProfileInfo"

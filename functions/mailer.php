@@ -5,6 +5,16 @@ use PHPMailer\PHPMailer\Exception;
 
 require "../vendor/autoload.php";
 
+/**
+ * Función que crea un nuevo objeto PHPMailer para enviar un correo electrónico
+ *
+ * @param String $emisor Email del emisor
+ * @param String $nombre Nombre del emisor
+ * @param String $asunto Asunto del email
+ * @param String $receptor Email del receptor
+ * @param String $mensaje Cuerpo del mensaje
+ * @return void
+ */
 function enviar_email($emisor, $nombre, $asunto, $receptor, $mensaje) {
 
     $mail = new PHPMailer();

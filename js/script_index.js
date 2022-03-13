@@ -29,6 +29,9 @@ function todayToInput(dayOffset = 0) {
     return date.toJSON().slice(0,10);
 };
 
+/**
+ * Carga las paradas como options en el select
+ */
 function cargarParadas(){
     $.post("functions/bd.php", {
         method: "loadStops"
@@ -42,6 +45,10 @@ function cargarParadas(){
     });
 }
 
+/**
+ * Comprueba que todos los campos del formulario de compra sean correctos
+ * @returns Mensaje de error (si lo hubiera)
+ */
 function validarCompra(){
     let msg = "";
     let result = true;

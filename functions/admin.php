@@ -5,6 +5,11 @@ if(isset($_POST['tarifas'])) actualizarTarifas();
 if(isset($_POST['reservas_OK']) || isset($_POST['reservas_NOK'])) actualizarReservas();
 if(isset($_POST['usuarios'])) actualizarUsuarios();
 
+/**
+ * Función para que el administrador acepte o deniegue una reserva
+ *
+ * @return void
+ */
 function actualizarReservas(){
     $action = isset($_POST['reservas_OK']); //TRUE: Aceptar, actualiza en BD / FALSE: Denegar, borra de BD
     $values = explode("_", $_POST['values']);
@@ -25,17 +30,33 @@ function actualizarReservas(){
     volver($result);
 }
 
+/**
+ * Función para que el administrador actualice las tarifas
+ *
+ * @return void
+ */
 function actualizarTarifas(){
     $paradas = explode("_", $_POST['between']);
     $result = setFare($paradas[0], $paradas[1], $_POST['price']);
     volver($result);
 }
 
+/**
+ * Función para actualizar el rol del usuario (administrador o usuario estandar)
+ *
+ * @return void
+ */
 function actualizarUsuarios(){
     $result = updateUserProfile($_POST['mail'], $_POST['profile']); 
     volver($result);
 }
 
+/**
+ * Gestión de redirección tras actualizar datos
+ *
+ * @param String $result Resultado de la BD
+ * @return void
+ */
 function volver($result){
     if($result == 'OK'){
         header('Location: ../pages/admin.php');

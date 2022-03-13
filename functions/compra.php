@@ -1,12 +1,5 @@
 <?php
 include 'bd.php';
-//var_dump($_POST); die();
-/*EJEMPLO
-array(9) { ["trayecto"]=> string(2) "iv" ["origen"]=> string(1) "1" 
-    ["destino"]=> string(1) "3" ["ida"]=> string(10) "2022-03-05" 
-    ["vuelta"]=> string(10) "2022-03-05" ["anc"]=> string(1) "0" 
-    ["adu"]=> string(1) "1" ["jov"]=> string(1) "1" ["step"]=> string(7) "Comprar" } 
-*/
 
 if($_POST['step']=='Comprar'){
 /* 
@@ -54,11 +47,26 @@ else if($_POST['step']=='Pagar'){
 
     //Guardar en la base de datos la reserva
     $values = explode("_", $_POST['h_ida']);
-    $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_ida']);
+    $seats = (is_array($_POST["a_ida"]) ? $_POST['a_ida'] : [$_POST['a_ida']]);
+
+    //Primero reservamos para el usuario
+    $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $seats[0]);
+
+    //Retiro el primer asiento del array porque ya se le ha asignado (No reasignamos para poder coger el mismo indice que los IDs del formulario de viajeros adicionales, que empieza en 1)
+    unset($seats[0]);
+
+    //Si hay viajeros adicionales, reservamos para ellos
+    foreach ($seats as $id => $seat) {
+        //Primero añadimos al viajero a la lista de viajeros. Si el password es null, solo registrará el viajero, no el usuario
+        if($result == 'OK') $result = registerUser($_POST["nombre_".$id], $_POST["apellidos_".$id], $_POST["dni_".$id], $_POST["fecha_".$id], $_POST["telefono_".$id], $_SESSION['email'], null, $_POST["direccion_".$id]);
+        //Luego asignamos al viajero (mediante su DNI) al asiento
+        if($result == 'OK') $result = setReservation(null, $values[0], $values[1], $values[2], $values[3], $seat, $_POST["dni_".$id]);
+    }
+
 
     if(isset($_POST['h_vuelta']) && $result == 'OK'){
         $values = explode("_", $_POST['h_vuelta']);
-        $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_vuelta']);     
+        if($result == 'OK') $result = setReservation($_SESSION['email'], $values[0], $values[1], $values[2], $values[3], $_POST['a_vuelta']);     
     }
 
     //Hacer el pago y cargar una página de success/error
@@ -76,6 +84,12 @@ else if($_POST['step']=='Pagar'){
     }
 }
 
+/**
+ * Se efectua un pago mediante un pseudoformulario
+ *
+ * @param Array $post_data Valores recibidos por POST
+ * @return void
+ */
 function doPayment($post_data){
     if(insertPayment($_SESSION['email'], str_replace(' €', '', $post_data["total"]), $post_data["forma_pago"], date("Y-m-d H:i:s")) == 'OK'){
         /*

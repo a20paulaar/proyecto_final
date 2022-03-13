@@ -18,6 +18,7 @@
             <div id="title">
                 TransMiño: Transportes do Miño S.A.
             </div>
+            <div id="username"></div>
             <nav id="nav">
                 <a id="mobile_menu" href="javascript:void(0);" class="menu_element" onclick="mobileMenu()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -61,7 +62,7 @@
                     <?php } ?>
                     <div class="formarea">
                         <span>
-                            <input class="form-control submit" type="submit" id="sesion" value="Iniciar Sesión" />
+                            <input class="form-control submit" type="submit" name="session" id="sesion" value="Iniciar Sesión" />
                         </span>
                     </div>
             </form>

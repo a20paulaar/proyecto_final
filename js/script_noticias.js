@@ -1,3 +1,7 @@
+/**
+ * Carga una noticia en concreto pasándole su id
+ * @param {*} id Id de la noticia a cargar
+ */
 function cargarNoticia(id){
     $.post("../functions/bd.php", {
         method: "loadNew",

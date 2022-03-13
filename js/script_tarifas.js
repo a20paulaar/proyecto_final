@@ -1,5 +1,8 @@
 var maxStop = 0; //Para el bucle de rellenar tarifas hay que saber el índice del último elemento
 
+/**
+ * Carga una lista con todas las paradas de la línea
+ */
 function cargarParadas(){
     $.post("../functions/bd.php", {
         method: "loadStops"
@@ -49,6 +52,10 @@ function cargarParadas(){
     });
 }
 
+/**
+ * Calcula la tarifa entre la parada seleccionada y cada una de las otras
+ * Si es igual a 0, el viaje no está disponible
+ */
 function calcular(){
     var origen = $(this).val();
 

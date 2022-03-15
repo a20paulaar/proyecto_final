@@ -23,7 +23,7 @@ if($_POST['step']=='Comprar'){
     $horarios['people']['adu'] = $_POST['adu'];
     $horarios['people']['jov'] = $_POST['jov'];
 
-    setcookie("traveldata_i", json_encode($horarios), ['path' => '/']);
+    setcookie("traveldata_i", json_encode($horarios), time()+3600, "/");
 
     if($_POST['trayecto']=='iv'){
         foreach ($horarios_copy as $exp => $datos) {
@@ -37,7 +37,7 @@ if($_POST['step']=='Comprar'){
         $horarios_copy['people']['adu'] = $_POST['adu'];
         $horarios_copy['people']['jov'] = $_POST['jov'];
 
-        setcookie("traveldata_v", json_encode($horarios_copy), ['path' => '/']);
+        setcookie("traveldata_v", json_encode($horarios_copy), time()+3600, "/");
     }
 
     header("Location: ../pages/compra.php");

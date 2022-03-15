@@ -14,9 +14,10 @@ if(isset($_POST["registro"])){
 }
 else if(isset($_POST["session"])){
     $perfil = validUser($_POST['email'], $_POST['pass']);
-    setcookie('email', $_POST['email'], time()+3600);
+    setcookie('email', $_POST['email'], time()+3600, "/");
     if($perfil!=null){
         session_start();
+        setcookie('email', '', time() - 3600);
         $_SESSION["rol"] = $perfil;
         $_SESSION["email"] = $_POST["email"];
         updateRegister($_SESSION["email"],date("Y-m-d H:i:s"),1);
@@ -39,6 +40,7 @@ function registrarUsuario(){
     $result = registerUser($_POST["nombre"], $_POST["apellidos"], $_POST["dni"], $_POST["fecha_nac"], $_POST["movil"], $_POST["email"], $_POST["pass"], $_POST["direccion"]);
     if($result == 'OK'){
         enviar_email("admin@transminho.es", "TransMiño", "Registro completado", $_POST["email"], "Su usuario ha sido registrado con éxito en nuestra web.");
+        setcookie("email", $_POST["email"], time()+3600, "/"); //Seteo el path a / para que esté disponible en todas las páginas
         header("Location: ../pages/sesion.php");
     } else {
         $result = urlencode($result);

@@ -24,7 +24,7 @@ document.getElementById('iv').onclick = function(){
     document.getElementById('formarea_fechavuelta').style.display = "block";
 }
 
-cargarParadas();
+cargarCookies();
 
 /**
  * Formatea la fecha para los input date
@@ -35,6 +35,39 @@ function todayToInput(dayOffset = 0) {
     date.setDate(date.getDate() + dayOffset);
     return date.toJSON().slice(0,10);
 };
+
+/**
+ * En caso de haber cookies para recuperar el último viaje buscado, se recupera
+ */
+async function cargarCookies(){
+    await cargarParadas();
+    var cookie_traveldata_i = (document.cookie.split('; ').filter(c => c.startsWith('traveldata_i')))[0];
+    var cookie_traveldata_v = (document.cookie.split('; ').filter(c => c.startsWith('traveldata_v')))[0];
+
+    if(cookie_traveldata_i != null){
+        var json_traveldata_i = JSON.parse(decodeURIComponent(cookie_traveldata_i).replace(/traveldata_i=/g,''));
+        console.log(json_traveldata_i);
+
+        $('#ida').val(json_traveldata_i.date);
+        if(cookie_traveldata_v == null){
+            $('#i').prop('checked', true);
+            $('#formarea_fechavuelta').css('display', 'none');
+        }
+        else{
+            var json_traveldata_v = JSON.parse(decodeURIComponent(cookie_traveldata_v).replace(/traveldata_v=/g,''));
+            $('#vuelta').val(json_traveldata_v.date);
+        }
+        //De traveldata_i, primera posición, recoger stop en 0 y stop en 1 y poner origen y destino
+        var key = Object.keys(json_traveldata_i)[0];
+        console.log(json_traveldata_i[key][0].stop);
+        $('#origen').val(json_traveldata_i[key][0].stop).change();
+        $('#destino').val(json_traveldata_i[key][1].stop).change();
+        //De traveldata_i, clave people, poner adultos, ancianos y jóvenes
+        $('#anc').val(json_traveldata_i.people.anc);
+        $('#jov').val(json_traveldata_i.people.jov);
+        $('#adu').val(json_traveldata_i.people.adu);
+    }
+}
 
 /**
  * Carga las paradas como options en el select
@@ -50,6 +83,11 @@ function cargarParadas(){
             $('#destino').append(new Option(p.name, p.id));
         }
     });
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(1);
+        }, 500);
+      });
 }
 
 /**

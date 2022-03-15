@@ -48,8 +48,8 @@ session_start();
     <div id="container">
         <section>
             <h2>Pago aceptado</h2>
-            Se ha mandado un correo con la confirmación. 
-            Este correo no certifica un viaje, el cual será valido cuando se acepte la reserva
+            Se ha mandado un correo con la confirmación del pago. 
+            Este correo no certifica un viaje, el cual será valido cuando se acepte la reserva.
         </section>
         <aside>
             <h2>Noticias</h2>

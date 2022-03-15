@@ -6,7 +6,7 @@ $reservation_data = loadPendingReservations($_SESSION['email']);
 $payment_data = loadLastPayment($_SESSION['email']);
 
 $cuerpo_mail = "<h2>Su compra ha sido efectuada</h2>
-<p>En breve recibirá un correo con la confirmación del viaje</p>
+<p>En breve recibirá un correo con la aceptación de la reserva.</p>
 <h3>Datos de viaje:</h3>";
 
 foreach ($reservation_data as $key => $data) {

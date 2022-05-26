@@ -83,6 +83,13 @@ session_start();
                     <button id="cancelar" type="button" class="form-control" style="display: none;">Cancelar</button>
                 </span>
             </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Últimas modificaciones de tu perfil:</th>
+                    </tr>
+                </thead>
+            </table>
             <?php } else { ?>
                 <div class="error">Acceso denegado.</div>
             <?php } ?>
@@ -90,7 +97,7 @@ session_start();
         <aside>
             <h2>Noticias</h2>
             <div></div>
-            <!-- <a class="menu_element" href="#">Ver noticias anteriores</a> -->
+            <a class="menu_element" href="pages/noticias.php">Ver noticias anteriores</a>
         </aside>
     </div>
     <footer>

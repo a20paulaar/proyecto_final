@@ -11,10 +11,12 @@ if(isset($_POST['method'])){
         case 'loadPendingReservations': loadPendingReservations(null); break;
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
+        case 'loadHowManyNews' : loadHowManyNews(); break;
         case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
         case 'loadRegister': loadRegister(); break;
+        case 'loadUpdatesLog': loadUpdatesLog(); break;
     }
 }
 
@@ -107,7 +109,7 @@ function loadStops(){
 
     $json = [];
     foreach ($resul as $r) {
-        $json['paradas'][] = ['id' => $r['id_parada'], 'name' => utf8_encode($r['nombre'])];
+        $json['paradas'][] = ['id' => $r['id_parada'], 'name' => encode($r['nombre'])];
     }
     echo json_encode($json);
 }
@@ -144,7 +146,7 @@ function loadSchedule(){
 
     $json = [];
     foreach ($resul as $r) {
-        $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => utf8_encode($r['nombre']), 'hour' => $r['hora']];
+        $json['paradas'][$r['id_expedicion']][] = ['id' => $r['id_parada'], 'name' => encode($r['nombre']), 'hour' => $r['hora']];
     }
     echo json_encode($json);
 }
@@ -195,7 +197,7 @@ function loadFares(){
     foreach ($resul as $r) {
         $json[] = [
             'between' => [$r['id_parada_origen'], $r['id_parada_destino']],
-            'between_n' => [utf8_encode($r['nombre_parada_origen']), utf8_encode($r['nombre_parada_destino'])], 
+            'between_n' => [encode($r['nombre_parada_origen']), encode($r['nombre_parada_destino'])], 
             'price' => $r['precio']
         ];
     }
@@ -250,8 +252,8 @@ function loadPendingReservations($email = null){
     foreach ($resul as $r) {
         $json[] = [
             'email' => $r['email'], 'dni' => $r['dni'], 'date' => $r['fecha_viaje'], 'exped' => $r['id_expedicion'],
-            'start_stop' => $r['id_parada_origen'], 'start_stop_name' => utf8_encode($r['nombre_parada_origen']), 'start_time' => $r['hora_origen'],
-            'end_stop' => $r['id_parada_destino'], 'end_stop_name' => utf8_encode($r['nombre_parada_destino']), 'end_time' => $r['hora_destino'],
+            'start_stop' => $r['id_parada_origen'], 'start_stop_name' => encode($r['nombre_parada_origen']), 'start_time' => $r['hora_origen'],
+            'end_stop' => $r['id_parada_destino'], 'end_stop_name' => encode($r['nombre_parada_destino']), 'end_time' => $r['hora_destino'],
             'seat' => $r['num_asiento']
         ];
     }
@@ -265,16 +267,18 @@ function loadPendingReservations($email = null){
  * @return void
  */
 function loadNews(){
+    $page = ($_POST['p']-1)*10;
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT id_noticia, titulo, noticia, imagen 
-        FROM noticias ORDER BY id_noticia DESC LIMIT ?");
+        FROM noticias ORDER BY id_noticia DESC LIMIT ? OFFSET ?");
     $query->bindParam(1, $_POST['range'], PDO::PARAM_INT);
+    $query->bindParam(2, $page, PDO::PARAM_INT);
     $query->execute();
     $resul = $query->fetchAll(PDO::FETCH_ASSOC);
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
-            'id' => $r['id_noticia'], 'title' => utf8_encode($r['titulo']), 'text' => utf8_encode($r['noticia']), 'has_pic' => $r['imagen'] 
+            'id' => $r['id_noticia'], 'title' => encode($r['titulo']), 'text' => encode($r['noticia']), 'has_pic' => $r['imagen'] 
         ];
     }
     echo json_encode($json);
@@ -297,10 +301,20 @@ function loadNew($id){
     $json = [];
     foreach ($resul as $r) {
         $json[] = [
-            'title' => utf8_encode($r['titulo']), 'text' => utf8_encode($r['noticia']), 'has_pic' => $r['imagen'] 
+            'title' => encode($r['titulo']), 'text' => encode($r['noticia']), 'has_pic' => $r['imagen'] 
         ];
     }
     echo json_encode($json);
+}
+
+function loadHowManyNews(){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT COUNT(*) FROM noticias");
+    $query->execute();
+
+    if($result=$query->fetch()){
+        echo $result[0];
+    }
 }
 
 /**
@@ -319,8 +333,8 @@ function loadProfileInfo($email){
     $r = $query->fetch(PDO::FETCH_ASSOC);
 
     $json = [
-        'nombre' => utf8_encode($r['nombre']), 'apellidos' => utf8_encode($r['apellidos']), 'email' => $r['email'], 
-        'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => utf8_encode($r['direccion'])
+        'nombre' => encode($r['nombre']), 'apellidos' => encode($r['apellidos']), 'email' => $r['email'], 
+        'dni' => $r['dni'], 'fecha_nacimiento' => $r['fecha_nacimiento'], 'telefono' => $r['telefono'], 'direccion' => encode($r['direccion'])
     ];
     if(isset($_POST['method'])){
         echo json_encode($json);
@@ -398,6 +412,25 @@ function loadRegister(){
     }
     echo json_encode($json);
 }
+
+/**
+ * Carga los registros de modificaciones del perfil del usuario activo
+ *
+ * @return void
+ */
+function loadUpdatesLog(){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT fecha FROM registro WHERE tipo=2 AND usuario=?");
+    $query->bindParam(1, $_SESSION['email']);
+    $query->execute();
+    $resul = $query->fetchAll(PDO::FETCH_ASSOC);
+    $json = [];
+    foreach ($resul as $r) {
+        $json[] = ['fecha' => $r['fecha']];
+    }
+    echo json_encode($json);
+}
+
 
 //ACTUALIZAR DATOS
 
@@ -560,9 +593,15 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
         $query_select = $bd->prepare("SELECT COUNT(*) AS cuenta FROM usuarios WHERE email = ?");
         $query_select->bindParam(1, $mail);
         $query_select->execute();
-        
         if($result_select=$query_select->fetch()){
             if($result_select['cuenta']) return "Ya existe una cuenta con este email";
+        }
+
+        $query_select2 = $bd->prepare("SELECT COUNT(*) AS cuenta FROM viajeros WHERE dni = ? AND principal = 1");
+        $query_select2->bindParam(1, $dni);
+        $query_select2->execute();
+        if($result_select2=$query_select2->fetch()){
+            if($result_select2['cuenta']) return "Ya existe una cuenta vinculada a este dni";
         }
     }
 
@@ -675,5 +714,19 @@ function updateRegister($mail, $date, $type){
     } catch (\Throwable $th) {
         $bd->rollBack();
         return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
+    }
+}
+/**
+ * Codifica a utf8 si estamos en prod.
+ *
+ * @param String $text
+ * @return String
+ */
+function encode($text){
+    $prod = false;
+    if($prod){
+        return utf8_encode($text);
+    } else {
+        return $text;
     }
 }

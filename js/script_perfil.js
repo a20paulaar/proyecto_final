@@ -4,7 +4,7 @@ cargarInformacionPerfil();
  * Carga la información del perfil del usuario que tiene la sesión iniciada
  */
 function cargarInformacionPerfil(){
-    $.post("../functions/bd.php", {
+   $.post("../functions/bd.php", {
         method: "loadProfileInfo"
     },
     function(data, status){
@@ -42,3 +42,15 @@ $('#modificar').click(function(){
 $('#cancelar').click(function(){
     location.reload();
 });
+
+function cargarRegistroModificaciones(){
+    $.post("../functions/bd.php", {
+        method: "loadUpdatesLog"
+    },
+    function(data, status){
+        var json = JSON.parse(data);
+        for(let dato in json){
+            $('tbody').append("<tr><td>" + json[dato] + "</td></tr>");  
+        }
+    });
+}

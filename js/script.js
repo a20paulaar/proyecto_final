@@ -24,7 +24,8 @@ function cargarUltimasNoticias(){
     let call = (window.location.pathname.indexOf('index.php')!=-1 ? "":"../");
     $.post(call + "functions/bd.php", {
         method: "loadNews",
-        range: 3
+        range: 3,
+        p: 1
     },
     function(data, status){
         var noticias = JSON.parse(data);

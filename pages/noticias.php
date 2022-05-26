@@ -47,33 +47,10 @@ session_start();
     </header>
     <div id="container">
         <section>
-            <h2>Atención al Cliente</h2>
-            <form action="../functions/atencion.php" method="post">
-                    <div class="formarea">
-                        <span>
-                            <label for="nombre">Nombre: </label>
-                            <input class="form-control" type="text" name="nombre" id="nombre">
-                        </span>
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <label for="email">E-mail: </label>
-                            <input class="form-control" type="email" name="email" id="email">
-                        </span>
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <label for="pass">Mensaje: </label>
-                            <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Introduce aquí tus comentarios, dudas o quejas."></textarea>
-                        </span>                    
-                    </div>
-                    <div class="formarea">
-                        <span>
-                            <input class="form-control submit" type="submit" name="atencion" value="Enviar" />
-                        </span>
-                    </div>
-            </form>
-            <p class="menu_element">También puedes ponerte en contacto con nosotros a través de nuestras redes sociales.</p>
+            <div id="noticias">
+                <h2>Histórico de noticias.</h2>
+            </div>
+            <div id="paginas"></div>
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -89,11 +66,9 @@ session_start();
             <a href="#"><img src="../images/facebook.png" alt="Facebook"></a>
         </div>
     </footer>
-    <?php if(isset($_GET["exito"])){?>
-        <script>alert("Mensaje enviado con éxito, gracias por su paciencia.");</script>
-    <?php } else if(isset($_GET["error"])){ ?>
-        <script>alert("Se ha producido un error al enviar su mensaje, disculpe las molestias.");</script>
-    <?php } ?>
+
     <script src="../js/script.js"></script>
+    <script src="../js/script_noticias.js"></script>
+    <script>cargarNoticias(<?= $_GET['p']?>)</script>
 </body>
 </html>

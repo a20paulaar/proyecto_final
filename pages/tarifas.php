@@ -57,7 +57,7 @@ session_start();
         <aside>
             <h2>Noticias</h2>
             <div></div>
-            <!-- <a class="menu_element" href="#">Ver noticias anteriores</a> -->
+            <a class="menu_element" href="pages/noticias.php">Ver noticias anteriores</a>
         </aside>
     </div>
     <footer>

@@ -48,7 +48,7 @@ session_start();
     <div id="container">
         <section id="profile">
         <?php if(isset($_SESSION["email"])){ ?>
-            <form action="../functions/perfil.php" method="post">
+            <form action="../functions/perfil.php" method="post"enctype="multipart/form-data">
                 <h2>Información del perfil</h2>
                 <span>
                     <div id="profile_img"></div>
@@ -83,12 +83,13 @@ session_start();
                     <button id="cancelar" type="button" class="form-control" style="display: none;">Cancelar</button>
                 </span>
             </form>
-            <table>
+            <table class="table" id="profile_table">
                 <thead>
                     <tr>
                         <th>Últimas modificaciones de tu perfil:</th>
                     </tr>
                 </thead>
+                <tbody></tbody>
             </table>
             <?php } else { ?>
                 <div class="error">Acceso denegado.</div>

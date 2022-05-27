@@ -1,4 +1,5 @@
 cargarInformacionPerfil();
+cargarRegistroModificaciones();
 
 /**
  * Carga la información del perfil del usuario que tiene la sesión iniciada
@@ -49,8 +50,8 @@ function cargarRegistroModificaciones(){
     },
     function(data, status){
         var json = JSON.parse(data);
-        for(let dato in json){
-            $('tbody').append("<tr><td>" + json[dato] + "</td></tr>");  
+        for(let dato of json){
+            $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td></tr>");  
         }
     });
 }

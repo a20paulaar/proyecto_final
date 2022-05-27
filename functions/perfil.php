@@ -1,28 +1,6 @@
 <?php
 require 'bd.php';
 session_start();
-/**
- * Comprueba que no haya errores en la subida del fichero
- *
- * @param String $fichero Ruta del fichero
- * @return void
- */
-function comprobarErrorSubida($fichero) {
-    if (!isset($fichero['error'])) {
-        $error = true;
-    }
-    switch ($fichero['error']) {
-        case UPLOAD_ERR_OK:
-            $error = false;
-            break;
-        case UPLOAD_ERR_NO_FILE:
-        case UPLOAD_ERR_INI_SIZE:
-        case UPLOAD_ERR_FORM_SIZE:
-        default:
-            $error = true;
-    }
-    return $error;
-}
 
 /**
  * Mueve el fichero, si no hay errores, al directorio del usuario y lo crea si no existe
@@ -32,25 +10,20 @@ function comprobarErrorSubida($fichero) {
  * @return void
  */
 function moverFichero($email, $file) {
-    $result = false;
-    $text = "";
-    if ($file['size'] > 1000000) {
-        $result = true;
-        $msg .= "Tamaño del archivo muy grande";
-    }
-
-    if (!$result) {
-        if (!file_exists('../images/'. $email)) {
-            mkdir('../images/'.$email, 0775, true);
+    $error = false;
+    if ($file['size'] > 5000000) {
+        $error = "Tamaño del archivo muy grande";
+    } else {
+        if (!file_exists('../images/' . $email)) {
+            mkdir('../images/' . $email, 0775, true);
         }
-        $result = comprobarErrorSubida($file);
-        if (!$result) {
+        if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
             $origin = $file['tmp_name'];
-            $destiny = "../images/$email/$file";
+            $destiny = "../images/" . $email . "/user.png";
             $result = move_uploaded_file($origin, $destiny);
         }
     }
-    return $result;
+    return $error;
 }
 
 if(isset($_POST['method'])){ // NO es una llamada desde el formulario, sino desde AJAX para comprobar si existe imagen
@@ -60,7 +33,12 @@ if(isset($_POST['method'])){ // NO es una llamada desde el formulario, sino desd
         echo "";
     }
 } else {
-    $subida = moverFichero($_SESSION['email'], $_POST['subir_img']);
+    $error = moverFichero($_SESSION['email'], $_FILES['subir_img']);
+    if($error){
+        $error = urlencode($error);
+        $error = str_replace('%0D%0A', ' ', $error);
+        header("Location: ../pages/perfil.php?error=".$error);
+    }
 
     $result = updateProfileInfo($_SESSION['email'], $_POST['telefono'], $_POST['direccion']);
     if($result == 'OK'){

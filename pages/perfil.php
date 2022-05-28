@@ -83,14 +83,24 @@ session_start();
                     <button id="cancelar" type="button" class="form-control" style="display: none;">Cancelar</button>
                 </span>
             </form>
-            <table class="table" id="profile_table">
-                <thead>
-                    <tr>
-                        <th>Últimas modificaciones de tu perfil:</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div id="profile_tables">
+                <table class="table" id="profile_table">
+                    <thead>
+                        <tr>
+                            <th>Últimas modificaciones de tu perfil:</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <table class="table" id="points_table">
+                    <thead>
+                        <tr>
+                            <th>Últimas transacciones de puntos:</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
             <?php } else { ?>
                 <div class="error">Acceso denegado.</div>
             <?php } ?>

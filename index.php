@@ -11,6 +11,8 @@ session_start();
     <title>TransMiño</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -45,8 +47,36 @@ session_start();
             </nav>
         </div>
     </header>
-    <div id="container">
-        <section>
+        <div id="container">
+            <section>
+                <div id="carouselIndex" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/bus_1.png" class="d-block w-100" alt="Autobus en la carretera">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/bus_2.png" class="d-block w-100" alt="Asientos del autobus">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/bus_3.png" class="d-block w-100" alt="Conductor del autobus">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/vigo.png" class="d-block w-100" alt="Ciudad de Vigo">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/bridge_tui.png" class="d-block w-100" alt="Puente de Tui">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/oporto.png" class="d-block w-100" alt="Ciudad de Oporto">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
             <h2>Comprar billetes</h2>
             <form action="functions/compra.php" method="post" onsubmit="return validarCompra()">
                 <div class="formarea">

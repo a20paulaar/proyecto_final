@@ -16,7 +16,7 @@ if(isset($_POST['method'])){
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
         case 'loadRegister': loadRegister(); break;
-        case 'loadUpdatesLog': loadUpdatesLog(); break;
+        case 'loadLog': loadLog($_POST['type']); break;
     }
 }
 
@@ -418,15 +418,16 @@ function loadRegister(){
  *
  * @return void
  */
-function loadUpdatesLog(){
+function loadLog($type){
     $bd = loadBBDD();
-    $query = $bd->prepare("SELECT fecha FROM registro WHERE tipo=2 AND usuario=?");
-    $query->bindParam(1, $_SESSION['email']);
+    $query = $bd->prepare("SELECT fecha, puntos FROM registro WHERE tipo=? AND usuario=? ORDER BY fecha DESC LIMIT 10");
+    $query->bindParam(1, $type);
+    $query->bindParam(2, $_SESSION['email']);
     $query->execute();
     $resul = $query->fetchAll(PDO::FETCH_ASSOC);
     $json = [];
     foreach ($resul as $r) {
-        $json[] = ['fecha' => $r['fecha']];
+        $json[] = ['fecha' => $r['fecha'], 'puntos' => $r['puntos']];
     }
     echo json_encode($json);
 }
@@ -610,7 +611,7 @@ function registerUser($name, $surname, $dni, $birth, $phone, $mail, $pass, $addr
     try {
         $main = 0;
         if(!is_null($pass)){ //Si el password es null, no estamos registrando usuario, estamos añadiendo un viajero (SOLO PARA LOS VIAJEROS ADICIONALES EN EL PROCESO DE COMPRA)
-            $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 2)");
+            $query = $bd->prepare("INSERT INTO usuarios VALUES (?, md5(?), 0, 2)");
             $query->bindParam(1, $mail);
             $query->bindParam(2, $pass);
             $query->execute();
@@ -699,15 +700,16 @@ function insertPayment($mail, $quantity, $method, $date){
  * @param String $type Tipo de evento (sesion/modificacion)
  * @return void
  */
-function updateRegister($mail, $date, $type){
+function updateRegister($mail, $date, $type, $points=null){
     $bd = loadBBDD();
     $bd->beginTransaction();
     try {
-        $query = $bd->prepare("INSERT INTO registro VALUES(null,?, ?, ?)");
+        $query = $bd->prepare("INSERT INTO registro VALUES(null,?, ?, ?, ?)");
 
         $query->bindParam(1, $mail);
         $query->bindParam(2, $date);
         $query->bindParam(3, $type);
+        $query->bindParam(4, $points); //Usualmente NULL salvo que venga de updatePoints ($type=3)
         $query->execute();
         $bd->commit();
         return 'OK';
@@ -716,6 +718,34 @@ function updateRegister($mail, $date, $type){
         return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
     }
 }
+/**
+ * Actualiza los puntos que el usuario tiene disponibles en su cuenta
+ *
+ * @param String $mail
+ * @param int $points
+ * @return void
+ */
+function updatePoints($mail, $points){
+    $bd = loadBBDD();
+    $bd->beginTransaction();
+    try {
+        $query = $bd->prepare("UPDATE usuarios SET puntos = puntos + ? WHERE email = ?");
+
+        $query->bindParam(1, $points);
+        $query->bindParam(2, $mail);
+        $query->execute();
+        $bd->commit();
+
+        $update = updateRegister($mail, date("Y-m-d H:i:s"), 3, $points);
+
+        return $update;
+    } catch (\Throwable $th) {
+        $bd->rollBack();
+        return 'ERROR EN EL REGISTRO. MOTIVO: ' . $th->getMessage();
+    }
+}
+
+
 /**
  * Codifica a utf8 si estamos en prod.
  *

@@ -58,6 +58,10 @@ article{
     border-image: linear-gradient(to right, rgba(0,0,0,0), black, rgba(0,0,0,0)) 1 0 100%;
 }
 
+#carouselIndex{
+    margin-bottom: 1em;
+}
+
 #anc, #adu, #jov{
     width: 50%;
 }
@@ -152,6 +156,11 @@ article{
     font-size: large;
     text-decoration: dashed;
 }
+#profile_tables{
+    display: flex;
+    justify-content: space-between;
+    margin: 1em;
+}
 
 footer{
     margin: 1em auto;
@@ -200,6 +209,9 @@ footer{
     }
     #social{
         width: 50%;
+    }
+    #profile_tables{
+        flex-direction: column;
     }
 }
 

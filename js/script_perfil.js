@@ -46,12 +46,26 @@ $('#cancelar').click(function(){
 
 function cargarRegistroModificaciones(){
     $.post("../functions/bd.php", {
-        method: "loadUpdatesLog"
+        method: "loadLog",
+        type: 2
     },
     function(data, status){
         var json = JSON.parse(data);
         for(let dato of json){
             $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td></tr>");  
+        }
+    });
+}
+
+function cargarRegistroPuntos(){
+    $.post("../functions/bd.php", {
+        method: "loadLog",
+        type: 3
+    },
+    function(data, status){
+        var json = JSON.parse(data);
+        for(let dato of json){
+            $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td><td>Transacción de "+ dato.puntos+" puntos</td></tr>");  
         }
     });
 }

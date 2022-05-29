@@ -65,7 +65,15 @@ function cargarRegistroPuntos(){
     function(data, status){
         var json = JSON.parse(data);
         for(let dato of json){
-            $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td><td>Transacción de "+ dato.puntos+" puntos</td></tr>");  
+            let puntos = Math.abs(dato.puntos);
+            let evento = "";
+            if(dato.puntos<0){
+                evento = "canjeado";
+            } else {
+                evento = "obtenido";
+            } 
+            $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td><td>Ha " + evento + " " + puntos + " puntos</td></tr>"); 
+
         }
     });
 }

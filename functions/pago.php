@@ -1,5 +1,6 @@
 <?php
 require 'bd.php';
+require 'mailer.php';
 session_start();
 
 $reservation_data = loadPendingReservations($_SESSION['email']);

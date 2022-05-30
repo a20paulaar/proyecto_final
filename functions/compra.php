@@ -39,6 +39,9 @@ if($_POST['step']=='Comprar'){
 
         setcookie("traveldata_v", json_encode($horarios_copy), time()+3600, "/");
     }
+    else{
+        setcookie('traveldata_v', '', time() - 3600, "/");
+    }
 
     header("Location: ../pages/compra.php");
 }
@@ -81,14 +84,16 @@ else if($_POST['step']=='Pagar'){
         }
     }
 
+    //Se sustraen los puntos usados
+    if($result == 'OK') $result = updatePoints($_SESSION['email'], $_POST["points"] * -1);
+
     //Hacer el pago y cargar una página de success/error
     if($result == 'OK'){
         //Borrar cookies tras registrar el viaje
-        setcookie('traveldata_i', '', time() - 3600);
-        setcookie('traveldata_v', '', time() - 3600);
+        setcookie('traveldata_i', '', time() - 3600, "/");
+        setcookie('traveldata_v', '', time() - 3600, "/");
 
         doPayment($_POST); //Simular alguna manera de pago
-        header('Location:../pages/pago.php');
     }
     else{
         $result = urlencode($result);
@@ -114,6 +119,10 @@ function doPayment($post_data){
         // Hay que simular un formulario invisible para mandar datos a una supuesta pasarela
         // ya que necesito mandarlo a una API externa con POST
         ?>
+        <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        </head>
+        <body>
             <form id="realizarPago" action="pseudopasarela.php" method="post">
             <input type='hidden' name='name' value='<?php echo $post_data["nombre"]; ?>'>
 
@@ -130,6 +139,7 @@ function doPayment($post_data){
                 $("#realizarPago").submit();
             });
             </script>
+        </body>
         <?php
     }
 }

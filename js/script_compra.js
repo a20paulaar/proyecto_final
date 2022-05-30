@@ -1,3 +1,4 @@
+let total = 0;
 /**
  * Rellena el formulario con los datos de viajes provenientes de cookies formateados a JSON
  * @param {*} json_ida 
@@ -133,18 +134,30 @@ function gestionarDatosCompra(json_ida, json_vuelta = null){
         let precio_adu = precio_base * json_ida.people.adu;
         let precio_anc = precio_base * 0.5 * json_ida.people.anc;
         let precio_jov = precio_base * 0.9 * json_ida.people.jov;
-        let total = precio_adu + precio_anc + precio_jov;
+        total = precio_adu + precio_anc + precio_jov;
 
         $('#t_pago').append(
-            "<tr><th>Precio base</th><th>" + precio_base.toFixed(2) + " €</th></tr>" +
-            ( json_ida.people.adu > 0 ? "<tr><td>Precio total adultos (100%)</td><td>" + precio_adu.toFixed(2) + " €</td></tr>" : "" ) +
-            ( json_ida.people.anc > 0 ? "<tr><td>Precio total reducido ancianos (50%)</td><td>" + precio_anc.toFixed(2) + " €</td></tr>" : "" ) +
-            ( json_ida.people.jov > 0 ? "<tr><td>Precio reducido jóvenes (90%)</td><td>" + precio_jov.toFixed(2) + " €</td></tr>" : "" ) +
-            "<tr><th>TOTAL</th><th><input type='text' id='total_price' name='total' class='readonly form-control-plaintext' value='" + total.toFixed(2) + " €' readonly /></th></tr>"
+            "<tr><th>Precio base</th><th></th><th>" + precio_base.toFixed(2) + " €</th></tr>" +
+            ( json_ida.people.adu > 0 ? "<tr><td>Precio total adultos (100%)</td><td></td><td>" + precio_adu.toFixed(2) + " €</td></tr>" : "" ) +
+            ( json_ida.people.anc > 0 ? "<tr><td>Precio total reducido ancianos (50%)</td><td></td><td>" + precio_anc.toFixed(2) + " €</td></tr>" : "" ) +
+            ( json_ida.people.jov > 0 ? "<tr><td>Precio reducido jóvenes (90%)</td><td></td><td>" + precio_jov.toFixed(2) + " €</td></tr>" : "" ) +
+            "<tr><td>Pago con puntos:</td><td><input type='number' id='points' name='points' value='0' min='0' /></td><td id='points_value'>0 €</td></tr>" +
+            "<tr><th>TOTAL</th><th></th><th><input type='text' id='total_price' name='total' class='readonly form-control-plaintext' value='" + total.toFixed(2) + " €' readonly /></th></tr>"
         );
-    });
 
+        $.post("../functions/bd.php", {
+            method: "loadPoints"
+        },
+        function(data, status){
+            $('#points').attr('step', 500).attr('max', data).keydown(function(e){
+                if ( e.keyCode ) {
+                    return false;
+                }
+            });
+        });
+    });
 }
+
 /**
  * Valida que los datos de la compra sean correctos
  * @returns Mensaje de error (si lo hubiera)
@@ -208,7 +221,7 @@ function invitado(){
         for(var i=1; i<=50; i++) $('#a_'+element).append('<option id="a_'+element+'_'+i+'" value="'+i+'">'+i+'</option>'); //50 asientos por bus
     
         let value = $(this).val().split("_");
-        
+console.log(value);
         $.post("../functions/bd.php", {
             method: "loadOccupiedSeats",
             date: value[0],
@@ -236,4 +249,10 @@ $('#forma_pago_seleccionar').change(function(){
         $('#datos_pago_paypal').css("display", "none");
         $('#datos_pago_tarjeta').css("display", "flex");
     }
+});
+
+$('#t_pago').on("change", "#points", function(e){
+    let money = $('#points').val()/2000;
+    $('#points_value').text("-" + money + " €");
+    $('#total_price').val((total - money).toFixed(2) + " €");
 });

@@ -1,5 +1,6 @@
 cargarInformacionPerfil();
 cargarRegistroModificaciones();
+cargarRegistroPuntos();
 
 /**
  * Carga la información del perfil del usuario que tiene la sesión iniciada
@@ -72,7 +73,7 @@ function cargarRegistroPuntos(){
             } else {
                 evento = "obtenido";
             } 
-            $('#profile_table>tbody').append("<tr><td>" + dato.fecha + "</td><td>Ha " + evento + " " + puntos + " puntos</td></tr>"); 
+            $('#points_table>tbody').append("<tr><td>" + dato.fecha + "</td><td>Ha " + evento + " " + puntos + " puntos</td></tr>"); 
 
         }
     });

@@ -172,6 +172,13 @@ footer{
     width: 2em;
 }
 
+#points{
+    border: none;
+    background-color: transparent;
+    cursor: default;
+    text-align: right;
+}
+
 @media (max-width: 767px){
     #title{
         margin: 0.5em auto 1em;

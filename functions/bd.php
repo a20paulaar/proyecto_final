@@ -12,11 +12,12 @@ if(isset($_POST['method'])){
         case 'loadNews': loadNews(); break;
         case 'loadNew': loadNew($_POST['id']); break;
         case 'loadHowManyNews' : loadHowManyNews(); break;
-        case 'loadProfileInfo': loadProfileInfo($_SESSION['email']); break;
+        case 'loadProfileInfo': loadProfileInfo(); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
         case 'loadRegister': loadRegister(); break;
         case 'loadLog': loadLog($_POST['type']); break;
+        case 'loadPoints': loadPoints(); break;
     }
 }
 
@@ -318,17 +319,16 @@ function loadHowManyNews(){
 }
 
 /**
- * Carga la información de un usuario especificado
+ * Carga la información del usuario activo
  *
- * @param String $email Email del usuario
  * @return void
  */
-function loadProfileInfo($email){
+function loadProfileInfo(){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT nombre, apellidos, email, dni, fecha_nacimiento, telefono, direccion 
         FROM viajeros WHERE email = ? AND principal = 1");
 
-    $query->bindParam(1, $email);
+    $query->bindParam(1, $_SESSION['email']);
     $query->execute();
     $r = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -360,10 +360,18 @@ function loadOccupiedSeats($date, $expedition, $id_origin, $id_destination){
 
     $query->bindParam(1, $date);
     $query->bindParam(2, $expedition);
-    $query->bindParam(3, $id_origin);
-    $query->bindParam(4, $id_destination);
-    $query->bindParam(5, $id_origin);
-    $query->bindParam(6, $id_destination);
+    if($id_origin > $id_destination){ //BETWEEN no admite comparar entre valor mas alto y valor mas bajo
+        $query->bindParam(3, $id_destination);
+        $query->bindParam(4, $id_origin);
+        $query->bindParam(5, $id_destination);
+        $query->bindParam(6, $id_origin);
+    }
+    else{
+        $query->bindParam(3, $id_origin);
+        $query->bindParam(4, $id_destination);
+        $query->bindParam(5, $id_origin);
+        $query->bindParam(6, $id_destination);
+    }
 
     $query->execute();
     $resul = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -385,7 +393,7 @@ function loadLastPayment($email){
     $bd = loadBBDD();
     $query = $bd->prepare("SELECT email, cantidad, metodo, fecha_hora 
     FROM transacciones
-    WHERE fecha_hora=? ORDER BY fecha_hora DESC LIMIT 1");
+    WHERE email=? ORDER BY fecha_hora DESC LIMIT 1");
 
     $query->bindParam(1, $email);
     $query->execute();
@@ -432,6 +440,16 @@ function loadLog($type){
     echo json_encode($json);
 }
 
+function loadPoints(){
+    $bd = loadBBDD();
+    $query = $bd->prepare("SELECT puntos FROM usuarios WHERE email=?");
+    $query->bindParam(1, $_SESSION['email']);
+    $query->execute();
+
+    if($result=$query->fetch()){
+        echo $result[0];
+    }
+}
 
 //ACTUALIZAR DATOS
 

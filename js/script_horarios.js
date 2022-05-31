@@ -1,9 +1,7 @@
-cargarHorarios();
-
 /**
  * Carga todas las paradas de la línea
  */
-function cargarParadas(){
+function cargarParadasEnTabla(){
     $.post("../functions/bd.php", {
         method: "loadStops"
     },
@@ -16,11 +14,23 @@ function cargarParadas(){
     });
 }
 
+function cargarParadasEnLista(){
+    $.post("../functions/bd.php", {
+        method: "loadStops"
+    },
+    function(data, status){
+        var json = JSON.parse(data);
+        for(var p of json.paradas){
+            $('#paradas').append(new Option(p.name, p.id));
+        }
+    });
+}
+
 /**
  * Carga todos los horarios (de ida y de vuelta)
  */
 function cargarHorarios(){
-    cargarParadas();
+    cargarParadasEnTabla();
 
     $.post("../functions/bd.php", {
         method: "loadSchedule"
@@ -53,4 +63,30 @@ function cargarHorarios(){
 
         }
     });
+}
+
+$('#paradas').change(function(e) {
+    console.log(e, $(this).val());
+    $.post("../functions/bd.php", {
+        method: "loadNextBus",
+        stop: $(this).val()
+    },
+    function(data, status){
+        var json = JSON.parse(data);
+        console.log(new Date(Date.now()), json.desc ? json.desc.hora : "");
+        $('#asc').text(json.asc ? json.asc.hora + " (" + intervalo(json.asc.hora) + ")" : "No hay próximas expediciones");
+        $('#desc').text(json.desc ? json.desc.hora + " (" + intervalo(json.desc.hora) + ")" : "No hay próximas expediciones");
+    });
+});
+
+function intervalo(hora){
+    var horaFrag = hora.split(":");
+    var segundosHora = parseInt(horaFrag[2]) + parseInt(horaFrag[1])*60 + parseInt(horaFrag[0])*3600;
+    var ahora = new Date();
+    var segundosAhora = ahora.getSeconds() + ahora.getMinutes()*60 + ahora.getHours()*3600;
+    
+    var intervalo = segundosHora - segundosAhora;
+    console.log(intervalo);
+    var ret = (parseInt(intervalo/3600) > 0 ? parseInt(intervalo/3600) + "h" : "") + (parseInt((intervalo%3600)/60) > 0 ? parseInt((intervalo%3600)/60) + "min" : "");
+    return (ret ?? "< 1min");
 }

@@ -58,7 +58,7 @@ session_start();
             <table class="table" id="vuelta">
                 <tr/>
             </table>
-            
+            <a href="tiemporeal.php">Estimación de los horarios en tiempo real.</a>
         </section>
         <aside>
             <h2>Noticias</h2>
@@ -77,5 +77,6 @@ session_start();
 
     <script src="../js/script.js"></script>
     <script src="../js/script_horarios.js"></script>
+    <script>cargarHorarios();</script>
 </body>
 </html>

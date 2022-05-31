@@ -14,6 +14,7 @@ if(isset($_POST['method'])){
         case 'loadHowManyNews' : loadHowManyNews(); break;
         case 'loadProfileInfo': loadProfileInfo(); break;
         case 'loadSchedulesBetween': loadSchedulesBetween($id_origin, $id_destination); break;
+        case 'loadNextBus': loadNextBus($_POST['stop']); break;
         case 'loadOccupiedSeats': loadOccupiedSeats($_POST['date'], $_POST['exp'], $_POST['id_origin'], $_POST['id_destination']); break;
         case 'loadRegister': loadRegister(); break;
         case 'loadLog': loadLog($_POST['type']); break;
@@ -179,6 +180,30 @@ function loadSchedulesBetween($id_origin, $id_destination){
     }
     
     return $data;
+}
+
+function loadNextBus($stop){
+    $json = [];
+    $bd = loadBBDD();
+    $keys = ["asc" => $stop + 1, "desc" => $stop - 1];
+
+    foreach ($keys as $key => $next) {
+        $query = $bd->prepare("SELECT h.id_expedicion, h.id_parada, h.hora FROM horarios h 
+            WHERE h.id_parada = ? 
+            AND h.hora BETWEEN NOW() 
+            AND ADDTIME(NOW(), '2:00:00') 
+            AND (SELECT hh.hora FROM horarios hh WHERE hh.id_parada = ? AND hh.id_expedicion = h.id_expedicion) > h.hora");
+        $query->bindParam(1, $stop);
+        $query->bindParam(2, $next);
+        $query->execute();
+        $resul = $query->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($resul as $r) {
+            $json[$key] = ['hora' => $r['hora']];
+        }
+    }
+    
+    echo json_encode($json);
 }
 
 /**

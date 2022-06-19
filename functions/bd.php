@@ -796,7 +796,7 @@ function updatePoints($mail, $points){
  * @return String
  */
 function encode($text){
-    $prod = false;
+    $prod = true;
     if($prod){
         return utf8_encode($text);
     } else {
